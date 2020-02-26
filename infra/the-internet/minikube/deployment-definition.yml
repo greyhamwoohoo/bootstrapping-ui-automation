@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: the-internet
+  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: the-internet
+      
+  template:
+    metadata:
+      labels:
+        app: the-internet
+        
+    spec:
+      containers:
+      - name: the-internet
+        image: gprestes/the-internet
+        resources:
+          limits:
+            memory: "1024Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000

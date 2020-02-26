@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: the-internet
+
+spec:
+  type: LoadBalancer
+  selector:
+    app: the-internet
+  ports:
+  # 7500 - the service port
+  # 5000 - the port exposed on the Pods
+  - port: 7500
+    targetPort: 5000
