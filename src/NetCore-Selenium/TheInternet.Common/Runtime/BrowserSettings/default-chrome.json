@@ -1,0 +1,28 @@
+﻿{
+  "browserName": "Chrome",
+  "browserSettings": {
+    "options": {
+      "captureChromeLogFile": false,
+      "chromeLogPath": "%TEST_OUTPUT_FOLDER%\\Chrome_debug.log",
+      "arguments": [
+        "incognito",
+        "--no-sandbox",
+        "!--headless",
+        "!--enable-logging",
+        "!--v=1"
+      ],
+      "loggingPreferences": {
+        "browser": "Severe",
+        "driver": "Severe",
+        "!performance": "All"
+      },
+      "!performanceLoggingPreferences": {
+        "tracingCategories": [ "blink", "cc", "netlog", "sequence_manager", "toplevel", "v8", "devtools.timeline" ]
+      },
+      "userProfilePreferences": {
+        "download.default_directory": "%TEST_OUTPUT_FOLDER%",
+        "download.prompt_for_download": false
+      }
+    }
+  }
+}
