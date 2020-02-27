@@ -8,7 +8,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
     public class ChromeBrowserSettings : BrowserSettingsBase
     {
         [JsonProperty("options")]
-        public ChromeBrowserParametersOptions Options { get; internal set; }
+        public ChromeBrowserParametersOptions Options { get; set; }
 
         public ChromeBrowserSettings()
         {
@@ -25,17 +25,17 @@ namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
         public class ChromeBrowserParametersOptions
         {
             [JsonProperty("arguments")]
-            public List<string> Arguments { get; internal set; }
+            public List<string> Arguments { get; set; }
             [JsonProperty("loggingPreferences")]
-            public Dictionary<string, LogLevel> LoggingPreferences { get; internal set; }
+            public Dictionary<string, LogLevel> LoggingPreferences { get; set; }
             [JsonProperty("userProfilePreferences")]
-            public Dictionary<string, object> UserProfilePreferences { get; internal set; }
+            public Dictionary<string, object> UserProfilePreferences { get; set; }
             [JsonProperty("performanceLoggingPreferences")]
-            public LoggingPreferencesPerformance PerformanceLoggingPreferences { get; internal set; }
+            public LoggingPreferencesPerformance PerformanceLoggingPreferences { get; set; }
             [JsonProperty("captureChromeLogFile")]
-            public bool CaptureChromeLogFile { get; internal set; }
+            public bool CaptureChromeLogFile { get; set; }
             [JsonProperty("chromeLogPath")]
-            public string ChromeLogPath { get; internal set; }
+            public string ChromeLogPath { get; set; }
             public ChromeBrowserParametersOptions()
             {
                 Cleanse();
@@ -59,7 +59,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
                 public bool IsEmpty => TracingCategories == null || TracingCategories.Count == 0;
 
                 [JsonProperty("tracingCategories")]
-                public List<string> TracingCategories { get; internal set; }
+                public List<string> TracingCategories { get; set; }
                 public LoggingPreferencesPerformance()
                 {
                     Cleanse();

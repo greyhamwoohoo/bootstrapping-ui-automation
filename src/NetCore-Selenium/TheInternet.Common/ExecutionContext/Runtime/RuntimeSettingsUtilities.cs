@@ -11,7 +11,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime
         /// Will return a list of all settings files. 
         /// </summary>
         /// <remarks>
-        /// An environment variable will be queried by convention: PREFIX_CATEGORY_FILES</remarks>
+        /// An environment variable will be queried by convention: PREFIXCATEGORY_FILES</remarks>
         /// <param name="prefix">The prefix used for this service. There must always be a prefix. Typically: this is the name of the service. </param>
         /// <param name="category">The category of settings. Use one of the folders under the Runtime folder. </param>
         /// <param name="rootFolder">Root folder. Typically: the test execution folder. </param>
@@ -24,8 +24,8 @@ namespace TheInternet.Common.ExecutionContext.Runtime
             if (category == null) throw new System.ArgumentNullException(nameof(category));
             if (defaultFilename == null) throw new System.ArgumentNullException(nameof(defaultFilename));
 
-            var candidateSettingFiles = System.Environment.ExpandEnvironmentVariables($"%{prefix}_{category.ToUpper()}_FILES%");
-            if (candidateSettingFiles == $"%{prefix}_{category.ToUpper()}_FILES%")
+            var candidateSettingFiles = System.Environment.ExpandEnvironmentVariables($"%{prefix}{category.ToUpper()}_FILES%");
+            if (candidateSettingFiles == $"%{prefix}{category.ToUpper()}_FILES%")
             {
                 candidateSettingFiles = Path.Combine(rootFolder, category, defaultFilename);
             }
@@ -53,6 +53,9 @@ namespace TheInternet.Common.ExecutionContext.Runtime
         /// <returns></returns>
         public IConfigurationRoot Buildconfiguration(string prefix, IEnumerable<string> paths)
         {
+            if (null == prefix) throw new System.ArgumentNullException(nameof(prefix));
+            if (null == paths) throw new System.ArgumentNullException(nameof(paths));
+
             var configuration = new ConfigurationBuilder();
 
             paths.ToList().ForEach(path =>

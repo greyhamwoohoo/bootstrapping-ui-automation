@@ -7,7 +7,7 @@ namespace TheInternet.SystemTests.Raw
     [TestClass]
     public class OneTimeTestInitialize
     {
-        const string PREFIX = "THEINTERNET";
+        const string PREFIX = "THEINTERNET_";
 
         static IServiceProvider _serviceProvider = default;
 

@@ -3,11 +3,13 @@ using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 
 namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
 {
-    public class BrowserSettingsBase : IBrowserName
+    public class BrowserSettingsBase : IBrowserProperties
     {
         [JsonProperty("browserName")]
-        public string BrowserName { get; internal set; }
+        public string BrowserName { get; set; }
 
-        string IBrowserName.Value => BrowserName;
+        public BrowserSettingsBase BrowserSettings => this;
+
+        string IBrowserProperties.Name => BrowserName;
     }
 }

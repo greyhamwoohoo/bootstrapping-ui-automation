@@ -1,17 +1,24 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.SystemTests.Raw
 {
     [TestClass]
-    public class SmokeTests : TestBase
+    public class SmokeTests : SeleniumTestBase
     {
         [TestMethod]
         public void ItIsChrome()
         {
-            var settings = Resolve<ChromeBrowserSettings>();
-            var browserName = Resolve<IBrowserName>().Value;
+            Resolve<IBrowserProperties>().Name.Should().BeOneOf("CHROME");
+        }
+
+        [TestMethod]
+        public void BrowserSessionExists()
+        {
+            BrowserSession.Should().NotBeNull(because: "the BrowserSession is instantiated in the Base Class. ");
         }
     }
 }

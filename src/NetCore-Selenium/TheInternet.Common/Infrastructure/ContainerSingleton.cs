@@ -5,6 +5,9 @@ using System.IO;
 using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using TheInternet.Common.SessionManagement;
+using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.Common.Infrastructure
 {
@@ -33,6 +36,18 @@ namespace TheInternet.Common.Infrastructure
             var services = new ServiceCollection();
 
             ConfigureBrowserSettings(prefix, services);
+            ConfigureRemoteWebDriverSettings(prefix, services);
+
+            services.AddSingleton<IBrowserSessionFactory, BrowserSessionFactory>();
+            services.AddScoped(isp =>
+            {
+                var factory = isp.GetRequiredService<IBrowserSessionFactory>();
+                var browserProperties = isp.GetRequiredService<IBrowserProperties>();
+                var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
+
+                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings);
+                return browserSession;
+            });
 
             _instance = services.BuildServiceProvider();
         }
@@ -49,15 +64,35 @@ namespace TheInternet.Common.Infrastructure
             {
                 case "CHROME":
                     ChromeBrowserSettings instance = new ChromeBrowserSettings();
+                    
                     browserSettings.Bind(instance);
+
                     instance.BrowserName = browserName;
                     instance.Cleanse();
+
                     services.AddSingleton(instance);
-                    services.AddSingleton<IBrowserName>(instance);
+                    services.AddSingleton<IBrowserProperties>(instance);
                     break;
                 default:
                     throw new System.ArgumentOutOfRangeException($"The browser called {browserName} is currently not supported. ");
             }
+        }
+
+        private static void ConfigureRemoteWebDriverSettings(string prefix, IServiceCollection services)
+        {
+            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "RemoteWebDriverSettings", "localhost.json");
+            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+
+            var remoteWebDriverSettings = configurationRoot.GetSection("remoteWebDriverSettings");
+
+            var instance = new RemoteWebDriverSettings();
+
+            remoteWebDriverSettings.Bind(instance);
+
+            instance.Cleanse();
+
+            services.AddSingleton(instance);
         }
     }
 }
