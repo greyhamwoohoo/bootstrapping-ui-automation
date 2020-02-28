@@ -2,7 +2,6 @@
 using OpenQA.Selenium;
 using System;
 using static TheInternet.Common.ElementOperations.ElementState;
-using static TheInternet.Common.ElementOperations.ElementStateCondition;
 
 namespace TheInternet.SystemTests.Raw.Tests
 {
@@ -48,6 +47,5 @@ namespace TheInternet.SystemTests.Raw.Tests
         {
             return $"{uri.Scheme}://{username}:{password}@{uri.AbsoluteUri.Substring(uri.Scheme.Length + 3)}";
         }
-
     }
 }
