@@ -16,7 +16,7 @@ namespace TheInternet.SystemTests.Raw
         [TestMethod]
         public void BrowserSessionExists()
         {
-            Logger.Information($"Here I am ");
+            Logger.Information($"Here I am");
             BrowserSession.Should().NotBeNull(because: "the BrowserSession is instantiated in the Base Class. ");
             Logger.Information($"Here I am again");
         }

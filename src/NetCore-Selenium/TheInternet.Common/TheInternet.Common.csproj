@@ -13,10 +13,11 @@
     <None Remove="Runtime\BrowserSettings\default-firefox.json" />
     <None Remove="Runtime\BrowserSettings\headless-chrome.json" />
     <None Remove="Runtime\BrowserSettings\performance-chrome.json" />
+    <None Remove="Runtime\ControlSettings\default.json" />
     <None Remove="Runtime\EnvironmentSettings\internet.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\localhost.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json" />
-    <None Remove="serilogsettings.json" />
+    <None Remove="serilogSettings.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,9 @@
     <Content Include="Runtime\BrowserSettings\default-chrome.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Runtime\ControlSettings\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Runtime\EnvironmentSettings\internet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -44,7 +48,7 @@
     <Content Include="Runtime\RemoteWebDriverSettings\localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="serilogsettings.json">
+    <Content Include="serilogSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

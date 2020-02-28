@@ -8,6 +8,8 @@ By default, the tests will run using the Chrome browser against http://the-inter
 | -------------------- | ------- | ----------- |
 | THEINTERNET_BROWSERSETTINGS_FILES | chrome-default.json | Launches an incognito Chrome |
 | THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | localhost.json | Does not use a remote webdriver - launches locally |
+| THEINTERNET_ENVIRONMENTSETTINGS_FILES | internet.json | The target environment for the tests. ie: where the application (baseUrl) will point to |
+| THEINTERNET_CONTROLSETTINGS_FILES | default.json | Element timeouts, polling frequency etc. |
 
 The following browsers (and configurations) are supported - choose the browser by setting THEINTERNET_BROWSERSETTINGS_FILES to one of these values:
 

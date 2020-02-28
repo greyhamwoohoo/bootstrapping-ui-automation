@@ -8,6 +8,7 @@ using System.Linq;
 using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
 using TheInternet.Common.SessionManagement;
 using TheInternet.Common.SessionManagement.Contracts;
@@ -47,6 +48,7 @@ namespace TheInternet.Common.Infrastructure
             ConfigureBrowserSettings(prefix, services);
             ConfigureRemoteWebDriverSettings(prefix, services);
             ConfigureEnvironmentSettings(prefix, services);
+            ConfigureControlSettings(prefix, services);
 
             services.AddSingleton<IBrowserSessionFactory, BrowserSessionFactory>();
             services.AddScoped(isp =>
@@ -55,8 +57,9 @@ namespace TheInternet.Common.Infrastructure
                 var browserProperties = isp.GetRequiredService<IBrowserProperties>();
                 var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
                 var environmentSettings = isp.GetRequiredService<EnvironmentSettings>();
+                var controlSettings = isp.GetRequiredService<IControlSettings>();
 
-                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings);
+                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings);
                 return browserSession;
             });
             services.AddScoped(sp =>
@@ -150,6 +153,25 @@ namespace TheInternet.Common.Infrastructure
             instance.Cleanse();
 
             services.AddSingleton(instance);
+        }
+
+        private static void ConfigureControlSettings(string prefix, IServiceCollection services)
+        {
+            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "ControlSettings", "default.json");
+            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+
+            var controlSettings = configurationRoot.GetSection("controlSettings");
+
+            var instance = new ControlSettings();
+
+            controlSettings.Bind(instance);
+
+            instance = SubstituteEnvironmentVariables<ControlSettings>(instance);
+
+            instance.Cleanse();
+
+            services.AddSingleton<IControlSettings, ControlSettings>(isp => instance);
         }
 
         private static void ConfigureEnvironmentSettings(string prefix, IServiceCollection services)
