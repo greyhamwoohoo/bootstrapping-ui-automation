@@ -9,6 +9,14 @@ By default, the tests will run using the Chrome browser against http://the-inter
 | THEINTERNET_BROWSERSETTINGS_FILES | chrome-default.json | Launches an incognito Chrome |
 | THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | localhost.json | Does not use a remote webdriver - launches locally |
 
+The following browsers (and configurations) are supported - choose the browser by setting THEINTERNET_BROWSERSETTINGS_FILES to one of these values:
+
+| Browser | Value | Description |
+| ------- | ----- | ----------- |
+| Edge | default-edge.json | Incognito / Private Browsing for Edge |
+| Chrome | headless-chrome.json | Launches Chrome in headless mode (use this to run tests in Docker containers) |
+| Chrome | default-performance-chrome.json | Launches Chrome and collects performance information |
+
 ### Advanced Parameters
 The optional xxx_FILES environment variables support either a fully qualified path; or the name of a file that is expected to exist under the Runtime folder when the tests are executed; or a combination of both. 
 

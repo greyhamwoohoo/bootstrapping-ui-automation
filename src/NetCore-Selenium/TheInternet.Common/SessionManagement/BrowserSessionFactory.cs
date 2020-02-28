@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Events;
 using System;
@@ -12,27 +13,35 @@ namespace TheInternet.Common.SessionManagement
 {
     public class BrowserSessionFactory : IBrowserSessionFactory
     {
-        public IBrowserSession Create(IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings)
+        public IBrowserSession Create(IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings)
         {
             if (browserProperties == null) throw new System.ArgumentNullException(nameof(browserProperties));
             if (remoteWebDriverSettings == null) throw new System.ArgumentNullException(nameof(remoteWebDriverSettings));
+            if (environmentSettings == null) throw new System.ArgumentNullException(nameof(environmentSettings));
 
             var browser = default(EventFiringWebDriver);
 
             switch (browserProperties.Name)
             {
                 case "CHROME":
-                    var browserSettings = browserProperties.BrowserSettings as ChromeBrowserSettings;
-                    if (null == browserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
+                    var chromeBrowserSettings = browserProperties.BrowserSettings as ChromeBrowserSettings;
+                    if (null == chromeBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
-                    browser = StartBrowser(remoteWebDriverSettings, browserSettings);
+                    browser = StartBrowser(remoteWebDriverSettings, chromeBrowserSettings);
+
+                    break;
+                case "EDGE":
+                    var edgeBrowserSettings = browserProperties.BrowserSettings as EdgeBrowserSettings;
+                    if (null == edgeBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
+
+                    browser = StartBrowser(remoteWebDriverSettings, edgeBrowserSettings);
 
                     break;
                 default:
                     throw new System.ArgumentOutOfRangeException($"There is no support for starting browsers of type {browserProperties.Name}");
             }
 
-            return new BrowserSession(browser);
+            return new BrowserSession(browser, environmentSettings);
         }
 
         private EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteWebDriverSettings, ChromeBrowserSettings settings)
@@ -51,6 +60,18 @@ namespace TheInternet.Common.SessionManagement
             }
 
             return StartRemoteBrowser(remoteWebDriverSettings, chromeOptions);
+        }
+        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, EdgeBrowserSettings settings)
+        {
+            var adapter = new EdgeBrowserSettingsAdapter();
+            var options = adapter.ToEdgeOptions(settings);
+
+            if (!remoteDriverSettings.UseRemoteDriver)
+            {
+                return new EventFiringWebDriver(new EdgeDriver(options));
+            }
+
+            return StartRemoteBrowser(remoteDriverSettings, options);
         }
 
         private static EventFiringWebDriver StartRemoteBrowser(RemoteWebDriverSettings remoteDriverSettings, DriverOptions options)

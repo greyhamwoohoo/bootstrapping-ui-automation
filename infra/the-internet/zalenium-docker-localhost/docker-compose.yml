@@ -1,0 +1,17 @@
+version: '3.0'
+
+services:
+  zelenium:
+    privileged: true
+    image: dosel/zalenium
+    container_name: zalenium
+    hostname: zalenium    
+    ports:
+      - "4444:4444"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: >
+      start --desiredContainers 2
+            --maxDockerSeleniumContainers 2 
+            --videoRecordingEnabled true 
+            --maxTestSessions 1 

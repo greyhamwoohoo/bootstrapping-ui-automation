@@ -9,12 +9,28 @@
 
   <ItemGroup>
     <None Remove="Runtime\BrowserSettings\default-chrome.json" />
+    <None Remove="Runtime\BrowserSettings\default-edge.json" />
+    <None Remove="Runtime\BrowserSettings\headless-chrome.json" />
+    <None Remove="Runtime\BrowserSettings\performance-chrome.json" />
+    <None Remove="Runtime\EnvironmentSettings\internet.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\localhost.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Runtime\BrowserSettings\default-edge.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Runtime\BrowserSettings\performance-chrome.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Runtime\BrowserSettings\headless-chrome.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Runtime\BrowserSettings\default-chrome.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Runtime\EnvironmentSettings\internet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json">
@@ -38,6 +54,7 @@
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
+    <PackageReference Include="Selenium.WebDriver.MicrosoftDriver" Version="17.17134.0" />
   </ItemGroup>
 
 </Project>

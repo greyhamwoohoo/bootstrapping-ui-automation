@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
@@ -37,6 +39,7 @@ namespace TheInternet.Common.Infrastructure
 
             ConfigureBrowserSettings(prefix, services);
             ConfigureRemoteWebDriverSettings(prefix, services);
+            ConfigureEnvironmentSettings(prefix, services);
 
             services.AddSingleton<IBrowserSessionFactory, BrowserSessionFactory>();
             services.AddScoped(isp =>
@@ -44,8 +47,9 @@ namespace TheInternet.Common.Infrastructure
                 var factory = isp.GetRequiredService<IBrowserSessionFactory>();
                 var browserProperties = isp.GetRequiredService<IBrowserProperties>();
                 var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
+                var environmentSettings = isp.GetRequiredService<EnvironmentSettings>();
 
-                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings);
+                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings);
                 return browserSession;
             });
 
@@ -60,6 +64,7 @@ namespace TheInternet.Common.Infrastructure
 
             var browserName = configurationRoot.GetSection("browserName")?.Value?.ToUpper();
             var browserSettings = configurationRoot.GetSection("browserSettings");
+
             switch(browserName)
             {
                 case "CHROME":
@@ -67,11 +72,26 @@ namespace TheInternet.Common.Infrastructure
                     
                     browserSettings.Bind(instance);
 
+                    instance = SubstituteEnvironmentVariables<ChromeBrowserSettings>(instance);
+
                     instance.BrowserName = browserName;
                     instance.Cleanse();
 
                     services.AddSingleton(instance);
                     services.AddSingleton<IBrowserProperties>(instance);
+                    break;
+                case "EDGE":
+                    EdgeBrowserSettings edgeInstance = new EdgeBrowserSettings();
+
+                    browserSettings.Bind(edgeInstance);
+
+                    edgeInstance = SubstituteEnvironmentVariables<EdgeBrowserSettings>(edgeInstance);
+
+                    edgeInstance.BrowserName = browserName;
+                    edgeInstance.Cleanse();
+
+                    services.AddSingleton(edgeInstance);
+                    services.AddSingleton<IBrowserProperties>(edgeInstance);
                     break;
                 default:
                     throw new System.ArgumentOutOfRangeException($"The browser called {browserName} is currently not supported. ");
@@ -90,9 +110,57 @@ namespace TheInternet.Common.Infrastructure
 
             remoteWebDriverSettings.Bind(instance);
 
+            instance = SubstituteEnvironmentVariables<RemoteWebDriverSettings>(instance);
+
             instance.Cleanse();
 
             services.AddSingleton(instance);
+        }
+
+        private static void ConfigureEnvironmentSettings(string prefix, IServiceCollection services)
+        {
+            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "EnvironmentSettings", "internet.json");
+            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+
+            var environmentSettings = configurationRoot.GetSection("EnvironmentSettings");
+
+            var instance = new EnvironmentSettings();
+
+            environmentSettings.Bind(instance);
+
+            instance = SubstituteEnvironmentVariables<EnvironmentSettings>(instance);
+
+            instance.Cleanse();
+
+            services.AddSingleton(instance);
+        }
+
+        /// <summary>
+        /// Brute force any environment variables embedded within the properties of the object. 
+        /// TODO: use a ConfigurationProvider to do this
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private static T SubstituteEnvironmentVariables<T>(T value) where T: class
+        {
+            var variables = System.Environment.GetEnvironmentVariables();
+            var content = JsonConvert.SerializeObject(value);
+            if (content.Contains("%"))
+            {
+                foreach (var variable in variables.Keys.Cast<string>())
+                {
+                    var candidateString = JsonConvert.ToString(variables[variable]).Trim('"');
+                    content = content.Replace($"%{variable.ToUpper()}%", candidateString);
+                }
+
+                return JsonConvert.DeserializeObject<T>(content);
+            } 
+            else
+            {
+                return value;    
+            }
         }
     }
 }

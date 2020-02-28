@@ -65,7 +65,8 @@ namespace TheInternet.Common.ExecutionContext.Runtime
 
             configuration.AddEnvironmentVariables(prefix);
 
-            return configuration.Build();
+            var result = configuration.Build();
+            return result;
         }
     }
 }

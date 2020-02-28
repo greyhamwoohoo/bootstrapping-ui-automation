@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
-using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.SystemTests.Raw
 {
@@ -12,7 +10,7 @@ namespace TheInternet.SystemTests.Raw
         [TestMethod]
         public void ItIsChrome()
         {
-            Resolve<IBrowserProperties>().Name.Should().BeOneOf("CHROME");
+            Resolve<IBrowserProperties>().Name.Should().BeOneOf("CHROME", "EDGE");
         }
 
         [TestMethod]

@@ -7,9 +7,9 @@ namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
     {
         [JsonProperty("browserName")]
         public string BrowserName { get; set; }
-
-        public BrowserSettingsBase BrowserSettings => this;
-
+        
         string IBrowserProperties.Name => BrowserName;
+
+        BrowserSettingsBase IBrowserProperties.BrowserSettings => this;
     }
 }

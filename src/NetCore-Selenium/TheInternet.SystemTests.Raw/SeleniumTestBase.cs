@@ -7,7 +7,7 @@ namespace TheInternet.SystemTests.Raw
     [TestClass]
     public abstract class SeleniumTestBase : TestBase
     {
-        protected virtual string BaseUrl => "http://the-internet.herokuapp.com";
+        protected virtual string BaseUrl => BrowserSession.EnvironmentSettings.BaseUrl;
         protected IBrowserSession BrowserSession { get; private set; }
 
         [TestInitialize]
