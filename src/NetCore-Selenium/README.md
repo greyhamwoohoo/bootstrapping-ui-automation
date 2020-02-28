@@ -13,9 +13,18 @@ The following browsers (and configurations) are supported - choose the browser b
 
 | Browser | Value | Description |
 | ------- | ----- | ----------- |
-| Edge | default-edge.json | Incognito / Private Browsing for Edge |
+| Chrome | default-chrome.json | Launches Chrome with sensible default settings |
 | Chrome | headless-chrome.json | Launches Chrome in headless mode (use this to run tests in Docker containers) |
 | Chrome | default-performance-chrome.json | Launches Chrome and collects performance information |
+| Edge | default-edge.json | Incognito / Private Browsing for Edge |
+| FireFox | default-firefox.json | Launches FireFox with sensible default settings |
+
+The following Remote Web Driver Settings files are provided:
+
+| Setting | Description |
+| ------- | ----------- |
+| localhost.json | The default. Means: do not use a Remote Web Driver |
+| zalenium-docker-localhost.json | Targets Zalenium running on localhost via Docker. See the infra/the-internet/zalenium-docker-localhost folder for more information |
 
 ### Advanced Parameters
 The optional xxx_FILES environment variables support either a fully qualified path; or the name of a file that is expected to exist under the Runtime folder when the tests are executed; or a combination of both. 
@@ -31,3 +40,9 @@ The .Net Core conventions for environment variable overrides are also supported.
 ```
 SET THEINTERNET_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
 ```
+
+### Reference
+| Reference | Link |
+| --------- | ---- |
+| '437' Encoding Error: Allowing FireFox WebDriver to run under .Net Core | https://github.com/SeleniumHQ/selenium/issues/4816 |
+| ChromeDriver.exe not copied to output folder | https://stackoverflow.com/questions/55007311/selenium-webdriver-chromedriver-chromedriver-exe-is-not-being-publishing-for-n |

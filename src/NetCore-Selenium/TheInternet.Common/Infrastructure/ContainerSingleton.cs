@@ -58,6 +58,9 @@ namespace TheInternet.Common.Infrastructure
 
         private static void ConfigureBrowserSettings(string prefix, IServiceCollection services)
         {
+            System.Environment.SetEnvironmentVariable("THEINTERNET_BROWSERSETTINGS_FILES", "default-firefox.json");
+            System.Environment.SetEnvironmentVariable("THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES", "zalenium-docker-localhost.json");
+
             var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
             var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "BrowserSettings", "default-chrome.json");
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
@@ -68,7 +71,7 @@ namespace TheInternet.Common.Infrastructure
             switch(browserName)
             {
                 case "CHROME":
-                    ChromeBrowserSettings instance = new ChromeBrowserSettings();
+                    var instance = new ChromeBrowserSettings();
                     
                     browserSettings.Bind(instance);
 
@@ -81,7 +84,7 @@ namespace TheInternet.Common.Infrastructure
                     services.AddSingleton<IBrowserProperties>(instance);
                     break;
                 case "EDGE":
-                    EdgeBrowserSettings edgeInstance = new EdgeBrowserSettings();
+                    var edgeInstance = new EdgeBrowserSettings();
 
                     browserSettings.Bind(edgeInstance);
 
@@ -92,6 +95,19 @@ namespace TheInternet.Common.Infrastructure
 
                     services.AddSingleton(edgeInstance);
                     services.AddSingleton<IBrowserProperties>(edgeInstance);
+                    break;
+                case "FIREFOX":
+                    var ffInstance = new FireFoxBrowserSettings();
+
+                    browserSettings.Bind(ffInstance);
+
+                    ffInstance = SubstituteEnvironmentVariables<FireFoxBrowserSettings>(ffInstance);
+
+                    ffInstance.BrowserName = browserName;
+                    ffInstance.Cleanse();
+
+                    services.AddSingleton(ffInstance);
+                    services.AddSingleton<IBrowserProperties>(ffInstance);
                     break;
                 default:
                     throw new System.ArgumentOutOfRangeException($"The browser called {browserName} is currently not supported. ");
