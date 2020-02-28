@@ -4,8 +4,10 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Events;
+using Serilog;
 using System;
 using System.Text;
+using TheInternet.Common.ElementOperations;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
@@ -16,12 +18,13 @@ namespace TheInternet.Common.SessionManagement
 {
     public class BrowserSessionFactory : IBrowserSessionFactory
     {
-        public IBrowserSession Create(IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings)
+        public IBrowserSession Create(IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger)
         {
             if (browserProperties == null) throw new System.ArgumentNullException(nameof(browserProperties));
             if (remoteWebDriverSettings == null) throw new System.ArgumentNullException(nameof(remoteWebDriverSettings));
             if (environmentSettings == null) throw new System.ArgumentNullException(nameof(environmentSettings));
             if (controlSettings == null) throw new System.ArgumentNullException(nameof(controlSettings));
+            if (logger == null) throw new System.ArgumentNullException(nameof(logger));
 
             var browser = default(EventFiringWebDriver);
 
@@ -52,7 +55,7 @@ namespace TheInternet.Common.SessionManagement
                     throw new System.ArgumentOutOfRangeException($"There is no support for starting browsers of type {browserProperties.Name}");
             }
 
-            return new BrowserSession(browser, environmentSettings, controlSettings);
+            return new BrowserSession(browser, environmentSettings, logger, controlSettings);
         }
 
         private EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteWebDriverSettings, ChromeBrowserSettings settings)

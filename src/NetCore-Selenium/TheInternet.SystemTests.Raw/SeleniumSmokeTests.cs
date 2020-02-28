@@ -5,12 +5,14 @@ using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 namespace TheInternet.SystemTests.Raw
 {
     [TestClass]
-    public class SmokeTests : SeleniumTestBase
+    public class SeleniumSmokeTests : SeleniumTestBase
     {
+        protected override string BaseUrl => "https://www.google.com";
+
         [TestMethod]
         public void ItIsChrome()
         {
-            Resolve<IBrowserProperties>().Name.Should().BeOneOf("CHROME", "EDGE");
+            Resolve<IBrowserProperties>().Name.Should().BeOneOf("CHROME", "EDGE", "FIREFOX");
         }
 
         [TestMethod]

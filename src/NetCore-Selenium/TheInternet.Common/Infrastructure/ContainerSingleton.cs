@@ -5,6 +5,7 @@ using Serilog;
 using System;
 using System.IO;
 using System.Linq;
+using TheInternet.Common.ElementOperations;
 using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
@@ -51,17 +52,6 @@ namespace TheInternet.Common.Infrastructure
             ConfigureControlSettings(prefix, services);
 
             services.AddSingleton<IBrowserSessionFactory, BrowserSessionFactory>();
-            services.AddScoped(isp =>
-            {
-                var factory = isp.GetRequiredService<IBrowserSessionFactory>();
-                var browserProperties = isp.GetRequiredService<IBrowserProperties>();
-                var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
-                var environmentSettings = isp.GetRequiredService<EnvironmentSettings>();
-                var controlSettings = isp.GetRequiredService<IControlSettings>();
-
-                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings);
-                return browserSession;
-            });
             services.AddScoped(sp =>
             {
                 var serilogContext = BuildSerilogConfiguration();
@@ -74,6 +64,18 @@ namespace TheInternet.Common.Infrastructure
                     .CreateLogger();
 
                 return logger;
+            });
+            services.AddScoped(isp =>
+            {
+                var factory = isp.GetRequiredService<IBrowserSessionFactory>();
+                var browserProperties = isp.GetRequiredService<IBrowserProperties>();
+                var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
+                var environmentSettings = isp.GetRequiredService<EnvironmentSettings>();
+                var controlSettings = isp.GetRequiredService<IControlSettings>();
+                var logger = isp.GetRequiredService<ILogger>();
+
+                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
+                return browserSession;
             });
 
             beforeContainerBuild(prefix, services);

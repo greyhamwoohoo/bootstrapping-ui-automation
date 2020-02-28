@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using System;
 using TheInternet.Common.SessionManagement.Contracts;
 
@@ -8,6 +9,7 @@ namespace TheInternet.SystemTests.Raw
     public abstract class SeleniumTestBase : TestBase
     {
         protected virtual string BaseUrl => BrowserSession.EnvironmentSettings.BaseUrl;
+        protected virtual IWebDriver Browser => BrowserSession.WebDriver;
         protected IBrowserSession BrowserSession { get; private set; }
 
         [TestInitialize]
@@ -27,7 +29,7 @@ namespace TheInternet.SystemTests.Raw
             }
             catch (Exception ex)
             {
-                // TODO: Logger
+                Logger.Error($"{ex}");
             }
 
             try
@@ -36,7 +38,7 @@ namespace TheInternet.SystemTests.Raw
             }
             catch(Exception ex)
             {
-                // TODO: Logger
+                Logger.Error($"{ex}");
             }
         }
     }
