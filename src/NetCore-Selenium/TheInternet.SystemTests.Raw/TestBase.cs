@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Serilog;
 using System;
 using TheInternet.Common.Infrastructure;
 
@@ -9,6 +10,7 @@ namespace TheInternet.SystemTests.Raw
     public abstract class TestBase
     {
         protected IServiceScope Scope;
+        protected ILogger Logger => Scope.ServiceProvider.GetRequiredService<ILogger>();
 
         [TestInitialize]
         public void SetupTest()

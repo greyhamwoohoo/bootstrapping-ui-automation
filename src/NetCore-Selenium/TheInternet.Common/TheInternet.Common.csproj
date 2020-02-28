@@ -16,6 +16,7 @@
     <None Remove="Runtime\EnvironmentSettings\internet.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\localhost.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json" />
+    <None Remove="serilogsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,9 @@
     <Content Include="Runtime\RemoteWebDriverSettings\localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="serilogsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -60,6 +64,10 @@
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
     <PackageReference Include="Selenium.WebDriver.MicrosoftDriver" Version="17.17134.0" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.0" />
   </ItemGroup>
 

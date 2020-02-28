@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.IO;
 using System.Linq;
@@ -57,6 +58,19 @@ namespace TheInternet.Common.Infrastructure
 
                 var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings);
                 return browserSession;
+            });
+            services.AddScoped(sp =>
+            {
+                var serilogContext = BuildSerilogConfiguration();
+
+                Serilog.ILogger logger = new LoggerConfiguration()
+                    .ReadFrom
+                    .Configuration(serilogContext)
+                    .Enrich
+                    .FromLogContext()
+                    .CreateLogger();
+
+                return logger;
             });
 
             beforeContainerBuild(prefix, services);
@@ -182,6 +196,16 @@ namespace TheInternet.Common.Infrastructure
             {
                 return value;    
             }
+        }
+
+        private static IConfigurationRoot BuildSerilogConfiguration()
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("serilogSettings.json", optional: false)
+                .Build();
+
+            return configuration;
         }
     }
 }
