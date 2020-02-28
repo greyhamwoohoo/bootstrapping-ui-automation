@@ -30,10 +30,16 @@ namespace TheInternet.Common.Infrastructure
                 }
             }
         }
-
         public static void Initialize(string prefix)
         {
+            Initialize(prefix, (prefix, services) => { });
+        }
+
+        public static void Initialize(string prefix, Action<string, IServiceCollection> beforeContainerBuild)
+        {
             if (_instance != null) throw new InvalidOperationException($"The Initialize method has already been called. ");
+            if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
+            if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
             var services = new ServiceCollection();
 
@@ -53,14 +59,13 @@ namespace TheInternet.Common.Infrastructure
                 return browserSession;
             });
 
+            beforeContainerBuild(prefix, services);
+
             _instance = services.BuildServiceProvider();
         }
 
         private static void ConfigureBrowserSettings(string prefix, IServiceCollection services)
         {
-            System.Environment.SetEnvironmentVariable("THEINTERNET_BROWSERSETTINGS_FILES", "default-firefox.json");
-            System.Environment.SetEnvironmentVariable("THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES", "zalenium-docker-localhost.json");
-
             var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
             var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "BrowserSettings", "default-chrome.json");
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);

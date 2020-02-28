@@ -5,7 +5,33 @@
     <IsPackable>false</IsPackable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <PublishChromeDriver>true</PublishChromeDriver>
-  </PropertyGroup>  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="TestExecutionContexts\testsettings.default-chrome-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.default-edge-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.default-firefox-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.default-firefox-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TestExecutionContexts\testsettings.default-chrome-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\testsettings.default-edge-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\testsettings.default-firefox-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\testsettings.default-firefox-zalenium-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\testsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>  
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
@@ -25,6 +51,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
   </ItemGroup>
 
   <ItemGroup>

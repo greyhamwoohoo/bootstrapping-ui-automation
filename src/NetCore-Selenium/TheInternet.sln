@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common", "TheIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.SystemTests.Raw", "TheInternet.SystemTests.Raw\TheInternet.SystemTests.Raw.csproj", "{6A82F996-5A4B-48A4-B4FB-A661C4AEA9F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheInternet.Common.UnitTests", "TheInternet.Common.UnitTests\TheInternet.Common.UnitTests.csproj", "{8FF0B0A7-F5C5-42EF-BC35-76F3D4A03869}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.UnitTests", "TheInternet.Common.UnitTests\TheInternet.Common.UnitTests.csproj", "{8FF0B0A7-F5C5-42EF-BC35-76F3D4A03869}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8F9EA5DF-BB72-4E33-A66C-59857D5B2E4D}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

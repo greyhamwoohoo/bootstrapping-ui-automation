@@ -41,6 +41,30 @@ The .Net Core conventions for environment variable overrides are also supported.
 SET THEINTERNET_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
 ```
 
+## Test Execution Contexts (run settings)
+It is convenient within Visual Studio to quickly switch between - say - 'default-firefox' and 'default-chrome' and/or different environments depending on the work you are doing. This can be done using the .runsettings files in the TestExecutionContexts folder. 
+
+To choose a .runsettings file:
+
+1. Select Test / Configure Run Settings / Select Solution Wide runsettings file from the menu
+2. Choose one of the .runsettings files
+3. Run your tests
+
+The 'real' settings are stored in the testsettings.*.json files - at the moment, these settings are the environment variables that need to be set for that test run. 
+
+If executing the tests from the command line, you can specify the name of the test execution context by setting this variable:
+
+```
+THEINTERNET_TEST_EXECUTION_CONTEXT=default-chrome
+```
+
+| RunSettings | Test Execution Context | Full filename | Description | 
+| ----------- | ---------------------- | ------------- | ----------- |
+| Default-Chrome-Localhost.runsettings | default-chrome-localhost | testsettings.default-chrome-localhost.json | The default. Launches Chrome |
+| Default-Edge-Localhost.runsettings | default-edge-localhost | testsettings.default-edge-localhost.json | Runs the tests in Edge |
+| Default-FireFox-Localhost.runsettings | default-firefox-localhost | testsettings.default-firefox-localhost.json | Runs the tests in Firerfox |
+| Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | testsettings.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
+
 ### Reference
 | Reference | Link |
 | --------- | ---- |
