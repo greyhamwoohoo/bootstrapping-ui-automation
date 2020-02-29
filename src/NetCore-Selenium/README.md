@@ -1,5 +1,18 @@
-# NetCore-Selenium
-A raw implementation - using inline locators/selectors - to drive the pages on the http://the-internet.herokuapp.com website. 
+# .Net Core - Selenium
+Bootstrapping of a bare minimum, opinionated .Net Core Selenium Framework using MsTest, the in-built .Net Core DI Container, Serilog, .runsettings and Visual Studio.  
+
+Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
+
+## Why?
+My goal is to be up and running with Selenium across several browsers within 15 minutes on either Linux or Windows in .Net Core using Visual Studio. By tweaking a few settings I want to optionally target Selenium Grid, different environments and change my control settings (such as timeouts and so forth). This repository lets me do that. 
+
+Browser selection, environment selection, timeouts/control management, parameterization, remote web driver configuration, environment variable overrides, multi-element eventual consistency, runsettings/IDE integration, simple logging, dependency injection/container initialization and so forth are taken care of. 
+
+No reporting. No screenshots. No extra niceties. No page object model. Not a lot of helper methods. Always incomplete. Why? Because the more I add, the more opinionated and prescribed it becomes and the less flexible it will be to adapt. Single Page Applications vs form-based apps influence where assertions go. Page Object Model vs Screenplay pattern influence structure. Stakeholders influence the kind of reporting needed. The underlying test engine (MsTest, NUnit, xUnit) dictates how parallelization is performed. etc. etc. etc.  
+
+A few automated (raw, inline locator) tests are written against https://the-internet.herokuapp.com/ - that site contains all kinds of UI Automation Nastiness. 
+
+The intention is to incorporate a lot more solutions to the-internet problems; I will chip away at this in the background. 
 
 ## Framework Parameters
 By default, the tests will run using the Chrome browser against http://the-internet.herokuapp.com
