@@ -7,12 +7,12 @@ using OpenQA.Selenium.Support.Events;
 using Serilog;
 using System;
 using System.Text;
-using TheInternet.Common.ElementOperations;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
 using TheInternet.Common.SessionManagement.Contracts;
+using TheInternet.Common.WebDrivers;
 
 namespace TheInternet.Common.SessionManagement
 {
@@ -34,7 +34,7 @@ namespace TheInternet.Common.SessionManagement
                     var chromeBrowserSettings = browserProperties.BrowserSettings as ChromeBrowserSettings;
                     if (null == chromeBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
-                    browser = StartBrowser(remoteWebDriverSettings, chromeBrowserSettings);
+                    browser = StartBrowser(remoteWebDriverSettings, chromeBrowserSettings, controlSettings);
 
                     break;
                 case "EDGE":
@@ -58,23 +58,26 @@ namespace TheInternet.Common.SessionManagement
             return new BrowserSession(browser, environmentSettings, logger, controlSettings);
         }
 
-        private EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteWebDriverSettings, ChromeBrowserSettings settings)
+        private EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteWebDriverSettings, ChromeBrowserSettings settings, IControlSettings controlSettings)
         {
             var adapter = new ChromeBrowserSettingsAdapter();
             var chromeOptions = adapter.ToChromeOptions(settings);
 
-            System.Environment.SetEnvironmentVariable("CHROME_LOG_FILE", null);
+            Environment.SetEnvironmentVariable("CHROME_LOG_FILE", null);
             if (settings.Options.CaptureChromeLogFile)
             {
-                System.Environment.SetEnvironmentVariable("CHROME_LOG_FILE", settings.Options.ChromeLogPath);
+                Environment.SetEnvironmentVariable("CHROME_LOG_FILE", settings.Options.ChromeLogPath);
             }
             if (!remoteWebDriverSettings.UseRemoteDriver)
             {
-                return new EventFiringWebDriver(new ChromeDriver(chromeOptions));
+                var chromeDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableChromeDriver(chromeOptions) : new ChromeDriver(chromeOptions);
+
+                return new EventFiringWebDriver(chromeDriver);
             }
 
             return StartRemoteBrowser(remoteWebDriverSettings, chromeOptions);
         }
+
         private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, FireFoxBrowserSettings settings)
         {
             // Reference: https://stackoverflow.com/questions/41644381/python-set-firefox-preferences-for-selenium-download-location

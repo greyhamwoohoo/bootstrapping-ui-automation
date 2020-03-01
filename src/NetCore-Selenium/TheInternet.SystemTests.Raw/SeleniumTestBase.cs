@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
+using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.SystemTests.Raw
@@ -23,6 +24,12 @@ namespace TheInternet.SystemTests.Raw
         [TestCleanup]
         public void TeardownSeleniumTest()
         {
+            if(Resolve<IControlSettings>().AttachToExistingSessionIfItExists)
+            {
+                Logger.Information($"The Control Settings want to attach to an existing session if it exists. Therefore, we will not close the browser at this time. ");
+                return;
+            }
+
             try
             {
                 BrowserSession?.WebDriver?.Close();

@@ -1,7 +1,11 @@
 # .Net Core - Selenium
 Bootstrapping of a bare minimum, opinionated .Net Core Selenium Framework using MsTest, the in-built .Net Core DI Container, Serilog, .runsettings and Visual Studio.  
 
+This framework optionally lets you attach to an already-running Selenium session by using the 'Attachable-Chrome-Localhost' .runsettings file (see below) - 
+this vastly improves the development workflow. 
+
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
+
 
 ## Why?
 My goal is to be up and running with Selenium across several browsers within 15 minutes on either Linux or Windows in .Net Core using Visual Studio. By tweaking a few settings I want to optionally target Selenium Grid, different environments and change my control settings (such as timeouts and so forth). This repository lets me do that. 
@@ -54,6 +58,9 @@ The .Net Core conventions for environment variable overrides are also supported.
 
 ```
 SET THEINTERNET_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
+
+REM Use the .Net Core __ notation for overriding nested values in the testsettings files: see testsettings.attachable-chrome-localhost.json for an example
+SET THEINTERNET_REMOTEWEBDRIVERSETTINGS__REMOTEURI="https://localhost.com/overriddenUri"
 ```
 
 ## Test Execution Contexts (run settings)
@@ -76,9 +83,30 @@ THEINTERNET_TEST_EXECUTION_CONTEXT=default-chrome
 | RunSettings | Test Execution Context | Full filename | Description | 
 | ----------- | ---------------------- | ------------- | ----------- |
 | Default-Chrome-Localhost.runsettings | default-chrome-localhost | testsettings.default-chrome-localhost.json | The default. Launches Chrome |
+| Attachable-Chrome-Localhost.runsettings | attachable-chrome-localhost | testsettings.attachable-chrome-localhost.json | Will attach to an already-running Selenium Driver instance if it exists. |
 | Default-Edge-Localhost.runsettings | default-edge-localhost | testsettings.default-edge-localhost.json | Runs the tests in Edge |
 | Default-FireFox-Localhost.runsettings | default-firefox-localhost | testsettings.default-firefox-localhost.json | Runs the tests in Firerfox |
 | Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | testsettings.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
+
+## How to attach to an existing Selenium Browser Instance
+To speed up the development workflow, it is often useful to attach to an existing Selenium Browser Session. This framework supports this in Chrome. 
+
+1. Use the Attachable-Chrome-Localhost .runsettings file *FIRST*
+2. Launch your test as normal
+3. The browser will NOT be terminated on shutdown (or test failure etc. )
+4. Re-run any test
+5. The existing browser will be reused
+
+If anything goes wrong, just switch to another .runsettings profile *OR* manually delete the .selenium.session file in your output folder. 
+
+Of course: it goes without saying that if there is no browser session to attach to at the given port, a new one will be created. 
+If you have closed the browser manually, but left the orphaned chromedriver.exe around, this implementation will still recover. 
+
+Implementation Notes:
+1. This only works with Chrome at the moment (you can probably extend it to other browsers)
+2. The implementatation is in Drivers/AttachableChromeDriver.cs
+3. The architecture and implementation of the WebDrivers makes it difficult / impossible to inject DI-resolved services. 
+   As a result, there's a lot of new-ing up going on. See AttachableChromeDriver.cs for more information. 
 
 ### Reference
 | Reference | Link |

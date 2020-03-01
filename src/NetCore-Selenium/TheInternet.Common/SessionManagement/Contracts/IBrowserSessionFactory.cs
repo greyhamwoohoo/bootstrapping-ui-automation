@@ -7,6 +7,7 @@ namespace TheInternet.Common.SessionManagement.Contracts
 {
     public interface IBrowserSessionFactory
     {
+        // TODO: Refactor - too many params
         IBrowserSession Create(IBrowserProperties properties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger);
     }
 }
