@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 
 namespace TheInternet.SystemTests.Raw

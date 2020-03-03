@@ -8,7 +8,7 @@ using TheInternet.SystemTests.Raw.Infrastructure;
 namespace TheInternet.SystemTests.Raw
 {
     [TestClass]
-    public class OneTimeTestInitialize
+    public class TestRunInitialization
     {
         const string PREFIX = "THEINTERNET_";
 
