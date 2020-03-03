@@ -23,8 +23,10 @@ namespace TheInternet.Common.SessionManagement
 
         public string Path => System.IO.Path.Combine(_basePath, SESSION_FILENAME);
 
-        public AttachableSeleniumSession ReadSessionState()
+        public AttachableSeleniumSession ReadSessionState(string browserName)
         {
+            if (null == browserName) throw new System.ArgumentNullException(nameof(browserName));
+
             if (!AttachableSessionExists)
             {
                 return new AttachableSeleniumSession()
@@ -44,7 +46,7 @@ namespace TheInternet.Common.SessionManagement
                 
                 var newSession = new AttachableSeleniumSession()
                 {
-                    BrowserName = "CHROME",
+                    BrowserName = browserName,
                     IsValid = true,
                     OfficialResponse = persistedSession.OfficialResponse,
                     Response = officialResponse,

@@ -1,5 +1,5 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
@@ -9,20 +9,13 @@ using TheInternet.Common.SessionManagement;
 namespace TheInternet.Common.WebDrivers
 {
     /// <summary>
-    /// Allows us to attach to a running Chrome Driver instance / Selenium Session
+    /// Allows us to attach to a running Edge Driver instance / Selenium Session
     /// </summary>
-    /// <remarks>
-    /// If the chrome driver instance is NOT running, then this will simply start a session as normal.
-    /// If the chrome driver instance IS running, then this will attach to the running instance. 
-    /// TODO: Move the persistence/checking out of this driver. 
-    /// TODO: The constructor of the WebDrivers initiates session creation: so we are limited at what we can 'inject'
-    /// before the connection process starts. As a result, I need to new up everything here instead of using DI. 
-    /// </remarks>
-    public class AttachableChromeDriver : ChromeDriver
+    public class AttachableEdgeDriver : EdgeDriver
     {
-        const string BROWSER_NAME = "CHROME";
+        const string BROWSER_NAME = "EDGE";
 
-        public AttachableChromeDriver(ChromeOptions options) : base(options)
+        public AttachableEdgeDriver(EdgeOptions options) : base(options)
         {
         }
 
@@ -83,7 +76,7 @@ namespace TheInternet.Common.WebDrivers
                 }
                 else
                 {
-                    throw new System.InvalidOperationException($"At the time of writing this there were two implementations of CommandInfoRepository. Add a switch statement and new up a type of {existingSession.CommandRepositoryTypeName}");
+                    throw new InvalidOperationException($"At the time of writing this there were two implementations of CommandInfoRepository. Add a switch statement and new up a type of {existingSession.CommandRepositoryTypeName}");
                 }
 
                 SetRemoteServerUri(existingSession.RemoteServerUri);

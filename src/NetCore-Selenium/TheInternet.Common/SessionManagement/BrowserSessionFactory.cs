@@ -41,7 +41,7 @@ namespace TheInternet.Common.SessionManagement
                     var edgeBrowserSettings = browserProperties.BrowserSettings as EdgeBrowserSettings;
                     if (null == edgeBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
-                    browser = StartBrowser(remoteWebDriverSettings, edgeBrowserSettings);
+                    browser = StartBrowser(remoteWebDriverSettings, edgeBrowserSettings, controlSettings);
 
                     break;
                 case "FIREFOX":
@@ -99,14 +99,16 @@ namespace TheInternet.Common.SessionManagement
             return StartRemoteBrowser(remoteDriverSettings, options);
         }
 
-        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, EdgeBrowserSettings settings)
+        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, EdgeBrowserSettings settings, IControlSettings controlSettings)
         {
             var adapter = new EdgeBrowserSettingsAdapter();
             var options = adapter.ToEdgeOptions(settings);
 
             if (!remoteDriverSettings.UseRemoteDriver)
             {
-                return new EventFiringWebDriver(new EdgeDriver(options));
+                var edgeDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableEdgeDriver(options) : new EdgeDriver(options);
+
+                return new EventFiringWebDriver(edgeDriver);
             }
 
             return StartRemoteBrowser(remoteDriverSettings, options);

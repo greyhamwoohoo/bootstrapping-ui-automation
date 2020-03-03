@@ -82,6 +82,7 @@ THEINTERNET_TEST_EXECUTION_CONTEXT=default-chrome-localhost
 | ----------- | ---------------------- | ------------- | ----------- |
 | Default-Chrome-Localhost.runsettings | default-chrome-localhost | testsettings.default-chrome-localhost.json | The default. Launches Chrome |
 | Attachable-Chrome-Localhost.runsettings | attachable-chrome-localhost | testsettings.attachable-chrome-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
+| Attachable-Edge-Localhost.runsettings | attachable-edge-localhost | testsettings.attachable-edge-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
 | Default-Edge-Localhost.runsettings | default-edge-localhost | testsettings.default-edge-localhost.json | Runs the tests in Edge |
 | Default-FireFox-Localhost.runsettings | default-firefox-localhost | testsettings.default-firefox-localhost.json | Runs the tests in Firerfox |
 | Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | testsettings.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
@@ -93,7 +94,7 @@ I want a 'scratchpad' where I can write a few lines of Selenium and have them ex
 
 For simplicity in this case: the 'scratchpad' takes the form of a single test  - it's just a normmal test - called 'HotReloadScratchpad'. 
 
-The first time the test is run with a test execution context of 'attachable-chrome-localhost' (via Attachable-Chrome-Localhost.runsettings) it will start a browser instance BUT NOT CLOSE IT. Subsequent test runs using the same test execution context will reuse the same browser instance. This allows you experiment with one or two lines of Selenium at a time for faster feedback before moving that code into your main test workflow; you are of course able to manually interact and mutate that browser state as you wish. 
+The first time the test is run with a test execution context of (say) 'attachable-chrome-localhost' (via Attachable-Chrome-Localhost.runsettings) it will start a browser instance BUT NOT CLOSE IT. Subsequent test runs using the same test execution context will reuse the same browser instance. This allows you experiment with one or two lines of Selenium at a time for faster feedback before moving that code into your main test workflow; you are of course able to manually interact and mutate that browser state as you wish. 
 
 There are two viable workflows:
 
@@ -120,10 +121,10 @@ The persisted session state is persisted in the test run folder as '.selenium.se
 If you have closed the browser manually between test runs, the implementation will start a new browser session automatically. 
 
 Implementation Notes:
-1. This only works with Chrome at the moment (you can probably extend it to other browsers)
-2. The implementatation is in Drivers/AttachableChromeDriver.cs
-3. The architecture and implementation of the WebDrivers makes it difficult / impossible to inject DI-resolved services. 
-   As a result, there's a lot of new-ing up going on. See AttachableChromeDriver.cs for more information. 
+1. This worked with Chrome and Edge at the moment (you can probably extend it to other browsers)
+2. The implementatation is in Drivers/ folder
+3. The architecture and implementation of the WebDrivers makes it difficult / impossible to inject DI-resolved services.
+   As a result, there's a lot of new-ing up going on and repeated (identical) code. See Driver/*Driver.cs files for more information. 
 
 ### Reference
 | Reference | Link |

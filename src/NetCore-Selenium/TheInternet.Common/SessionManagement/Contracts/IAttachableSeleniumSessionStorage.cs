@@ -4,7 +4,7 @@
     {
         bool AttachableSessionExists { get; }
         string Path { get; }
-        AttachableSeleniumSession ReadSessionState();
+        AttachableSeleniumSession ReadSessionState(string browserName);
         void RemoveSessionState();
         void WriteSessionState(AttachableSeleniumSession session);
     }

@@ -13,18 +13,17 @@ namespace TheInternet.Common.SessionManagement
         {
             if (null == attachableSeleniumSession) return false;
             if (!attachableSeleniumSession.IsValid) return false;
-            if (attachableSeleniumSession.BrowserName != "CHROME") return false;
 
-            var isChromeDriverReady = IsChromeDriverReady(attachableSeleniumSession);
-            if (!isChromeDriverReady) return false;
+            var isDriverReady = IsDriverReady(attachableSeleniumSession);
+            if (!isDriverReady) return false;
 
-            var isChromeDriverReallyAbleToTalkToItsBrowser = IsChromeDriverReallyReallyReallyAbleToTalkToItsBrowser(attachableSeleniumSession);
-            if (!isChromeDriverReallyAbleToTalkToItsBrowser) return false;
+            var isDriverReallyAbleToTalkToItsBrowser = IsTheDriverReallyReallyReallyAbleToTalkToItsBrowser(attachableSeleniumSession);
+            if (!isDriverReallyAbleToTalkToItsBrowser) return false;
 
             return true;
         }
 
-        private bool IsChromeDriverReallyReallyReallyAbleToTalkToItsBrowser(AttachableSeleniumSession attachableSeleniumSession)
+        private bool IsTheDriverReallyReallyReallyAbleToTalkToItsBrowser(AttachableSeleniumSession attachableSeleniumSession)
         {
             // UNFORTUNATELY: Just because chromedriver.exe says it is ready does not mean it is actually able to do anything. 
             // chromedriver.exe will spawn multiple chrome.exe processes.
@@ -52,7 +51,7 @@ namespace TheInternet.Common.SessionManagement
             }
         }
 
-        private bool IsChromeDriverReady(AttachableSeleniumSession attachableSeleniumSession)
+        private bool IsDriverReady(AttachableSeleniumSession attachableSeleniumSession)
         {
             try
             {
@@ -86,10 +85,11 @@ namespace TheInternet.Common.SessionManagement
                         return false;
                     }
 
-                    if (!((bool)resultAsJObject["value"]["ready"]))
-                    {
-                        return false;
-                    }
+                    // NOTE: We cannot rely on this as true/false - it seems to vary between browsers. 
+                    // if (!((bool)resultAsJObject["value"]["ready"]))
+                    // {
+                    //     return false;
+                    // }
 
                     return true;
                 }
