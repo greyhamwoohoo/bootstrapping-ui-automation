@@ -7,9 +7,9 @@ using System.Linq;
 namespace TheInternet.SystemTests.Raw.Tests
 {
     [TestClass]
-    public class BrokenImages : TheInternetTestBase
+    public class BrokenImagesTests : TheInternetTestBase
     {
-        public BrokenImages() { }
+        public BrokenImagesTests() { }
 
         protected override string BaseUrl => base.BaseUrl + "/broken_images";
 

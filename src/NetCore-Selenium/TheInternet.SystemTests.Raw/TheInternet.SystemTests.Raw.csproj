@@ -37,6 +37,7 @@
     <PackageReference Include="AutoFixture" Version="4.11.0" />
     <PackageReference Include="AutoFixture.AutoNSubstitute" Version="4.11.0" />
     <PackageReference Include="AutoFixture.Idioms" Version="4.11.0" />
+    <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.2" />
