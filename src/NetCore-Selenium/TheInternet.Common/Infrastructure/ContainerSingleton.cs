@@ -44,6 +44,8 @@ namespace TheInternet.Common.Infrastructure
             if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
             if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
+            System.Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+
             var services = new ServiceCollection();
 
             ConfigureBrowserSettings(prefix, services);

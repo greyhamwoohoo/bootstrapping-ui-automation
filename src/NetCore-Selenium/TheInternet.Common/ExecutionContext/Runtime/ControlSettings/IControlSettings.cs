@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
+﻿namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
 {
     /// <summary>
     /// We use an interface for the 'Common' control settings. 
@@ -11,5 +7,6 @@ namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
     {
         public int WaitUntilTimeoutInSeconds { get; }
         public int PollingTimeInMilliseconds { get; }
+        public bool AttachToExistingSessionIfItExists { get; }
     }
 }

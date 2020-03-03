@@ -1,0 +1,128 @@
+﻿using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using TheInternet.Common.SessionManagement;
+
+namespace TheInternet.Common.WebDrivers
+{
+    /// <summary>
+    /// Allows us to attach to a running Chrome Driver instance / Selenium Session
+    /// </summary>
+    /// <remarks>
+    /// If the chrome driver instance is NOT running, then this will simply start a session as normal.
+    /// If the chrome driver instance IS running, then this will attach to the running instance. 
+    /// TODO: Move the persistence/checking out of this driver. 
+    /// TODO: The constructor of the WebDrivers initiates session creation: so we are limited at what we can 'inject'
+    /// before the connection process starts. As a result, I need to new up everything here instead of using DI. 
+    /// </remarks>
+    public class AttachableChromeDriver : ChromeDriver
+    {
+        public AttachableChromeDriver(ChromeOptions options) : base(options)
+        {
+        }
+
+        protected override Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters)
+        {
+            var seleniumVersion = typeof(RemoteWebDriver).Assembly.GetName().Version.ToString();
+            if(seleniumVersion != "3.0.0.0" && seleniumVersion != "3.141.0.0")
+            {
+                // Unfortunately, it would appear that 3.141.59 is not surfaced anywhere, so we are limited to major/minor
+                throw new NotSupportedException($"The implementation below is very specific to the above Selenium Versions (3.0.0.0 if referencing the Webdriver code locally; 3.141.0.0 if referencing the NuGET package. ");
+            }
+
+            //
+            // NOTE: *ALL* of the following code requires Selenium 3.141.59 to work (it might work on earlier versions - but definitely not 4)
+            //
+            if (driverCommandToExecute == "newSession")
+            {
+                var attachableSeleniumSessionStorage = new AttachableSeleniumSessionStorage(Directory.GetCurrentDirectory());
+                var existingSession = attachableSeleniumSessionStorage.ReadSessionState();
+                var sessionProbe = new AttachableSeleniumSessionProbe();
+                
+                if(!existingSession.IsValid || existingSession.BrowserName != "CHROME" || !sessionProbe.IsRunning(existingSession))
+                {
+                    attachableSeleniumSessionStorage.RemoveSessionState();
+                    existingSession = attachableSeleniumSessionStorage.ReadSessionState();
+                }
+
+                if(!existingSession.IsValid)
+                {
+                    // There is currently no persisted session we can use. 
+                    var newSession = base.Execute(driverCommandToExecute, parameters);
+
+                    var attachableSeleniumSession = new AttachableSeleniumSession()
+                    {
+                        BrowserName = "CHROME",
+                        Response = newSession,
+                        OfficialResponse = newSession.ToJson(),
+                        RemoteServerUri = GetRemoteServerUri(),
+                        CommandRepositoryTypeName = GetCommandInfoRepository().GetType().FullName
+                    };
+
+                    attachableSeleniumSessionStorage.WriteSessionState(attachableSeleniumSession);
+
+                    return newSession;
+                }
+
+                // The HttpCommandExecutor has some specific logic if handling the NewSession command - it will determine
+                // the specification and update the internal CommandInfoRepository. This is what gives the 'specification level'
+                // of the connection. Therefore, as we skipped that call and constructed the session ourselves, we need to inject
+                // the CommandInfoRepository here. 
+                if(existingSession.CommandRepositoryTypeName == typeof(W3CWireProtocolCommandInfoRepository).FullName)
+                {
+                    SetCommandInfoRepository(new W3CWireProtocolCommandInfoRepository());
+                }
+                else if(existingSession.CommandRepositoryTypeName == typeof(WebDriverWireProtocolCommandInfoRepository).FullName)
+                {
+                    SetCommandInfoRepository(new WebDriverWireProtocolCommandInfoRepository());
+                }
+                else
+                {
+                    throw new System.InvalidOperationException($"At the time of writing this there were two implementations of CommandInfoRepository. Add a switch statement and new up a type of {existingSession.CommandRepositoryTypeName}");
+                }
+
+                SetRemoteServerUri(existingSession.RemoteServerUri);
+                return existingSession.Response;
+            }
+
+            var result = base.Execute(driverCommandToExecute, parameters);
+            return result;
+        }
+
+        private string GetRemoteServerUri()
+        {
+            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
+            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
+            var remoteServerUriField = executor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var remoteServerUri = remoteServerUriField.GetValue(executor);
+            return remoteServerUri.ToString();
+        }
+
+        private void SetRemoteServerUri(string value)
+        {
+            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
+            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
+            var remoteServerUriField = executor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            remoteServerUriField.SetValue(executor, new Uri(value));
+        }
+
+        private CommandInfoRepository GetCommandInfoRepository()
+        {
+            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
+            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
+            var commandInfoRepositoryField = executor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var commandInfoRepository = commandInfoRepositoryField.GetValue(executor);
+            return commandInfoRepository as CommandInfoRepository;
+        }
+
+        private void SetCommandInfoRepository(CommandInfoRepository repository)
+        {
+            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
+            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
+            var commandInfoRepositoryField = executor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            commandInfoRepositoryField.SetValue(executor, repository);
+        }
+    }
+}

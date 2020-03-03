@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
+﻿namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
 {
     public class ControlSettings : IControlSettings
     {
@@ -10,10 +6,12 @@ namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
         {
             PollingTimeInMilliseconds = 250;
             WaitUntilTimeoutInSeconds = 30;
+            AttachToExistingSessionIfItExists = false;
         }
 
         public int PollingTimeInMilliseconds { get; set; }
         public int WaitUntilTimeoutInSeconds { get; set; }
+        public bool AttachToExistingSessionIfItExists { get; set;  }
 
         public void Cleanse()
         {
