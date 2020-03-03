@@ -135,6 +135,19 @@ namespace TheInternet.Common.Infrastructure
                     services.AddSingleton(ffInstance);
                     services.AddSingleton<IBrowserProperties>(ffInstance);
                     break;
+                case "INTERNETEXPLORER":
+                    var ieInstance = new InternetExplorerBrowserSettings();
+
+                    browserSettings.Bind(ieInstance);
+
+                    ieInstance = SubstituteEnvironmentVariables<InternetExplorerBrowserSettings>(ieInstance);
+
+                    ieInstance.BrowserName = browserName;
+                    ieInstance.Cleanse();
+
+                    services.AddSingleton(ieInstance);
+                    services.AddSingleton<IBrowserProperties>(ieInstance);
+                    break;
                 default:
                     throw new System.ArgumentOutOfRangeException($"The browser called {browserName} is currently not supported. ");
             }

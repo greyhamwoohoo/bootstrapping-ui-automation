@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Events;
 using Serilog;
@@ -42,6 +43,13 @@ namespace TheInternet.Common.SessionManagement
                     if (null == edgeBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
                     browser = StartBrowser(remoteWebDriverSettings, edgeBrowserSettings, controlSettings);
+
+                    break;
+                case "INTERNETEXPLORER":
+                    var ieBrowserSettings = browserProperties.BrowserSettings as InternetExplorerBrowserSettings;
+                    if (null == ieBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
+
+                    browser = StartBrowser(remoteWebDriverSettings, ieBrowserSettings, controlSettings);
 
                     break;
                 case "FIREFOX":
@@ -94,6 +102,21 @@ namespace TheInternet.Common.SessionManagement
             if (!remoteDriverSettings.UseRemoteDriver)
             {
                 return new EventFiringWebDriver(new FirefoxDriver(options));
+            }
+
+            return StartRemoteBrowser(remoteDriverSettings, options);
+        }
+
+        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, InternetExplorerBrowserSettings settings, IControlSettings controlSettings)
+        {
+            var adapter = new InternetExplorerBrowserSettingsAdapter();
+            InternetExplorerOptions options = adapter.ToInternetExplorerOptions(settings);
+
+            if (!remoteDriverSettings.UseRemoteDriver)
+            {
+                var ieDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableInternetExplorerDriver(options) : new InternetExplorerDriver(options);
+
+                return new EventFiringWebDriver(ieDriver);
             }
 
             return StartRemoteBrowser(remoteDriverSettings, options);

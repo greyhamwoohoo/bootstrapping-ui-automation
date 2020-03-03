@@ -1,7 +1,7 @@
 # .Net Core - Selenium
 Bootstrapping of a bare minimum, opinionated .Net Core Selenium Framework using MsTest, the in-built .Net Core DI Container, Serilog, .runsettings and Visual Studio.  
 
-This framework supports a 'hot-reload' workflow that allows you to run your tests against an existing browser instance: see below for more information. 
+This framework supports a 'hot-reload' workflow that allows you to run your tests against an existing browser instance: IE11, Chrome and Edge are supported. See below for more information. 
 
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
 
@@ -121,10 +121,9 @@ The persisted session state is persisted in the test run folder as '.selenium.se
 If you have closed the browser manually between test runs, the implementation will start a new browser session automatically. 
 
 Implementation Notes:
-1. This worked with Chrome and Edge at the moment (you can probably extend it to other browsers)
-2. The implementatation is in Drivers/ folder
-3. The architecture and implementation of the WebDrivers makes it difficult / impossible to inject DI-resolved services.
-   As a result, there's a lot of new-ing up going on and repeated (identical) code. See Driver/*Driver.cs files for more information. 
+1. The implementatation is in Drivers/ folder for each supported driver. 
+2. The architecture and implementation of the WebDrivers makes it difficult / impossible to inject DI-resolved services.
+   As a result, there's a lot of new-ing up going on and lots of cloned code. See Driver/*Driver.cs files for more information. 
 
 ### Reference
 | Reference | Link |

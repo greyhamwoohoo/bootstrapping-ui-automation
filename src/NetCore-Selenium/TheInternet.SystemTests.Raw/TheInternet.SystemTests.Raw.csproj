@@ -10,14 +10,22 @@
   <ItemGroup>
     <None Remove="TestExecutionContexts\testsettings.attachable-chrome-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.attachable-edge-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.attachable-ie11-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-chrome-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-edge-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-firefox-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-firefox-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.default-ie11-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestExecutionContexts\testsettings.attachable-ie11-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\testsettings.default-ie11-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestExecutionContexts\testsettings.attachable-edge-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -61,6 +69,7 @@
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
+    <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.1" />
   </ItemGroup>
 
   <ItemGroup>
