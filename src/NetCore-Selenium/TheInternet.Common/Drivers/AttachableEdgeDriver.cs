@@ -11,6 +11,9 @@ namespace TheInternet.Common.WebDrivers
     /// <summary>
     /// Allows us to attach to a running Edge Driver instance / Selenium Session
     /// </summary>
+    /// <remarks>
+    /// The AttachableDrivers have almost identical code - will refactor later.
+    /// </remarks>
     public class AttachableEdgeDriver : EdgeDriver
     {
         const string BROWSER_NAME = "EDGE";

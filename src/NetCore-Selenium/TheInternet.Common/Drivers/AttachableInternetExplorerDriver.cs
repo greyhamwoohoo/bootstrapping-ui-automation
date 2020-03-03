@@ -8,8 +8,11 @@ using TheInternet.Common.SessionManagement;
 namespace TheInternet.Common.WebDrivers
 {
     /// <summary>
-    /// Allows us to attach to a running Edge Driver instance / Selenium Session
+    /// Allows us to attach to a running Internet Explorer Driver instance / Selenium Session
     /// </summary>
+    /// <remarks>
+    /// The AttachableDrivers have almost identical code - will refactor later.
+    /// </remarks>
     public class AttachableInternetExplorerDriver : InternetExplorerDriver
     {
         const string BROWSER_NAME = "InternetExplorer";
