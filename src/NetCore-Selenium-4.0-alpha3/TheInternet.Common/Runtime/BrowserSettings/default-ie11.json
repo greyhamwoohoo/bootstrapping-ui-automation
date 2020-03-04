@@ -1,0 +1,19 @@
+﻿{
+  "browserName": "InternetExplorer",
+  "browserVersion": "11",
+  "options": {
+    "acceptInsecureCerts": false,
+    "browserCommandLineArguments": "",
+    "forceShellWindowApi": false,
+    "forceCreateProcessApi": false,
+    "enablePersistentHover": true,
+    "elementScrollBehaviour": "Default",
+    "initialBrowserUrl": "",
+    "requireWindowFocus": false,
+    "enableNativeEvents": true,
+    "ignoreZoomLevel": false,
+    "introduceInstabilityByIgnoringProtectedModeSettings": false,
+    "usePerProcessProxy": false,
+    "ensureCleanSession": false
+  }
+}

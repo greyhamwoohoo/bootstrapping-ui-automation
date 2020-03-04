@@ -12,11 +12,7 @@ namespace TheInternet.Common.WebDrivers
     /// Allows us to attach to a running Chrome Driver instance / Selenium Session
     /// </summary>
     /// <remarks>
-    /// If the chrome driver instance is NOT running, then this will simply start a session as normal.
-    /// If the chrome driver instance IS running, then this will attach to the running instance. 
-    /// TODO: Move the persistence/checking out of this driver. 
-    /// TODO: The constructor of the WebDrivers initiates session creation: so we are limited at what we can 'inject'
-    /// before the connection process starts. As a result, I need to new up everything here instead of using DI. 
+    /// The AttachableDrivers have almost identical code - will refactor later.
     /// </remarks>
     public class AttachableChromeDriver : ChromeDriver
     {
@@ -54,6 +50,7 @@ namespace TheInternet.Common.WebDrivers
                 {
                     // There is currently no persisted session we can use. 
                     var newSession = base.Execute(driverCommandToExecute, parameters);
+                    if (newSession.Status != WebDriverResult.Success) return newSession;
 
                     var attachableSeleniumSession = new AttachableSeleniumSession()
                     {

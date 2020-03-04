@@ -25,14 +25,14 @@ namespace TheInternet.Common.WebDrivers
         protected override Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters)
         {
             var seleniumVersion = typeof(RemoteWebDriver).Assembly.GetName().Version.ToString();
-            if(seleniumVersion != "3.0.0.0" && seleniumVersion != "3.141.0.0")
+            if (seleniumVersion != "0.0.0.0")
             {
-                // Unfortunately, it would appear that 3.141.59 is not surfaced anywhere, so we are limited to major/minor
-                throw new NotSupportedException($"The implementation below is very specific to the above Selenium Versions (3.0.0.0 if referencing the Webdriver code locally; 3.141.0.0 if referencing the NuGET package. ");
+                // The Alpha version has nothing stamped in their DLL. So we have to guess. 
+                throw new NotSupportedException($"The implementation below is very specific to the V4.0 Alpha-03 version (but we have no exact way of detecting it from the assembly version)");
             }
 
             //
-            // NOTE: *ALL* of the following code requires Selenium 3.141.59 to work (it might work on earlier versions - but definitely not 4)
+            // NOTE: *ALL* of the following code requires Selenium 4.0 to work (tested on: Alpha 03)
             //
             if (driverCommandToExecute == "newSession")
             {
@@ -66,17 +66,12 @@ namespace TheInternet.Common.WebDrivers
                     return newSession;
                 }
 
-                // The HttpCommandExecutor has some specific logic if handling the NewSession command - it will determine
-                // the specification and update the internal CommandInfoRepository. This is what gives the 'specification level'
-                // of the connection. Therefore, as we skipped that call and constructed the session ourselves, we need to inject
-                // the CommandInfoRepository here. 
-                if(existingSession.CommandRepositoryTypeName == typeof(W3CWireProtocolCommandInfoRepository).FullName)
+                // The CommandInfoRepository indicates the 'specifical level' of the session. 
+                //   In 4.0+, the WebDriverWireProtocolCommandInfoRepository type is no more: there appears to be only one kind of CommandInfoRepository
+                //   on the code base which is W3CWireProtocolCommandInfoRepository
+                if (existingSession.CommandRepositoryTypeName == typeof(W3CWireProtocolCommandInfoRepository).FullName)
                 {
                     SetCommandInfoRepository(new W3CWireProtocolCommandInfoRepository());
-                }
-                else if(existingSession.CommandRepositoryTypeName == typeof(WebDriverWireProtocolCommandInfoRepository).FullName)
-                {
-                    SetCommandInfoRepository(new WebDriverWireProtocolCommandInfoRepository());
                 }
                 else
                 {

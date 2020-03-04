@@ -50,6 +50,7 @@ namespace TheInternet.Common.WebDrivers
                 {
                     // There is currently no persisted session we can use. 
                     var newSession = base.Execute(driverCommandToExecute, parameters);
+                    if (newSession.Status != WebDriverResult.Success) return newSession;
 
                     var attachableSeleniumSession = new AttachableSeleniumSession()
                     {

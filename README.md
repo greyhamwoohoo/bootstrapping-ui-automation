@@ -5,6 +5,14 @@ This framework supports a 'hot-reload' workflow that allows you to run your test
 
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
 
+## Versions
+The baseline framework is the same - but the attachable driver / hot-reload workflow implementation is very dependent on the version of Selenium in use. 
+
+| Folder | Description | 
+| ------ | ----------- |
+| NetCore-Selenium | Baseline framework and attachable drivers using Selenium 3.141  (IE, Chrome, Edge) |
+| NetCore-Selenium-NetCore-Selenium-4.0-alpha3 | Baseline framework and attachable drivers using Selenium 4.0.0.0-alpha-03  (IE, Chrome, Edge) |
+
 ## Infrastructure
 You can run 'the-internet' yourself in the following ways: 
 
