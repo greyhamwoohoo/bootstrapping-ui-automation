@@ -5,6 +5,11 @@ This framework supports a 'hot-reload' workflow that allows you to run your test
 
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
 
+## To Get Going
+Just open the solution and run a test - it will launch Chrome locally and target https://the-internet.herokuapp.com/ on the Internet. 
+
+The framework can be customized with .runsettings within Visual Studio, Test Execution Contexts and/or Environment Variables. See Framework Parameters below for more information. 
+
 ## Why?
 My goal is to be up and running with Selenium across several browsers within 15 minutes on either Linux or Windows in .Net Core using Visual Studio. By tweaking a few settings I want to optionally target Selenium Grid, different environments and change my control settings (such as timeouts and so forth). This repository lets me do that. 
 
@@ -83,6 +88,7 @@ THEINTERNET_TEST_EXECUTION_CONTEXT=default-chrome-localhost
 | Default-Chrome-Localhost.runsettings | default-chrome-localhost | testsettings.default-chrome-localhost.json | The default. Launches Chrome |
 | Attachable-Chrome-Localhost.runsettings | attachable-chrome-localhost | testsettings.attachable-chrome-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
 | Attachable-Edge-Localhost.runsettings | attachable-edge-localhost | testsettings.attachable-edge-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
+| Attachable-IE11-Localhost.runsettings | attachable-ie11-localhost | testsettings.attachable-ie11-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
 | Default-Edge-Localhost.runsettings | default-edge-localhost | testsettings.default-edge-localhost.json | Runs the tests in Edge |
 | Default-FireFox-Localhost.runsettings | default-firefox-localhost | testsettings.default-firefox-localhost.json | Runs the tests in Firerfox |
 | Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | testsettings.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
