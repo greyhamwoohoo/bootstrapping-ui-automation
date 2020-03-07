@@ -5,6 +5,6 @@
     /// </summary>
     public interface IAttachableSeleniumSessionProbe
     {
-        bool IsRunning(AttachableSeleniumSession attachableSeleniumSession);
+        bool IsRunning(IAttachableSeleniumSession attachableSeleniumSession);
     }
 }

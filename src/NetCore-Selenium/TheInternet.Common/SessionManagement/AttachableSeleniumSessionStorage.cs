@@ -23,7 +23,7 @@ namespace TheInternet.Common.SessionManagement
 
         public string Path => System.IO.Path.Combine(_basePath, SESSION_FILENAME);
 
-        public AttachableSeleniumSession ReadSessionState(string browserName)
+        public IAttachableSeleniumSession ReadSessionState(string browserName)
         {
             if (null == browserName) throw new System.ArgumentNullException(nameof(browserName));
 
@@ -78,7 +78,7 @@ namespace TheInternet.Common.SessionManagement
             }
         }
 
-        public void WriteSessionState(AttachableSeleniumSession session)
+        public void WriteSessionState(IAttachableSeleniumSession session)
         {
             if (null == session) throw new ArgumentNullException(nameof(session));
 

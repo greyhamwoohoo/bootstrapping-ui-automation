@@ -6,10 +6,10 @@ namespace TheInternet.Common.SessionManagement
 {
     public class AttachableSeleniumSessionProbe : IAttachableSeleniumSessionProbe
     {
-        // NOTE: There is no easy way to DI this into the CachableChromeDriver context
+        // NOTE: There is no easy way to DI this into the Attachable*Driver context
         public const int PROBE_TIMEOUT = 5000;
 
-        public bool IsRunning(AttachableSeleniumSession attachableSeleniumSession)
+        public bool IsRunning(IAttachableSeleniumSession attachableSeleniumSession)
         {
             if (null == attachableSeleniumSession) return false;
             if (!attachableSeleniumSession.IsValid) return false;
@@ -23,9 +23,9 @@ namespace TheInternet.Common.SessionManagement
             return true;
         }
 
-        private bool IsTheDriverReallyReallyReallyAbleToTalkToItsBrowser(AttachableSeleniumSession attachableSeleniumSession)
+        private bool IsTheDriverReallyReallyReallyAbleToTalkToItsBrowser(IAttachableSeleniumSession attachableSeleniumSession)
         {
-            // UNFORTUNATELY: Just because chromedriver.exe says it is ready does not mean it is actually able to do anything. 
+            // UNFORTUNATELY: Just because (say) chromedriver.exe says it is ready does not mean it is actually able to do anything. 
             // chromedriver.exe will spawn multiple chrome.exe processes.
             // If we close the browser (manually), then the browsers go away - but chromedriver.exe is left orphaned. 
             //    Worse, chromedriver.exe will return ready:true in the IsChromeDriverReady check (technically: this is correct; but its misleading)
@@ -51,7 +51,7 @@ namespace TheInternet.Common.SessionManagement
             }
         }
 
-        private bool IsDriverReady(AttachableSeleniumSession attachableSeleniumSession)
+        private bool IsDriverReady(IAttachableSeleniumSession attachableSeleniumSession)
         {
             try
             {
