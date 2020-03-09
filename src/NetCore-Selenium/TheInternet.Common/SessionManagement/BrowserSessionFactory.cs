@@ -56,7 +56,7 @@ namespace TheInternet.Common.SessionManagement
                     var ffBrowserSettings = browserProperties.BrowserSettings as FireFoxBrowserSettings;
                     if (null == ffBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
-                    browser = StartBrowser(remoteWebDriverSettings, ffBrowserSettings);
+                    browser = StartBrowser(remoteWebDriverSettings, ffBrowserSettings, controlSettings);
 
                     break;
                 default:
@@ -83,10 +83,10 @@ namespace TheInternet.Common.SessionManagement
                 return new EventFiringWebDriver(chromeDriver);
             }
 
-            return StartRemoteBrowser(remoteWebDriverSettings, chromeOptions);
+            return StartRemoteBrowser(remoteWebDriverSettings, chromeOptions, controlSettings);
         }
 
-        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, FireFoxBrowserSettings settings)
+        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, FireFoxBrowserSettings settings, IControlSettings controlSettings)
         {
             // Reference: https://stackoverflow.com/questions/41644381/python-set-firefox-preferences-for-selenium-download-location
             var adapter = new FireFoxBrowserSettingsAdapter();
@@ -104,7 +104,7 @@ namespace TheInternet.Common.SessionManagement
                 return new EventFiringWebDriver(new FirefoxDriver(options));
             }
 
-            return StartRemoteBrowser(remoteDriverSettings, options);
+            return StartRemoteBrowser(remoteDriverSettings, options, controlSettings);
         }
 
         private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, InternetExplorerBrowserSettings settings, IControlSettings controlSettings)
@@ -119,7 +119,7 @@ namespace TheInternet.Common.SessionManagement
                 return new EventFiringWebDriver(ieDriver);
             }
 
-            return StartRemoteBrowser(remoteDriverSettings, options);
+            return StartRemoteBrowser(remoteDriverSettings, options, controlSettings);
         }
 
         private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, EdgeBrowserSettings settings, IControlSettings controlSettings)
@@ -134,12 +134,13 @@ namespace TheInternet.Common.SessionManagement
                 return new EventFiringWebDriver(edgeDriver);
             }
 
-            return StartRemoteBrowser(remoteDriverSettings, options);
+            return StartRemoteBrowser(remoteDriverSettings, options, controlSettings);
         }
 
-        private static EventFiringWebDriver StartRemoteBrowser(RemoteWebDriverSettings remoteDriverSettings, DriverOptions options)
+        private static EventFiringWebDriver StartRemoteBrowser(RemoteWebDriverSettings remoteDriverSettings, DriverOptions options, IControlSettings controlSettings)
         {
-            return new EventFiringWebDriver(new RemoteWebDriver(new Uri(remoteDriverSettings.RemoteUri), options));
+            RemoteWebDriver remoteWebDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableRemoteWebDriver(new Uri(remoteDriverSettings.RemoteUri), options) : new RemoteWebDriver(new Uri(remoteDriverSettings.RemoteUri), options);
+            return new EventFiringWebDriver(remoteWebDriver);
         }
     }
 }
