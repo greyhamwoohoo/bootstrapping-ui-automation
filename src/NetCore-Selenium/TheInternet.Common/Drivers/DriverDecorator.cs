@@ -1,22 +1,32 @@
-﻿using OpenQA.Selenium.Remote;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using TheInternet.Common.SessionManagement;
 
 namespace TheInternet.Common.Drivers
 {
     /// <summary>
-    /// Decorates the Driver by providing an accessible facade over its private / protected methods to enable session re-attach
+    /// Decorates the underlying driver with functionality to allow Attach / Detach 
     /// </summary>
     public class DriverDecorator
     {
         public const string IMPLEMENTATION_NOTE = "This implementation is for Selenium 3.141.59 and is using protected / private methods to enable session reuse. The implementation might have changed for the Selenium you are using; we will need a new specific adapter for the (Driver,SeleniumVersion).";
 
         private readonly RemoteWebDriver _remoteWebDriver;
-
+        private readonly string _browserName;
         public DriverDecorator(RemoteWebDriver remoteWebDriver)
         {
+        }
+
+        public DriverDecorator(RemoteWebDriver remoteWebDriver, string browserName)
+        {
             if (null == remoteWebDriver) throw new System.ArgumentNullException(nameof(remoteWebDriver));
+            if (null == browserName) throw new System.ArgumentNullException(nameof(browserName));
 
             _remoteWebDriver = remoteWebDriver;
+            _browserName = browserName;
         }
 
         public void AssertSeleniumVersionIsCompatible()
@@ -104,6 +114,67 @@ namespace TheInternet.Common.Drivers
             if (null == commandInfoRepositoryField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor.commandInfoRepository property should exist. {IMPLEMENTATION_NOTE}");
 
             commandInfoRepositoryField.SetValue(executor, repository);
+        }
+
+        public Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters, Func<string, Dictionary<string, object>, Response> executor)
+        {
+            if (null == executor) throw new System.ArgumentNullException(nameof(executor));
+
+            if (driverCommandToExecute == "newSession")
+            {
+                var attachableSeleniumSessionStorage = new AttachableSeleniumSessionStorage(Directory.GetCurrentDirectory());
+                var existingSession = attachableSeleniumSessionStorage.ReadSessionState(_browserName);
+                var sessionProbe = new AttachableSeleniumSessionProbe();
+
+                if (!existingSession.IsValid || existingSession.BrowserName != _browserName || !sessionProbe.IsRunning(existingSession))
+                {
+                    attachableSeleniumSessionStorage.RemoveSessionState();
+                    existingSession = attachableSeleniumSessionStorage.ReadSessionState(_browserName);
+                }
+
+                if (!existingSession.IsValid)
+                {
+                    // There is currently no persisted session we can use. 
+                    var newSession = executor(driverCommandToExecute, parameters);
+                    if (newSession.Status != WebDriverResult.Success) return newSession;
+
+                    var attachableSeleniumSession = new AttachableSeleniumSession()
+                    {
+                        BrowserName = _browserName,
+                        Response = newSession,
+                        OfficialResponse = newSession.ToJson(),
+                        RemoteServerUri = GetRemoteServerUri(),
+                        CommandRepositoryTypeName = GetCommandInfoRepository().GetType().FullName
+                    };
+
+                    attachableSeleniumSessionStorage.WriteSessionState(attachableSeleniumSession);
+
+                    return newSession;
+                }
+
+                // The HttpCommandExecutor has some specific logic if handling the NewSession command - it will determine
+                // the specification and update the internal CommandInfoRepository. This is what gives the 'specification level'
+                // of the connection. Therefore, as we skipped that call and constructed the session ourselves, we need to inject
+                // the CommandInfoRepository here. 
+                if (existingSession.CommandRepositoryTypeName == typeof(W3CWireProtocolCommandInfoRepository).FullName)
+                {
+                    SetCommandInfoRepository(new W3CWireProtocolCommandInfoRepository());
+                }
+                else if (existingSession.CommandRepositoryTypeName == typeof(WebDriverWireProtocolCommandInfoRepository).FullName)
+                {
+                    SetCommandInfoRepository(new WebDriverWireProtocolCommandInfoRepository());
+                }
+                else
+                {
+                    throw new System.InvalidOperationException($"At the time of writing this there were two implementations of CommandInfoRepository. Add a switch statement and new up a type of {existingSession.CommandRepositoryTypeName}");
+                }
+
+                SetRemoteServerUri(existingSession.RemoteServerUri);
+                return existingSession.Response;
+            }
+
+            var result = executor(driverCommandToExecute, parameters);
+            return result;
         }
 
         private ICommandExecutor GetCommandExecutor(RemoteWebDriver remoteWebDriver)
