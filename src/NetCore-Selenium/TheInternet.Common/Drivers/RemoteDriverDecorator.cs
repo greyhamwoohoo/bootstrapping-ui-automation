@@ -9,7 +9,7 @@ namespace TheInternet.Common.Drivers
     /// <summary>
     /// Decorates the underlying driver with functionality to attach to an existing session
     /// </summary>
-    public class DriverDecorator
+    public class RemoteDriverDecorator
     {
         public const string IMPLEMENTATION_NOTE = "This implementation is for Selenium 3.141.59 and is using protected / private methods to enable session reuse. The implementation might have changed for the Selenium you are using; we will need a new specific adapter for the (Driver,SeleniumVersion).";
 
@@ -17,7 +17,7 @@ namespace TheInternet.Common.Drivers
         private readonly string _browserName;
         private readonly string _targetFolder;
 
-        public DriverDecorator(RemoteWebDriver remoteWebDriver, string browserName, string targetFolder)
+        public RemoteDriverDecorator(RemoteWebDriver remoteWebDriver, string browserName, string targetFolder)
         {
             if (null == remoteWebDriver) throw new System.ArgumentNullException(nameof(remoteWebDriver));
             if (null == browserName) throw new System.ArgumentNullException(nameof(browserName));
@@ -43,17 +43,11 @@ namespace TheInternet.Common.Drivers
             // return this.CommandExecutor.HttpExecutor.remoteServerUri.ToString();
             var commandExecutor = GetCommandExecutor(_remoteWebDriver);
             
-            var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
-            if (null == httpExecutorProperty) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
-            
-            var executor = httpExecutorProperty.GetValue(commandExecutor);
-            if (null == executor) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should not be null. {IMPLEMENTATION_NOTE}");
+            var remoteServerUriField = commandExecutor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (null == remoteServerUriField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.remoteServerUriField property should not be null. {IMPLEMENTATION_NOTE}");
 
-            var remoteServerUriField = executor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (null == remoteServerUriField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor.remoteServerUriField property should not be null. {IMPLEMENTATION_NOTE}");
-
-            var remoteServerUri = remoteServerUriField.GetValue(executor);
-            if (null == remoteServerUri) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor.remoteServerUri should not be null. {IMPLEMENTATION_NOTE}");
+            var remoteServerUri = remoteServerUriField.GetValue(commandExecutor);
+            if (null == remoteServerUri) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.remoteServerUri should not be null. {IMPLEMENTATION_NOTE}");
 
             return remoteServerUri.ToString();
         }
@@ -63,16 +57,10 @@ namespace TheInternet.Common.Drivers
             // this.CommandExecutor.HttpExecutor.remoteServerUri = new Uri(value)
             var commandExecutor = GetCommandExecutor(_remoteWebDriver);
 
-            var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
-            if (null == httpExecutorProperty) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
+            var remoteServerUriField = commandExecutor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (null == remoteServerUriField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.remoteServerUriField property should not be null. {IMPLEMENTATION_NOTE}");
 
-            var executor = httpExecutorProperty.GetValue(commandExecutor);
-            if (null == executor) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should not be null. {IMPLEMENTATION_NOTE}");
-
-            var remoteServerUriField = executor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (null == remoteServerUriField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor.remoteServerUriField property should not be null. {IMPLEMENTATION_NOTE}");
-
-            remoteServerUriField.SetValue(executor, new Uri(value));
+            remoteServerUriField.SetValue(commandExecutor, new Uri(value));
         }
 
         public CommandInfoRepository GetCommandInfoRepository()
@@ -80,16 +68,10 @@ namespace TheInternet.Common.Drivers
             // return this.CommandExecutor.HttpExecutor.commandInfoRepository
             var commandExecutor = GetCommandExecutor(_remoteWebDriver);
 
-            var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
-            if (null == httpExecutorProperty) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
+            var commandInfoRepositoryField = commandExecutor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (null == commandInfoRepositoryField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.commandInfoRepository property should exist. {IMPLEMENTATION_NOTE}");
 
-            var executor = httpExecutorProperty.GetValue(commandExecutor);
-            if (null == executor) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should not be null. {IMPLEMENTATION_NOTE}");
-            
-            var commandInfoRepositoryField = executor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (null == commandInfoRepositoryField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor.commandInfoRepository property should exist. {IMPLEMENTATION_NOTE}");
-
-            var commandInfoRepository = commandInfoRepositoryField.GetValue(executor);
+            var commandInfoRepository = commandInfoRepositoryField.GetValue(commandExecutor);
             if (null == commandInfoRepository) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor.commandInfoRepository property should not be null. {IMPLEMENTATION_NOTE}");
 
             var result = commandInfoRepository as CommandInfoRepository;
@@ -103,16 +85,10 @@ namespace TheInternet.Common.Drivers
             // this.CommandExecutor.HttpExecutor.commandInfoRepository = repository
             var commandExecutor = GetCommandExecutor(_remoteWebDriver);
 
-            var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
-            if (null == httpExecutorProperty) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
+            var commandInfoRepositoryField = commandExecutor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (null == commandInfoRepositoryField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.commandInfoRepository property should exist. {IMPLEMENTATION_NOTE}");
 
-            var executor = httpExecutorProperty.GetValue(commandExecutor);
-            if (null == executor) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should not be null. {IMPLEMENTATION_NOTE}");
-           
-            var commandInfoRepositoryField = executor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (null == commandInfoRepositoryField) throw new System.InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor.commandInfoRepository property should exist. {IMPLEMENTATION_NOTE}");
-
-            commandInfoRepositoryField.SetValue(executor, repository);
+            commandInfoRepositoryField.SetValue(commandExecutor, repository);
         }
 
         public Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters, Func<string, Dictionary<string, object>, Response> executor)

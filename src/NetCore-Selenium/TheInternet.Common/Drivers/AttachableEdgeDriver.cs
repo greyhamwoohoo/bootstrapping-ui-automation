@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Remote;
 using System.Collections.Generic;
+using System.IO;
 using TheInternet.Common.Drivers;
 
 namespace TheInternet.Common.WebDrivers
@@ -16,7 +17,7 @@ namespace TheInternet.Common.WebDrivers
 
         protected override Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters)
         {
-            var decoratedRemoteWebDriver = new DriverDecorator(this, "EDGE");
+            var decoratedRemoteWebDriver = new DriverDecorator(this, "EDGE", Directory.GetCurrentDirectory());
             decoratedRemoteWebDriver.AssertSeleniumVersionIsCompatible();
 
             return decoratedRemoteWebDriver.Execute(driverCommandToExecute, parameters, Executor);
