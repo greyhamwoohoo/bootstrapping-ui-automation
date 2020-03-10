@@ -4,6 +4,7 @@ using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TheInternet.Common.Drivers;
 using TheInternet.Common.SessionManagement;
 
 namespace TheInternet.Common.WebDrivers
@@ -12,7 +13,6 @@ namespace TheInternet.Common.WebDrivers
     /// Allows us to attach to a running Internet Explorer Driver instance / Selenium Session
     /// </summary>
     /// <remarks>
-    /// The AttachableDrivers have almost identical code - will refactor later.
     /// </remarks>
     public class AttachableInternetExplorerDriver : InternetExplorerDriver
     {
@@ -24,23 +24,16 @@ namespace TheInternet.Common.WebDrivers
 
         protected override Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters)
         {
-            var seleniumVersion = typeof(RemoteWebDriver).Assembly.GetName().Version.ToString();
-            if(seleniumVersion != "3.0.0.0" && seleniumVersion != "3.141.0.0")
-            {
-                // Unfortunately, it would appear that 3.141.59 is not surfaced anywhere, so we are limited to major/minor
-                throw new NotSupportedException($"The implementation below is very specific to the above Selenium Versions (3.0.0.0 if referencing the Webdriver code locally; 3.141.0.0 if referencing the NuGET package. ");
-            }
-
-            //
-            // NOTE: *ALL* of the following code requires Selenium 3.141.59 to work (it might work on earlier versions - but definitely not 4)
-            //
             if (driverCommandToExecute == "newSession")
             {
+                var decoratedRemoteWebDriver = new DriverDecorator(this);
+                decoratedRemoteWebDriver.AssertSeleniumVersionIsCompatible();
+
                 var attachableSeleniumSessionStorage = new AttachableSeleniumSessionStorage(Directory.GetCurrentDirectory());
                 var existingSession = attachableSeleniumSessionStorage.ReadSessionState(BROWSER_NAME);
                 var sessionProbe = new AttachableSeleniumSessionProbe();
-                
-                if(!existingSession.IsValid || existingSession.BrowserName != BROWSER_NAME || !sessionProbe.IsRunning(existingSession))
+
+                if (!existingSession.IsValid || existingSession.BrowserName != BROWSER_NAME || !sessionProbe.IsRunning(existingSession))
                 {
                     attachableSeleniumSessionStorage.RemoveSessionState();
                     existingSession = attachableSeleniumSessionStorage.ReadSessionState(BROWSER_NAME);
@@ -57,8 +50,8 @@ namespace TheInternet.Common.WebDrivers
                         BrowserName = BROWSER_NAME,
                         Response = newSession,
                         OfficialResponse = newSession.ToJson(),
-                        RemoteServerUri = GetRemoteServerUri(),
-                        CommandRepositoryTypeName = GetCommandInfoRepository().GetType().FullName
+                        RemoteServerUri = decoratedRemoteWebDriver.GetRemoteServerUri(),
+                        CommandRepositoryTypeName = decoratedRemoteWebDriver.GetCommandInfoRepository().GetType().FullName
                     };
 
                     attachableSeleniumSessionStorage.WriteSessionState(attachableSeleniumSession);
@@ -72,57 +65,23 @@ namespace TheInternet.Common.WebDrivers
                 // the CommandInfoRepository here. 
                 if(existingSession.CommandRepositoryTypeName == typeof(W3CWireProtocolCommandInfoRepository).FullName)
                 {
-                    SetCommandInfoRepository(new W3CWireProtocolCommandInfoRepository());
+                    decoratedRemoteWebDriver.SetCommandInfoRepository(new W3CWireProtocolCommandInfoRepository());
                 }
                 else if(existingSession.CommandRepositoryTypeName == typeof(WebDriverWireProtocolCommandInfoRepository).FullName)
                 {
-                    SetCommandInfoRepository(new WebDriverWireProtocolCommandInfoRepository());
+                    decoratedRemoteWebDriver.SetCommandInfoRepository(new WebDriverWireProtocolCommandInfoRepository());
                 }
                 else
                 {
                     throw new InvalidOperationException($"At the time of writing this there were two implementations of CommandInfoRepository. Add a switch statement and new up a type of {existingSession.CommandRepositoryTypeName}");
                 }
 
-                SetRemoteServerUri(existingSession.RemoteServerUri);
+                decoratedRemoteWebDriver.SetRemoteServerUri(existingSession.RemoteServerUri);
                 return existingSession.Response;
             }
 
             var result = base.Execute(driverCommandToExecute, parameters);
             return result;
-        }
-
-        private string GetRemoteServerUri()
-        {
-            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
-            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
-            var remoteServerUriField = executor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var remoteServerUri = remoteServerUriField.GetValue(executor);
-            return remoteServerUri.ToString();
-        }
-
-        private void SetRemoteServerUri(string value)
-        {
-            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
-            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
-            var remoteServerUriField = executor.GetType().GetField("remoteServerUri", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            remoteServerUriField.SetValue(executor, new Uri(value));
-        }
-
-        private CommandInfoRepository GetCommandInfoRepository()
-        {
-            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
-            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
-            var commandInfoRepositoryField = executor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var commandInfoRepository = commandInfoRepositoryField.GetValue(executor);
-            return commandInfoRepository as CommandInfoRepository;
-        }
-
-        private void SetCommandInfoRepository(CommandInfoRepository repository)
-        {
-            var httpExecutorProperty = this.CommandExecutor.GetType().GetProperty("HttpExecutor");
-            var executor = httpExecutorProperty.GetValue(this.CommandExecutor);
-            var commandInfoRepositoryField = executor.GetType().GetField("commandInfoRepository", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            commandInfoRepositoryField.SetValue(executor, repository);
         }
     }
 }

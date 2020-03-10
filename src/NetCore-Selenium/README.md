@@ -139,3 +139,4 @@ Implementation Notes:
 | --------- | ---- |
 | '437' Encoding Error: Allowing FireFox WebDriver to run under .Net Core | https://github.com/SeleniumHQ/selenium/issues/4816 |
 | ChromeDriver.exe not copied to output folder | https://stackoverflow.com/questions/55007311/selenium-webdriver-chromedriver-chromedriver-exe-is-not-being-publishing-for-n |
+| Docker /dev/shm default is 64Meg - nowhere near enough for ChromeDriver Headless | https://developers.google.com/web/tools/puppeteer/troubleshooting |
