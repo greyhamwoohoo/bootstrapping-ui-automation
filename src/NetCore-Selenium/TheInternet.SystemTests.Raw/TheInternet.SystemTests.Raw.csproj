@@ -9,7 +9,9 @@
 
   <ItemGroup>
     <None Remove="TestExecutionContexts\testsettings.attachable-chrome-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.attachable-chrome-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.attachable-edge-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.attachable-firefox-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.attachable-ie11-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-chrome-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-edge-localhost.json" />
@@ -20,6 +22,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestExecutionContexts\testsettings.attachable-firefox-zalenium-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\testsettings.attachable-chrome-zalenium-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestExecutionContexts\testsettings.attachable-ie11-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

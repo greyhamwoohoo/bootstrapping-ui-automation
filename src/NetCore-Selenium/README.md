@@ -114,6 +114,9 @@ dotnet watch test --filter "Name="HotReloadWorkflow"
 
 Whenever we save anything in the TheInternet.SystemTests.Raw project, that single test will be run. On my machine it takes around 6 seconds for the build and test exection to occur; perhaps 'warm-reload' is a better description :)
 
+NOTE: There is also an Attachable .runsettings for targetting Zalenium - this will let you attach to a remote running instance of Chrome, or FireFox, on Zalenium. The current implementation is quite limited in that it will reconnect to ANY remote session (regardless of whether it is Chrome, Firefox, or otherwise). 
+Be aware of the default timeout for browser sessions in Zalenium - it is possible your browser session will be purged before you have a chance to interact with it again. Google SEL_BROWSER_TIMEOUT_SECS for more information. 
+
 ### Within Visual Studio
 1. Select the Attachable-Chrome-Localhost .runsettings file *FIRST*
 2. Run the 'HotReloadWorkflow' test (or: ANY test!)
@@ -136,3 +139,4 @@ Implementation Notes:
 | --------- | ---- |
 | '437' Encoding Error: Allowing FireFox WebDriver to run under .Net Core | https://github.com/SeleniumHQ/selenium/issues/4816 |
 | ChromeDriver.exe not copied to output folder | https://stackoverflow.com/questions/55007311/selenium-webdriver-chromedriver-chromedriver-exe-is-not-being-publishing-for-n |
+| Docker /dev/shm default is 64Meg - nowhere near enough for ChromeDriver Headless | https://developers.google.com/web/tools/puppeteer/troubleshooting |

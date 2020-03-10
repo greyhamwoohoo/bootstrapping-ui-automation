@@ -1,5 +1,6 @@
-﻿using OpenQA.Selenium.Edge;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using TheInternet.Common.Drivers;
@@ -7,17 +8,17 @@ using TheInternet.Common.Drivers;
 namespace TheInternet.Common.WebDrivers
 {
     /// <summary>
-    /// Allows us to attach to a running Edge Driver instance / Selenium Session
+    /// Allows us to attach to a running Driver instance / Selenium Session
     /// </summary>
-    public class AttachableEdgeDriver : EdgeDriver
+    public class AttachableRemoteWebDriver : RemoteWebDriver
     {
-        public AttachableEdgeDriver(EdgeOptions options) : base(options)
+        public AttachableRemoteWebDriver(Uri remoteUri, DriverOptions options) : base(remoteUri, options)
         {
         }
 
         protected override Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters)
         {
-            var decoratedRemoteWebDriver = new DriverDecorator(this, "EDGE", Directory.GetCurrentDirectory());
+            var decoratedRemoteWebDriver = new RemoteDriverDecorator(this, "REMOTE", Directory.GetCurrentDirectory());
             decoratedRemoteWebDriver.AssertSeleniumVersionIsCompatible();
 
             return decoratedRemoteWebDriver.Execute(driverCommandToExecute, parameters, Executor);
