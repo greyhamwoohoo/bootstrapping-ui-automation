@@ -1,14 +1,14 @@
-# .Net Core - Selenium
-Bootstrapping of a bare minimum, opinionated .Net Core Selenium Framework using MsTest, the in-built .Net Core DI Container, Serilog, .runsettings and Visual Studio.  
+# netcore-selenium-framework 
+Bootstrapping of a bare minimum, opinionated .Net Core Selenium Framework using MsTest, the in-built .Net Core DI Container, Serilog, .runsettings and Visual Studio. 
 
-This framework supports a 'hot-reload' workflow that allows you to run your tests against an existing browser instance: IE11, Chrome and Edge are supported. See below for more information. 
+This framework supports a 'hot-reload' workflow that allows you to run your tests against an existing browser instance: see the NetCore-Selenium/README.md file for more information.
 
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
 
-## To Get Going
-Just open the solution and run a test - it will launch Chrome locally and target https://the-internet.herokuapp.com/ on the Internet. 
+## What it is not
+This framework is not trying to be a fully fledged, ready to use, Selenium framework with POM or a Fluent API. This implementation is mostly a personal reference for patterns to separate, configure and orchestrate browsers, selenium grid, environments, control settings and so forth via configuration files and environment variable overrides using .Net Core, DI and Visual Studio. That's pretty much it :)
 
-The framework can be customized with .runsettings within Visual Studio, Test Execution Contexts and/or Environment Variables. See Framework Parameters below for more information. 
+If you are looking for a fully fledged Selenium / Automation framework implementation, that problem has already been solved: consider looking at [Atata Framework](https://github.com/atata-framework)
 
 ## Why?
 My goal is to be up and running with Selenium across several browsers within 15 minutes on either Linux or Windows in .Net Core using Visual Studio. By tweaking a few settings I want to optionally target Selenium Grid, different environments and change my control settings (such as timeouts and so forth). This repository lets me do that. 
@@ -20,9 +20,11 @@ No reporting. No screenshots. No extra niceties. No page object model. Not a lot
 A few automated (raw, inline locator) tests are written against https://the-internet.herokuapp.com/ - that site contains all kinds of UI Automation Nastiness. 
 
 ## Framework Parameters
+The browser you use, where the test is executed (locally, Selenium Grid, Zalenium), how you control that execution (timeouts, logging) and the environment you target are runtime parameters and each one is a separate concern and should be configurable independently. Collectively these parameters are known as the "Test Execution Context"
+
 By default, the tests will run using the Chrome browser against http://the-internet.herokuapp.com.
 
-Environment variables, test execution contexts or .runsettings can be used to change execution parameters:
+Environment variables can be set before running the tests to configure the Test Execution Context:
 
 | Environment Variable | Default | Description |
 | -------------------- | ------- | ----------- |
@@ -57,7 +59,9 @@ This implementation uses the .Net Core ConfigurationBuilder() - this means confi
 SET THEINTERNET_BROWSERSETTINGS_FILES=chrome-default.json;chrome-captureLogFile.json;otherspecializations
 ```
 
-The .Net Core conventions for environment variable overrides are also supported. For example: to change the RemoteWebDriverSettings RemoteUri property in the JSON, do something like this:
+The .Net Core conventions for environment variable overrides are also supported which means individual settings can be overridden by setting environment variables prior to execution. 
+
+For example: to change the RemoteWebDriverSettings RemoteUri property in the JSON, do something like this:
 
 ```
 SET THEINTERNET_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
@@ -87,8 +91,8 @@ THEINTERNET_TEST_EXECUTION_CONTEXT=default-chrome-localhost
 | ----------- | ---------------------- | ------------- | ----------- |
 | Default-Chrome-Localhost.runsettings | default-chrome-localhost | testsettings.default-chrome-localhost.json | The default. Launches Chrome |
 | Attachable-Chrome-Localhost.runsettings | attachable-chrome-localhost | testsettings.attachable-chrome-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
+| Attachable-IE11-Localhost.runsettings | attachable-ie11-localhost | testsettings.attachable-ie11-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. 
 | Attachable-Edge-Localhost.runsettings | attachable-edge-localhost | testsettings.attachable-edge-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
-| Attachable-IE11-Localhost.runsettings | attachable-ie11-localhost | testsettings.attachable-ie11-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
 | Default-Edge-Localhost.runsettings | default-edge-localhost | testsettings.default-edge-localhost.json | Runs the tests in Edge |
 | Default-FireFox-Localhost.runsettings | default-firefox-localhost | testsettings.default-firefox-localhost.json | Runs the tests in Firerfox |
 | Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | testsettings.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
@@ -114,8 +118,7 @@ dotnet watch test --filter "Name="HotReloadWorkflow"
 
 Whenever we save anything in the TheInternet.SystemTests.Raw project, that single test will be run. On my machine it takes around 6 seconds for the build and test exection to occur; perhaps 'warm-reload' is a better description :)
 
-NOTE: There is also an Attachable .runsettings for targetting Zalenium - this will let you attach to a remote running instance of Chrome, or FireFox, on Zalenium. The current implementation is quite limited in that it will reconnect to ANY remote session (regardless of whether it is Chrome, Firefox, or otherwise). 
-Be aware of the default timeout for browser sessions in Zalenium - it is possible your browser session will be purged before you have a chance to interact with it again. Google SEL_BROWSER_TIMEOUT_SECS for more information. 
+NOTE: There is also an Attachable .runsettings for targetting Zalenium - this will let you attach to a remote running instance of Chrome, or FireFox, on Zalenium. The current implementation is quite limited in that it will reconnect to ANY remote session (regardless of whether it is Chrome, Firefox, or otherwise).  qBe aware of the default timeout for browser sessions in Zalenium - it is possible your browser session will be purged before you have a chance to interact with it again. Google SEL_BROWSER_TIMEOUT_SECS for more information.
 
 ### Within Visual Studio
 1. Select the Attachable-Chrome-Localhost .runsettings file *FIRST*

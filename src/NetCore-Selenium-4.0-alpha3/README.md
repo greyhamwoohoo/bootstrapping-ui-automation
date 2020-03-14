@@ -1,9 +1,14 @@
-# .Net Core - Selenium
-Bootstrapping of a bare minimum, opinionated .Net Core Selenium Framework using MsTest, the in-built .Net Core DI Container, Serilog, .runsettings and Visual Studio.  
+# netcore-selenium-framework 
+Bootstrapping of a bare minimum, opinionated .Net Core Selenium Framework using MsTest, the in-built .Net Core DI Container, Serilog, .runsettings and Visual Studio. 
 
-This framework supports a 'hot-reload' workflow that allows you to run your tests against an existing browser instance: IE11, Chrome and Edge are supported. See below for more information. 
+This framework supports a 'hot-reload' workflow that allows you to run your tests against an existing browser instance: see the NetCore-Selenium/README.md file for more information.
 
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
+
+## What it is not
+This framework is not trying to be a fully fledged, ready to use, Selenium framework with POM or a Fluent API. This implementation is mostly a personal reference for patterns to separate, configure and orchestrate browsers, selenium grid, environments, control settings and so forth via configuration files and environment variable overrides using .Net Core, DI and Visual Studio. That's pretty much it :)
+
+If you are looking for a fully fledged Selenium / Automation framework implementation, that problem has already been solved: consider looking at [Atata Framework](https://github.com/atata-framework)
 
 ## Why?
 My goal is to be up and running with Selenium across several browsers within 15 minutes on either Linux or Windows in .Net Core using Visual Studio. By tweaking a few settings I want to optionally target Selenium Grid, different environments and change my control settings (such as timeouts and so forth). This repository lets me do that. 
@@ -15,9 +20,11 @@ No reporting. No screenshots. No extra niceties. No page object model. Not a lot
 A few automated (raw, inline locator) tests are written against https://the-internet.herokuapp.com/ - that site contains all kinds of UI Automation Nastiness. 
 
 ## Framework Parameters
+The browser you use, where the test is executed (locally, Selenium Grid, Zalenium), how you control that execution (timeouts, logging) and the environment you target are runtime parameters and each one is a separate concern and should be configurable independently. Collectively these parameters are known as the "Test Execution Context"
+
 By default, the tests will run using the Chrome browser against http://the-internet.herokuapp.com.
 
-Environment variables, test execution contexts or .runsettings can be used to change execution parameters:
+Environment variables can be set before running the tests to configure the Test Execution Context:
 
 | Environment Variable | Default | Description |
 | -------------------- | ------- | ----------- |
@@ -52,7 +59,9 @@ This implementation uses the .Net Core ConfigurationBuilder() - this means confi
 SET THEINTERNET_BROWSERSETTINGS_FILES=chrome-default.json;chrome-captureLogFile.json;otherspecializations
 ```
 
-The .Net Core conventions for environment variable overrides are also supported. For example: to change the RemoteWebDriverSettings RemoteUri property in the JSON, do something like this:
+The .Net Core conventions for environment variable overrides are also supported which means individual settings can be overridden by setting environment variables prior to execution. 
+
+For example: to change the RemoteWebDriverSettings RemoteUri property in the JSON, do something like this:
 
 ```
 SET THEINTERNET_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
