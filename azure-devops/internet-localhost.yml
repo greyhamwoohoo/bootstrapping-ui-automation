@@ -1,8 +1,8 @@
-# Runs the tests using Google Chrome and target http://the-internet.herokuapp.com on the Internet
+# Runs the tests using Google Chrome and target http://localhost:9000
 #
 # Implementation:
-# 1. All work is executed on a Windows VM
-# 2. The tests are run 'from the VM' against the real website on the Internet
+# 1. All work is executed on a Ubuntu VM
+# 2. The tests are run 'from the VM' against a container running the application
 
 trigger: none
 pr: none
@@ -19,7 +19,7 @@ variables:
   - name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
     value: localhost.json
   - name: THEINTERNET_ENVIRONMENTSETTINGS_FILES
-    value: internet.json
+    value: internet-localhost.json
   - name: THEINTERNET_CONTROLSETTINGS_FILES
     value: default.json
   - name: TEST_TARGET_FOLDER
@@ -33,7 +33,7 @@ stages:
     timeoutInMinutes: 12
     cancelTimeoutInMinutes: 2
     pool:
-      vmImage: windows-2019
+      vmImage: ubuntu-18.04
 
     steps:
     - task: DotNetCoreCLI@2
@@ -56,13 +56,26 @@ stages:
       workingDirectory: src/$(TEST_TARGET_FOLDER)
       displayName: 'PowerShell Script'
 
+    - powershell: |
+        docker-compose up -d
+      workingDirectory: infra/the-internet/docker-localhost
+      displayName: Start TheInternet
+
+    - task: PowerShell@2
+      displayName: 'Wait For Container'
+      inputs:
+        targetType: filePath
+        filePath: './azure-devops/wait-until-uri-is-ready.ps1'
+        arguments: '-TimeoutInSeconds 120 -Uri http://localhost:9000 -ExpectStatusCode 200 -Verbose'
+        failOnStderr: true
+
     - task: DotNetCoreCLI@2
       displayName: 'Run Raw SystemTests'
       inputs:
         command: custom
         custom: vstest
         arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.SystemTests.Raw/bin/$(Build.Configuration)/netcoreapp3.1/publish/TheInternet.SystemTests.Raw.dll --logger:"trx;LogFileName=TheInternet-Tests.trx"'
-    
+
     - task: PublishTestResults@2
       displayName: 'Publish Test Results **/TheInternet-Tests.trx'
       inputs:

@@ -15,6 +15,7 @@
     <None Remove="Runtime\BrowserSettings\headless-chrome.json" />
     <None Remove="Runtime\BrowserSettings\performance-chrome.json" />
     <None Remove="Runtime\ControlSettings\default.json" />
+    <None Remove="Runtime\EnvironmentSettings\internet-localhost.json" />
     <None Remove="Runtime\EnvironmentSettings\internet.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\localhost.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json" />
@@ -41,6 +42,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\ControlSettings\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Runtime\EnvironmentSettings\internet-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\EnvironmentSettings\internet.json">
