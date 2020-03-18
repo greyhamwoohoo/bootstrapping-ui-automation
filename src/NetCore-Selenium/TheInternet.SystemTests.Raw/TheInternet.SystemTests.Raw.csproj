@@ -18,10 +18,14 @@
     <None Remove="TestExecutionContexts\testsettings.default-firefox-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-firefox-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.default-ie11-localhost.json" />
+    <None Remove="TestExecutionContexts\testsettings.empty.json" />
     <None Remove="TestExecutionContexts\testsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestExecutionContexts\testsettings.empty.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestExecutionContexts\testsettings.attachable-firefox-zalenium-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

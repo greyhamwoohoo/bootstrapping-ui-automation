@@ -52,7 +52,7 @@
     <Content Include="Runtime\RemoteWebDriverSettings\localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="serilogSettings.json">
+    <Content Include="serilogsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

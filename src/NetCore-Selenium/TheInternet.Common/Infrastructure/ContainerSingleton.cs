@@ -241,7 +241,7 @@ namespace TheInternet.Common.Infrastructure
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("serilogSettings.json", optional: false)
+                .AddJsonFile("serilogsettings.json", optional: false)
                 .Build();
 
             return configuration;

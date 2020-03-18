@@ -1,0 +1,107 @@
+# Starts Zalenium on Localhost (as part of the build) and executes the tests to target Zalenium
+#
+# Implementation:
+# 1. All work is executed on an Ubuntu VM
+# 2. The tests are run 'from the VM' against the running docker container
+
+# Implications:
+# 1. We need to start docker-compose in detached mode, wait for it to be 'ready' and then start the test
+# 2. The target Environment is the 'default' - which is http://the-internet.herokuapp.com
+
+trigger: none
+pr: none
+
+name: 1.0$(Rev:.r)
+
+variables:
+  - name: Build.Configuration
+    value: Release
+  - name: THEINTERNET_TEST_EXECUTION_CONTEXT
+    value: empty
+  - name: THEINTERNET_BROWSERSETTINGS_FILES
+    value: headless-chrome.json
+  - name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
+    value: zalenium-docker-localhost.json
+  - name: THEINTERNET_ENVIRONMENTSETTINGS_FILES
+    value: internet.json
+  - name: THEINTERNET_CONTROLSETTINGS_FILES
+    value: default.json
+  - name: TEST_TARGET_FOLDER
+    value: NetCore-Selenium
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
+    timeoutInMinutes: 12
+    cancelTimeoutInMinutes: 2
+    pool:
+      vmImage: ubuntu-18.04
+
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Dotnet Restore'
+      inputs:
+        command: restore
+        projects: '**/*.sln'
+    - task: DotNetCoreCLI@2
+      displayName: 'Dotnet Publish'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: |
+           **/*.sln
+        
+        arguments: '--no-restore --configuration $(Build.Configuration)'
+        zipAfterPublish: false  
+
+    - powershell: 'Get-ChildItem -Recurse'
+      workingDirectory: src/$(TEST_TARGET_FOLDER)
+      displayName: 'Dump Entire Folder'
+
+    - powershell: |
+        docker pull dosel/zalenium:3
+        docker pull elgalu/selenium:latest
+      displayName: Pull Images
+
+    - powershell: |
+        docker-compose up -d
+      workingDirectory: infra/the-internet/zalenium-docker-localhost
+      displayName: Start Zalenium
+
+    # This will wait forever - so be sure to set the timeout in the YAML Job as above: 
+    #   https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
+    - task: Bash@3
+      displayName: 'Wait For Zalenium to Start'
+      inputs:
+        targetType: inline
+        script: |
+          printf 'TRY: To wait for Selenium Server to be responsive...\n'
+          while :
+          do
+              $(curl --output /dev/null --silent --head http://localhost:4444/wd/hub)  
+              if [ $? -eq 0 ]
+              then
+                break
+              fi
+              printf '.'
+              sleep 1
+          done
+          printf 'DONE: Selenium Server is responsive\n'
+        failOnStderr: true
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run Raw SystemTests'
+      inputs:
+        command: custom
+        custom: vstest
+        arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.SystemTests.Raw/bin/$(Build.Configuration)/netcoreapp3.1/publish/TheInternet.SystemTests.Raw.dll --logger:"trx;LogFileName=TheInternet-Tests.trx"'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results **/TheInternet-Tests.trx'
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '**/TheInternet-Tests.trx'
+        failTaskOnFailedTests: true
+        testRunTitle: 'TheInternet-Tests'
