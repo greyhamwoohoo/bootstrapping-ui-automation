@@ -1,0 +1,7 @@
+{
+  "testSettings": {
+    "environmentVariables": {
+      "COMMENT_TO_BE_RUN_IN":  "CI"
+    }
+  }
+}
