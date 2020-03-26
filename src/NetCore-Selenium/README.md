@@ -111,9 +111,16 @@ There are two viable workflows:
 ### Automatically
 Open  up a command prompt in TheInternet.SystemTests.Raw folder and execute the following command:
 
+Command Prompt:
 ```
 SET THEINTERNET_TEST_EXECUTION_CONTEXT=attachable-chrome-localhost
-dotnet watch test --filter "Name="HotReloadWorkflow"
+dotnet watch test --filter "Name=HotReloadWorkflow"
+```
+
+PowerShell:
+```
+$env:THEINTERNET_TEST_EXECUTION_CONTEXT="attachable-chrome-localhost"
+dotnet watch test --filter "Name=HotReloadWorkflow"
 ```
 
 Whenever we save anything in the TheInternet.SystemTests.Raw project, that single test will be run. On my machine it takes around 6 seconds for the build and test exection to occur; perhaps 'warm-reload' is a better description :)
