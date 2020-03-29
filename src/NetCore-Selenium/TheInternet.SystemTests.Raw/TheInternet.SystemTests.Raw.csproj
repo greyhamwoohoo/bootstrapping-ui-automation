@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content\SampleFileToUpload.txt" />
     <None Remove="TestExecutionContexts\testsettings.attachable-chrome-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.attachable-chrome-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\testsettings.attachable-edge-localhost.json" />
@@ -23,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Content\SampleFileToUpload.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestExecutionContexts\testsettings.empty.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

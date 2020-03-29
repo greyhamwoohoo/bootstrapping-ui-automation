@@ -12,6 +12,8 @@ namespace TheInternet.SystemTests.Raw
         protected IServiceScope Scope;
         protected ILogger Logger => Scope.ServiceProvider.GetRequiredService<ILogger>();
 
+        public TestContext TestContext { get; set; }
+
         [TestInitialize]
         public void SetupTest()
         {

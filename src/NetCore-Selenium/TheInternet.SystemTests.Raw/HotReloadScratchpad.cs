@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static TheInternet.Common.ElementOperations.ElementState;
+using static TheInternet.Common.ElementOperations.ElementStateCondition;
 using OpenQA.Selenium;
 
 namespace TheInternet.SystemTests.Raw
