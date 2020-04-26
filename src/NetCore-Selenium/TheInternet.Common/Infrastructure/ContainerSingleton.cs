@@ -47,6 +47,7 @@ namespace TheInternet.Common.Infrastructure
             if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
             System.Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+            System.Environment.SetEnvironmentVariable("TESTDEPLOYMENTDIR", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
 
             var services = new ServiceCollection();
 
@@ -78,9 +79,10 @@ namespace TheInternet.Common.Infrastructure
                 var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
                 var environmentSettings = isp.GetRequiredService<EnvironmentSettings>();
                 var controlSettings = isp.GetRequiredService<IControlSettings>();
+                var deviceSettings = isp.GetRequiredService<IDeviceProperties>();
                 var logger = isp.GetRequiredService<ILogger>();
 
-                var driverSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
+                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
                 return driverSession;
             });
 
@@ -95,21 +97,33 @@ namespace TheInternet.Common.Infrastructure
             var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "DeviceSettings", "desktop-selenium-default.json");
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
 
-            var deviceName = configurationRoot.GetSection("deviceName")?.Value?.ToUpper();
-            var deviceSettings = configurationRoot.GetSection("deviceSettings");
+            var platformName = configurationRoot.GetSection("platformName")?.Value?.ToUpper();
 
-            switch(deviceName)
+            switch(platformName)
             {
                 case "DESKTOP":
                     var instance = new DesktopSettings();
 
-                    instance.DeviceName = deviceName;
+                    instance.PlatformName = platformName;
 
                     services.AddSingleton(instance);
                     services.AddSingleton<IDeviceProperties>(instance);
                     break;
+                case "ANDROID":
+                    var androidSettings = new AppiumSettings();
+
+                    configurationRoot.Bind(androidSettings);
+
+                    androidSettings = SubstituteEnvironmentVariables<AppiumSettings>(androidSettings);
+
+                    androidSettings.PlatformName = platformName;
+                    androidSettings.Cleanse();
+
+                    services.AddSingleton(androidSettings);
+                    services.AddSingleton<IDeviceProperties>(androidSettings);
+                    break;
                 default:
-                    throw new System.ArgumentOutOfRangeException($"The device called {deviceName} is currently not supported. ");
+                    throw new System.ArgumentOutOfRangeException($"The device called {platformName} is currently not supported. ");
             }
         }
 
@@ -119,7 +133,6 @@ namespace TheInternet.Common.Infrastructure
             var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "BrowserSettings", "default-chrome.json");
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
 
-            var technology = configurationRoot.GetSection("technology")?.Value?.ToUpper();
             var browserName = configurationRoot.GetSection("browserName")?.Value?.ToUpper();
             var browserSettings = configurationRoot.GetSection("browserSettings");
 

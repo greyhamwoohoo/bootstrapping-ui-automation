@@ -5,6 +5,8 @@ This framework supports a 'hot-reload' workflow that allows you to run your test
 
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
 
+NOTE: Appium is slowly being added, but is a work in progress. 
+
 ## What it is not
 This framework is not trying to be a fully fledged, ready to use, Selenium framework with POM or a Fluent API. This implementation is mostly a personal reference for patterns to separate, configure and orchestrate browsers, selenium grid, environments, control settings and so forth via configuration files and environment variable overrides using .Net Core, DI and Visual Studio. That's pretty much it :)
 

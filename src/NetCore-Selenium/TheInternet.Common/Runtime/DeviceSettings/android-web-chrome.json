@@ -1,4 +1,27 @@
 ﻿{
   "!description": "Launches Google Chrome on an Android Device and uses whichever Browser Settings are configured for Chrome (ie: through the BROWSERSETTINGS environment variable)",
-  "deviceName": "Android"
+  "platformName": "Android",
+  "deviceSettings": {
+    "options": {
+      "mobileCapabilities": {
+        "automationName": "UiAutomator2",
+        "autoWebView": false,
+        "browserName": "Chrome",
+        "deviceName": "Pixel_2_API_R",
+        "fullReset": false,
+        "!language": "en",
+        "!locale": "en_US",
+        "noReset": true,
+        "orientation": "PORTRAIT",
+        "platformName": "Android",
+        "platformVersion": "10",
+        "newCommandTimeout": 60000,
+        "udid": "emulator-5554"
+      },
+      "androidCapabilities": {
+        "!chromedriverExecutableNote": "By specifying this, we are using the Chromedriver based on the Project NuGET Reference. This is (usually) find if with the -R- (latest) Android AVD Images",
+        "chromedriverExecutable": "%TESTDEPLOYMENTDIR%/chromedriver.exe"
+      }
+    }
+  }
 }

@@ -19,6 +19,7 @@
     <None Remove="Runtime\DeviceSettings\desktop-selenium-default.json" />
     <None Remove="Runtime\EnvironmentSettings\internet-localhost.json" />
     <None Remove="Runtime\EnvironmentSettings\internet.json" />
+    <None Remove="Runtime\RemoteWebDriverSettings\localhost-appium.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\localhost-selenium.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json" />
     <None Remove="serilogSettings.json" />
@@ -56,6 +57,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\EnvironmentSettings\internet.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Runtime\RemoteWebDriverSettings\localhost-appium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json">

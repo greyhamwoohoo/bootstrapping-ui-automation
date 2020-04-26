@@ -6,6 +6,9 @@ using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.SystemTests.Raw
 {
+    /// <summary>
+    /// Base class for all Web based tests: use for Selenium and Device Web Browsing
+    /// </summary>
     [TestClass]
     public abstract class SeleniumTestBase : TestBase
     {

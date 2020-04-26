@@ -97,6 +97,7 @@ THEINTERNET_TEST_EXECUTION_CONTEXT=default-chrome-localhost
 | Default-Edge-Localhost.runsettings | default-edge-localhost | tec.default-edge-localhost.json | Runs the tests in Edge |
 | Default-FireFox-Localhost.runsettings | default-firefox-localhost | tec.default-firefox-localhost.json | Runs the tests in Firerfox |
 | Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | tec.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
+| Default-Android-Web-Chrome-Localhost.runsettings | default-android-chrome-web-localhost | tec.tec.default-android-chrome-web-localhost.json | Runs tests against Chrome on an Android Device using the chromedriver.exe that is part of the Solution |
 
 ## Hot Reload Functionality / Scratchpad
 The problem I want to solve is this:

@@ -5,10 +5,10 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 {
     public class DeviceSettingsBase : IDeviceProperties
     {
-        [JsonProperty("deviceName")]
-        public string DeviceName { get; set; }
+        [JsonProperty("platformName")]
+        public string PlatformName { get; set; }
         
-        string IDeviceProperties.Name => DeviceName;
+        string IDeviceProperties.Name => PlatformName;
 
         DeviceSettingsBase IDeviceProperties.DeviceSettings => this;
     }

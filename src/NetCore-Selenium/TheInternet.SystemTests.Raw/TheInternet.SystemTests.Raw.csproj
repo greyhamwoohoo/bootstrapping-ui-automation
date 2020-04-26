@@ -14,6 +14,7 @@
     <None Remove="TestExecutionContexts\tec.attachable-edge-localhost.json" />
     <None Remove="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\tec.attachable-ie11-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-android-chrome-web-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-chrome-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-edge-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-firefox-localhost.json" />
@@ -25,6 +26,9 @@
 
   <ItemGroup>
     <Content Include="Content\SampleFileToUpload.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.default-android-chrome-web-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestExecutionContexts\tec.empty.json">
