@@ -31,7 +31,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             var successButtonLocator = By.CssSelector(".button.success");
 
             // Assume
-            BrowserSession.Waiter.AssertThatEventually(notAlertAndNotSuccessButtonLocator, IsDisplayed,
+            DriverSession.Waiter.AssertThatEventually(notAlertAndNotSuccessButtonLocator, IsDisplayed,
                 And(alertButtonLocator, IsDisplayed),
                 And(successButtonLocator, IsDisplayed));
         }
@@ -57,14 +57,14 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             // Assume
             Browser.Url.Should().NotEndWith("#edit", because: "we will navigate to that location during the test");
-            BrowserSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
+            DriverSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
                 And(phaeDrum4RowLocator, IsDisplayed));
 
             // Arrange
             By editRowElementLocator = By.XPath(".//*/a[text()='edit']");
 
             // Act
-            var phaeDrum4Row = BrowserSession.Waiter.AssertThatEventually(phaeDrum4RowLocator, IsDisplayed);
+            var phaeDrum4Row = DriverSession.Waiter.AssertThatEventually(phaeDrum4RowLocator, IsDisplayed);
             var editRowElement = phaeDrum4Row.FindElements(editRowElementLocator).Single();
             editRowElement.Click();
 
@@ -93,11 +93,11 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             // Assume
             Browser.Url.Should().NotEndWith("#delete", because: "we will navigate to that location during the test");
-            BrowserSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
+            DriverSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
                 And(phaeDrum4RowLocator, IsDisplayed));
 
             // Arrange
-            var phaeDrum4Row = BrowserSession.Waiter.AssertThatEventually(phaeDrum4RowLocator, IsDisplayed);
+            var phaeDrum4Row = DriverSession.Waiter.AssertThatEventually(phaeDrum4RowLocator, IsDisplayed);
 
             // Act
             By deleteRowElementLocator = By.XPath(".//*/a[text()='delete']");

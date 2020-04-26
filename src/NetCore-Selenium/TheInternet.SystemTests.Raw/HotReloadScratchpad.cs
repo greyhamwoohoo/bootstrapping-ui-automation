@@ -2,6 +2,16 @@
 using static TheInternet.Common.ElementOperations.ElementState;
 using static TheInternet.Common.ElementOperations.ElementStateCondition;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Appium.Service;
+using OpenQA.Selenium.Appium.Service.Options;
+using OpenQA.Selenium.Appium.Enums;
+using OpenQA.Selenium.Appium.Android;
+using System;
+using OpenQA.Selenium.Chrome;
+using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
+using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
 
 namespace TheInternet.SystemTests.Raw
 {
@@ -26,6 +36,16 @@ namespace TheInternet.SystemTests.Raw
     [TestClass]
     public class HotReloadScratchpad : SeleniumTestBase
     {
+        [TestInitialize]
+        public void BrowsersOnly()
+        {
+            var deviceProperties = Resolve<IDeviceProperties>();
+            if(deviceProperties.Name != "DESKTOP")
+            {
+                // Assert.Fail($"Hot reload only works on Desktop Browser; not Appium. ");
+            }
+        }
+
         protected override void NavigateToBaseUrl()
         {
             // We do nothing here - we want to control everything 
@@ -35,8 +55,8 @@ namespace TheInternet.SystemTests.Raw
         [TestCategory("HotReloadWorkflow")]
         public void HotReloadWorkflow()
         {
-            //Browser.Navigate().GoToUrl("http://www.google.com");
-            //Browser.FindElement(By.Name("q")).SendKeys("howdi!" + Keys.Enter);
+            // Browser.Navigate().GoToUrl("http://www.google.com");
+            // Browser.FindElement(By.Name("q")).SendKeys("howdi!" + Keys.Enter);
         }
     }
 }

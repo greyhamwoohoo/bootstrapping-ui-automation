@@ -5,6 +5,8 @@ This framework supports a 'hot-reload' workflow that allows you to run your test
 
 Optional use of Zalenium (dockerized Selenium Grid) via docker or Kubernetes (Minikube only at the moment). 
 
+NOTE: Appium is slowly being added, but is a work in progress. 
+
 ## What it is not
 This framework is not trying to be a fully fledged, ready to use, Selenium framework with POM or a Fluent API. This implementation is mostly a personal reference for patterns to separate, configure and orchestrate browsers, selenium grid, environments, control settings and so forth via configuration files and environment variable overrides using .Net Core, DI and Visual Studio. That's pretty much it :)
 
@@ -25,7 +27,7 @@ The baseline framework is the same - but the attachable driver / hot-reload work
 | Folder | Description | 
 | ------ | ----------- |
 | src/NetCore-Selenium | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 3.141  (IE, Chrome, Edge) |
-| src/NetCore-Selenium-4.0-alpha3 | Baseline framework and attachable drivers using Selenium 4.0.0.0-alpha-03  (IE, Chrome, Edge) <br><br>NOTE: This was created as a Spike, it works, but is out of date from the original implementation. NetCore-Selenium is the reference implementation. |
+| src/NetCore-Selenium-4.0-alpha3 | (OBSOLETE) Baseline framework and attachable drivers using Selenium 4.0.0.0-alpha-03  (IE, Chrome, Edge) <br><br>NOTE: This was created as a Spike, it works, but is out of date from the original implementation. NetCore-Selenium is the reference implementation. |
 
 ## Infrastructure
 You can run 'the-internet' yourself in the following ways: 

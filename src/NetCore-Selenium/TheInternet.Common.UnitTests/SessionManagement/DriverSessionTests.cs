@@ -7,7 +7,7 @@ using TheInternet.Common.SessionManagement;
 namespace TheInternet.Common.UnitTests.SessionManagement
 {
     [TestClass]
-    public class BrowserSessionFactoryTests
+    public class DriverSessionTests
     {
         [TestMethod]
         public void GuardTests()
@@ -20,7 +20,7 @@ namespace TheInternet.Common.UnitTests.SessionManagement
             var assertThatAllMembersHaveGuards = new GuardClauseAssertion(fixture);
 
             // Act, Assert
-            assertThatAllMembersHaveGuards.Verify(typeof(BrowserSessionFactory).GetMembers());
+            assertThatAllMembersHaveGuards.Verify(typeof(DriverSession).GetMembers());
         }
     }
 }

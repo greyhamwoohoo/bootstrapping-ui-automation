@@ -6,7 +6,7 @@ namespace TheInternet.SystemTests.Raw.Tests
     [TestClass]
     public abstract class TheInternetTestBase : SeleniumTestBase
     {
-        protected override string BaseUrl => BrowserSession.EnvironmentSettings.BaseUrl;
+        protected override string BaseUrl => DriverSession.EnvironmentSettings.BaseUrl;
 
         [TestInitialize]
         public void SetupTheInternet()

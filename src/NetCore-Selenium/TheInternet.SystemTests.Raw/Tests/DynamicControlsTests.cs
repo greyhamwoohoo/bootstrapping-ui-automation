@@ -20,11 +20,11 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             var removeButton = Browser.FindElements(By.XPath("//button[text()='Remove']")).Single();
             removeButton.Click();
-            BrowserSession.Waiter.AssertThatEventually(browser => !Exists(Browser, By.CssSelector("#checkbox")));
+            DriverSession.Waiter.AssertThatEventually(browser => !Exists(Browser, By.CssSelector("#checkbox")));
 
             var addButton = Browser.FindElements(By.XPath("//button[text()='Add']")).Single();
             addButton.Click();
-            BrowserSession.Waiter.AssertThatEventually(browser => Exists(browser, By.CssSelector("#checkbox")));
+            DriverSession.Waiter.AssertThatEventually(browser => Exists(browser, By.CssSelector("#checkbox")));
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             var enableButton = Browser.FindElements(By.XPath("//button[text()='Enable']")).Single();
             enableButton.Click();
-            BrowserSession.Waiter.AssertThatEventually(driver => Exists(Browser, By.XPath("//input[@type='text' and not(@disabled)]")));
+            DriverSession.Waiter.AssertThatEventually(driver => Exists(Browser, By.XPath("//input[@type='text' and not(@disabled)]")));
 
             var enabledTextBox = Browser.FindElements(By.XPath("//input[@type='text' and not(@disabled)]")).Single();
             enabledTextBox.SendKeys("Some Text Is Typed");
@@ -42,7 +42,7 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             var disableButton = Browser.FindElements(By.XPath("//button[text()='Disable']")).Single();
             disableButton.Click();
-            BrowserSession.Waiter.AssertThatEventually(driver => Exists(Browser, By.XPath("//input[@type='text' and @disabled]")));
+            DriverSession.Waiter.AssertThatEventually(driver => Exists(Browser, By.XPath("//input[@type='text' and @disabled]")));
         }
 
         private bool Exists(IWebDriver driver, By locator)

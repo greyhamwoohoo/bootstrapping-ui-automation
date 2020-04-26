@@ -9,63 +9,68 @@
 
   <ItemGroup>
     <None Remove="Content\SampleFileToUpload.txt" />
-    <None Remove="TestExecutionContexts\testsettings.attachable-chrome-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.attachable-chrome-zalenium-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.attachable-edge-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.attachable-firefox-zalenium-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.attachable-ie11-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.default-chrome-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.default-edge-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.default-firefox-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.default-firefox-zalenium-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.default-ie11-localhost.json" />
-    <None Remove="TestExecutionContexts\testsettings.empty.json" />
-    <None Remove="TestExecutionContexts\testsettings.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-chrome-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-edge-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-ie11-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-android-chrome-web-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-chrome-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-edge-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-firefox-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-ie11-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.empty.json" />
+    <None Remove="TestExecutionContexts\tec.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Content\SampleFileToUpload.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.empty.json">
+    <Content Include="TestExecutionContexts\tec.default-android-chrome-web-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.attachable-firefox-zalenium-localhost.json">
+    <Content Include="TestExecutionContexts\tec.empty.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.attachable-chrome-zalenium-localhost.json">
+    <Content Include="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.attachable-ie11-localhost.json">
+    <Content Include="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.default-ie11-localhost.json">
+    <Content Include="TestExecutionContexts\tec.attachable-ie11-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.attachable-edge-localhost.json">
+    <Content Include="TestExecutionContexts\tec.default-ie11-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.attachable-chrome-localhost.json">
+    <Content Include="TestExecutionContexts\tec.attachable-edge-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.default-chrome-localhost.json">
+    <Content Include="TestExecutionContexts\tec.attachable-chrome-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.default-edge-localhost.json">
+    <Content Include="TestExecutionContexts\tec.default-chrome-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.default-firefox-localhost.json">
+    <Content Include="TestExecutionContexts\tec.default-edge-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.default-firefox-zalenium-localhost.json">
+    <Content Include="TestExecutionContexts\tec.default-firefox-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\testsettings.json">
+    <Content Include="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>  
 
   <ItemGroup>
+    <PackageReference Include="Appium.WebDriver" Version="4.1.1" />
     <PackageReference Include="AutoFixture" Version="4.11.0" />
     <PackageReference Include="AutoFixture.AutoNSubstitute" Version="4.11.0" />
     <PackageReference Include="AutoFixture.Idioms" Version="4.11.0" />
@@ -84,7 +89,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="81.0.4044.6900" />
     <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.1" />
   </ItemGroup>
 

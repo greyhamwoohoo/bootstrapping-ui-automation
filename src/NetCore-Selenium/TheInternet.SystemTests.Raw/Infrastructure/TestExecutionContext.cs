@@ -3,9 +3,9 @@ using System.Text;
 
 namespace TheInternet.SystemTests.Raw.Infrastructure
 {
-    public class TestSettings
+    public class TestExecutionContext
     {
-        public TestSettings()
+        public TestExecutionContext()
         {
             EnvironmentVariables = new EnvironmentVariableCollection();
         }

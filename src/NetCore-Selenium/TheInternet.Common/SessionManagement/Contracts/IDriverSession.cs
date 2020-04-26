@@ -5,7 +5,7 @@ using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
 
 namespace TheInternet.Common.SessionManagement.Contracts
 {
-    public interface IBrowserSession
+    public interface IDriverSession
     {
         EnvironmentSettings EnvironmentSettings { get; }
         IControlSettings ControlSettings { get; }

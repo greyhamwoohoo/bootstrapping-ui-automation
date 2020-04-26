@@ -10,6 +10,8 @@ using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
+using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
+using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
 using TheInternet.Common.SessionManagement;
 using TheInternet.Common.SessionManagement.Contracts;
@@ -45,15 +47,17 @@ namespace TheInternet.Common.Infrastructure
             if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
             System.Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+            System.Environment.SetEnvironmentVariable("TESTDEPLOYMENTDIR", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
 
             var services = new ServiceCollection();
 
+            ConfigureDeviceSettings(prefix, services);
             ConfigureBrowserSettings(prefix, services);
             ConfigureRemoteWebDriverSettings(prefix, services);
             ConfigureEnvironmentSettings(prefix, services);
             ConfigureControlSettings(prefix, services);
 
-            services.AddSingleton<IBrowserSessionFactory, BrowserSessionFactory>();
+            services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
             services.AddScoped(sp =>
             {
                 var serilogContext = BuildSerilogConfiguration();
@@ -67,22 +71,60 @@ namespace TheInternet.Common.Infrastructure
 
                 return logger;
             });
+
             services.AddScoped(isp =>
             {
-                var factory = isp.GetRequiredService<IBrowserSessionFactory>();
+                var factory = isp.GetRequiredService<IDriverSessionFactory>();
                 var browserProperties = isp.GetRequiredService<IBrowserProperties>();
                 var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
                 var environmentSettings = isp.GetRequiredService<EnvironmentSettings>();
                 var controlSettings = isp.GetRequiredService<IControlSettings>();
+                var deviceSettings = isp.GetRequiredService<IDeviceProperties>();
                 var logger = isp.GetRequiredService<ILogger>();
 
-                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
-                return browserSession;
+                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
+                return driverSession;
             });
 
             beforeContainerBuild(prefix, services);
 
             _instance = services.BuildServiceProvider();
+        }
+
+        private static void ConfigureDeviceSettings(string prefix, IServiceCollection services)
+        {
+            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "DeviceSettings", "desktop-selenium-default.json");
+            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+
+            var platformName = configurationRoot.GetSection("platformName")?.Value?.ToUpper();
+
+            switch(platformName)
+            {
+                case "DESKTOP":
+                    var instance = new DesktopSettings();
+
+                    instance.PlatformName = platformName;
+
+                    services.AddSingleton(instance);
+                    services.AddSingleton<IDeviceProperties>(instance);
+                    break;
+                case "ANDROID":
+                    var androidSettings = new AppiumSettings();
+
+                    configurationRoot.Bind(androidSettings);
+
+                    androidSettings = SubstituteEnvironmentVariables<AppiumSettings>(androidSettings);
+
+                    androidSettings.PlatformName = platformName;
+                    androidSettings.Cleanse();
+
+                    services.AddSingleton(androidSettings);
+                    services.AddSingleton<IDeviceProperties>(androidSettings);
+                    break;
+                default:
+                    throw new System.ArgumentOutOfRangeException($"The device called {platformName} is currently not supported. ");
+            }
         }
 
         private static void ConfigureBrowserSettings(string prefix, IServiceCollection services)
@@ -156,7 +198,7 @@ namespace TheInternet.Common.Infrastructure
         private static void ConfigureRemoteWebDriverSettings(string prefix, IServiceCollection services)
         {
             var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "RemoteWebDriverSettings", "localhost.json");
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "RemoteWebDriverSettings", "localhost-selenium.json");
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
 
             var remoteWebDriverSettings = configurationRoot.GetSection("remoteWebDriverSettings");

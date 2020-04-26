@@ -29,9 +29,10 @@ Environment variables can be set before running the tests to configure the Test 
 | Environment Variable | Default | Description |
 | -------------------- | ------- | ----------- |
 | THEINTERNET_BROWSERSETTINGS_FILES | chrome-default.json | Launches an incognito Chrome |
-| THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | localhost.json | Does not use a remote webdriver - launches locally |
+| THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | localhost-selenium.json | Does not use a remote webdriver - launches locally (Selenium) |
 | THEINTERNET_ENVIRONMENTSETTINGS_FILES | internet.json | The target environment for the tests. ie: where the application (baseUrl) will point to |
 | THEINTERNET_CONTROLSETTINGS_FILES | default.json | Element timeouts, polling frequency etc. |
+| THEINTERNET_DEVICESETTINGS_FILES | desktop-selenium-default.json | The 'Selenium Happy Path' - we want to launch browsers on the Desktop |
 
 The following browsers (and configurations) are supported - choose the browser by setting THEINTERNET_BROWSERSETTINGS_FILES environment variable to one of these values:
 
@@ -66,7 +67,7 @@ For example: to change the RemoteWebDriverSettings RemoteUri property in the JSO
 ```
 SET THEINTERNET_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
 
-REM Use the .Net Core __ notation for overriding nested values in the testsettings files: see testsettings.attachable-chrome-localhost.json for an example
+REM Use the .Net Core __ notation for overriding nested values in the configuration files: see tec.attachable-chrome-localhost.json for an example
 SET THEINTERNET_REMOTEWEBDRIVERSETTINGS__REMOTEURI="https://localhost.com/overriddenUri"
 ```
 
@@ -79,7 +80,7 @@ To choose a .runsettings file:
 2. Choose one of the .runsettings files
 3. Run your tests
 
-The 'real' settings are stored in the testsettings.*.json files - at the moment, these settings are the environment variables that need to be set for that test run. The 'TestRunInitialization.cs' file contains the logic to set this up. 
+The 'real' settings are stored in the tec.*.json files - at the moment, these settings are the environment variables that need to be set for that test run. The 'TestRunInitialization.cs' file contains the logic to set this up. 
 
 If executing the tests from the command line, you can specify the name of the test execution context by setting this variable:
 
@@ -89,13 +90,14 @@ THEINTERNET_TEST_EXECUTION_CONTEXT=default-chrome-localhost
 
 | RunSettings | Test Execution Context | Full filename | Description | 
 | ----------- | ---------------------- | ------------- | ----------- |
-| Default-Chrome-Localhost.runsettings | default-chrome-localhost | testsettings.default-chrome-localhost.json | The default. Launches Chrome |
-| Attachable-Chrome-Localhost.runsettings | attachable-chrome-localhost | testsettings.attachable-chrome-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
-| Attachable-IE11-Localhost.runsettings | attachable-ie11-localhost | testsettings.attachable-ie11-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. 
-| Attachable-Edge-Localhost.runsettings | attachable-edge-localhost | testsettings.attachable-edge-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
-| Default-Edge-Localhost.runsettings | default-edge-localhost | testsettings.default-edge-localhost.json | Runs the tests in Edge |
-| Default-FireFox-Localhost.runsettings | default-firefox-localhost | testsettings.default-firefox-localhost.json | Runs the tests in Firerfox |
-| Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | testsettings.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
+| Default-Chrome-Localhost.runsettings | default-chrome-localhost | tec.default-chrome-localhost.json | The default. Launches Chrome |
+| Attachable-Chrome-Localhost.runsettings | attachable-chrome-localhost | tec.attachable-chrome-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
+| Attachable-IE11-Localhost.runsettings | attachable-ie11-localhost | tec.attachable-ie11-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. 
+| Attachable-Edge-Localhost.runsettings | attachable-edge-localhost | tec.attachable-edge-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
+| Default-Edge-Localhost.runsettings | default-edge-localhost | tec.default-edge-localhost.json | Runs the tests in Edge |
+| Default-FireFox-Localhost.runsettings | default-firefox-localhost | tec.default-firefox-localhost.json | Runs the tests in Firerfox |
+| Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | tec.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
+| Default-Android-Web-Chrome-Localhost.runsettings | default-android-chrome-web-localhost | tec.tec.default-android-chrome-web-localhost.json | Runs tests against Chrome on an Android Device using the chromedriver.exe that is part of the Solution |
 
 ## Hot Reload Functionality / Scratchpad
 The problem I want to solve is this:
