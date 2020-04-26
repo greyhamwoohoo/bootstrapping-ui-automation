@@ -17,7 +17,7 @@ variables:
   - name: THEINTERNET_BROWSERSETTINGS_FILES
     value: headless-chrome.json
   - name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
-    value: localhost.json
+    value: localhost-selenium.json
   - name: THEINTERNET_ENVIRONMENTSETTINGS_FILES
     value: internet.json
   - name: THEINTERNET_CONTROLSETTINGS_FILES

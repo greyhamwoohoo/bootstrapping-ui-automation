@@ -25,17 +25,17 @@ namespace TheInternet.SystemTests.Raw
             // 1. {PREFIX}TEST_EXECUTION_CONTEXT
             // 2. DEFAULT_TEST_EXECUTION_CONTEXT
             // 3. .runsettings is the fallback (if in the solution root)
-            var testExecutionContext = $"{Environment.GetEnvironmentVariable($"{PREFIX}TEST_EXECUTION_CONTEXT") ?? DEFAULT_TEST_EXECUTION_CONTEXT}";
+            var testExecutionContextName = $"{Environment.GetEnvironmentVariable($"{PREFIX}TEST_EXECUTION_CONTEXT") ?? DEFAULT_TEST_EXECUTION_CONTEXT}";
             if (testContext.Properties.Contains(TEST_EXECUTION_CONTEXT_KEY_NAME))
             {
-                testExecutionContext = Convert.ToString(testContext.Properties[TEST_EXECUTION_CONTEXT_KEY_NAME]);
+                testExecutionContextName = Convert.ToString(testContext.Properties[TEST_EXECUTION_CONTEXT_KEY_NAME]);
             }
 
-            var testExecutionContextFilename = $"testsettings.{testExecutionContext}.json";
+            var testExecutionContextFilename = $"tec.{testExecutionContextName}.json";
 
-            var testSettings = TestSettingsFactory.Create(testExecutionContextFilename);
+            var testExecutionContext = TestExecutionContextFactory.Create(testExecutionContextFilename);
 
-            var environmentVariables = testSettings.EnvironmentVariables;
+            var environmentVariables = testExecutionContext.EnvironmentVariables;
             environmentVariables.Keys.ToList().ForEach(ev =>
             {
                 Environment.SetEnvironmentVariable(ev, environmentVariables[ev], EnvironmentVariableTarget.Process);
@@ -43,7 +43,7 @@ namespace TheInternet.SystemTests.Raw
 
             ContainerSingleton.Initialize(PREFIX, (prefix, services) =>
             {
-                services.AddSingleton(testSettings);
+                services.AddSingleton(testExecutionContext);
             });
 
             _serviceProvider = ContainerSingleton.Instance;

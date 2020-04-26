@@ -6,13 +6,13 @@ using System.Text;
 
 namespace TheInternet.SystemTests.Raw.Infrastructure
 {
-    public static class TestSettingsFactory
+    public static class TestExecutionContextFactory
     {
-        public static TestSettings Create(string testExecutionContextFullPath)
+        public static TestExecutionContext Create(string testExecutionContextFullPath)
         {
             var configuration = BuildTestExecutionContext(testExecutionContextFullPath);
-            var testSettings = configuration.GetSection("TestSettings").Get<TestSettings>();
-            return testSettings;
+            var textExecutionContext = configuration.GetSection("TestExecutionContext").Get<TestExecutionContext>();
+            return textExecutionContext;
         }
 
         private static IConfigurationRoot BuildTestExecutionContext(string testExecutionContextFilename)
@@ -26,7 +26,7 @@ namespace TheInternet.SystemTests.Raw.Infrastructure
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(Path.Combine("TestExecutionContexts", "testsettings.json"), optional: false)
+                .AddJsonFile(Path.Combine("TestExecutionContexts", "tec.json"), optional: false)
                 .AddJsonFile(testExecutionContextRelativePath, optional: false)
                 .Build();
 
