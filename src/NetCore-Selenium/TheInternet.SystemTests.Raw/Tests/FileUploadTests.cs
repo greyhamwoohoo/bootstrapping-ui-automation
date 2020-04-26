@@ -21,9 +21,9 @@ namespace TheInternet.SystemTests.Raw.Tests
             var uploadButton = Browser.FindElements(By.XPath("//input[@id='file-submit']")).Single();
             uploadButton.Click();
 
-            BrowserSession.Waiter.AssertThatEventually(By.XPath("//div[@id='uploaded-files']"), Exists);
+            DriverSession.Waiter.AssertThatEventually(By.XPath("//div[@id='uploaded-files']"), Exists);
 
-            BrowserSession.Waiter.AssertThatEventually(browser =>
+            DriverSession.Waiter.AssertThatEventually(browser =>
             {
                 browser.PageSource.Should().Contain("SampleFileToUpload.txt", because: "that was the filename uploaded");
             });

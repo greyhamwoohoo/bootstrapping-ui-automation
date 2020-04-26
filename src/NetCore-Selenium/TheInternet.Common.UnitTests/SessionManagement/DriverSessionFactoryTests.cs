@@ -1,16 +1,13 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoNSubstitute;
 using AutoFixture.Idioms;
-using AutoFixture.Kernel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium.Support.Events;
-using System.Linq;
 using TheInternet.Common.SessionManagement;
 
 namespace TheInternet.Common.UnitTests.SessionManagement
 {
     [TestClass]
-    public class BrowserSessionTests
+    public class DriverSessionFactoryTests
     {
         [TestMethod]
         public void GuardTests()
@@ -23,7 +20,7 @@ namespace TheInternet.Common.UnitTests.SessionManagement
             var assertThatAllMembersHaveGuards = new GuardClauseAssertion(fixture);
 
             // Act, Assert
-            assertThatAllMembersHaveGuards.Verify(typeof(BrowserSession).GetMembers());
+            assertThatAllMembersHaveGuards.Verify(typeof(DriverSessionFactory).GetMembers());
         }
     }
 }

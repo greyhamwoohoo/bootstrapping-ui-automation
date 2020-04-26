@@ -17,9 +17,9 @@ using TheInternet.Common.WebDrivers;
 
 namespace TheInternet.Common.SessionManagement
 {
-    public class BrowserSessionFactory : IBrowserSessionFactory
+    public class DriverSessionFactory : IDriverSessionFactory
     {
-        public IBrowserSession Create(IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger)
+        public IDriverSession Create(IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger)
         {
             if (browserProperties == null) throw new System.ArgumentNullException(nameof(browserProperties));
             if (remoteWebDriverSettings == null) throw new System.ArgumentNullException(nameof(remoteWebDriverSettings));
@@ -63,7 +63,7 @@ namespace TheInternet.Common.SessionManagement
                     throw new System.ArgumentOutOfRangeException($"There is no support for starting browsers of type {browserProperties.Name}");
             }
 
-            return new BrowserSession(browser, environmentSettings, logger, controlSettings);
+            return new DriverSession(browser, environmentSettings, logger, controlSettings);
         }
 
         private EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteWebDriverSettings, ChromeBrowserSettings settings, IControlSettings controlSettings)

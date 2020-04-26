@@ -53,7 +53,7 @@ namespace TheInternet.Common.Infrastructure
             ConfigureEnvironmentSettings(prefix, services);
             ConfigureControlSettings(prefix, services);
 
-            services.AddSingleton<IBrowserSessionFactory, BrowserSessionFactory>();
+            services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
             services.AddScoped(sp =>
             {
                 var serilogContext = BuildSerilogConfiguration();
@@ -67,17 +67,18 @@ namespace TheInternet.Common.Infrastructure
 
                 return logger;
             });
+
             services.AddScoped(isp =>
             {
-                var factory = isp.GetRequiredService<IBrowserSessionFactory>();
+                var factory = isp.GetRequiredService<IDriverSessionFactory>();
                 var browserProperties = isp.GetRequiredService<IBrowserProperties>();
                 var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
                 var environmentSettings = isp.GetRequiredService<EnvironmentSettings>();
                 var controlSettings = isp.GetRequiredService<IControlSettings>();
                 var logger = isp.GetRequiredService<ILogger>();
 
-                var browserSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
-                return browserSession;
+                var driverSession = factory.Create(browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
+                return driverSession;
             });
 
             beforeContainerBuild(prefix, services);
@@ -91,6 +92,7 @@ namespace TheInternet.Common.Infrastructure
             var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "BrowserSettings", "default-chrome.json");
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
 
+            var technology = configurationRoot.GetSection("technology")?.Value?.ToUpper();
             var browserName = configurationRoot.GetSection("browserName")?.Value?.ToUpper();
             var browserSettings = configurationRoot.GetSection("browserSettings");
 
@@ -156,7 +158,7 @@ namespace TheInternet.Common.Infrastructure
         private static void ConfigureRemoteWebDriverSettings(string prefix, IServiceCollection services)
         {
             var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "RemoteWebDriverSettings", "localhost.json");
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "RemoteWebDriverSettings", "localhost-selenium.json");
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
 
             var remoteWebDriverSettings = configurationRoot.GetSection("remoteWebDriverSettings");

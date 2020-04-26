@@ -9,14 +9,14 @@ namespace TheInternet.SystemTests.Raw
     [TestClass]
     public abstract class SeleniumTestBase : TestBase
     {
-        protected virtual string BaseUrl => BrowserSession.EnvironmentSettings.BaseUrl;
-        protected virtual IWebDriver Browser => BrowserSession.WebDriver;
-        protected IBrowserSession BrowserSession { get; private set; }
+        protected virtual string BaseUrl => DriverSession.EnvironmentSettings.BaseUrl;
+        protected virtual IWebDriver Browser => DriverSession.WebDriver;
+        protected IDriverSession DriverSession { get; private set; }
 
         [TestInitialize]
         public void SetupSeleniumTest()
         {
-            BrowserSession = Resolve<IBrowserSession>();
+            DriverSession = Resolve<IDriverSession>();
 
             NavigateToBaseUrl();
         }
@@ -32,7 +32,7 @@ namespace TheInternet.SystemTests.Raw
 
             try
             {
-                BrowserSession?.WebDriver?.Close();
+                DriverSession?.WebDriver?.Close();
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace TheInternet.SystemTests.Raw
 
             try
             {
-                BrowserSession?.WebDriver?.Dispose();
+                DriverSession?.WebDriver?.Dispose();
             }
             catch(Exception ex)
             {
@@ -51,7 +51,7 @@ namespace TheInternet.SystemTests.Raw
 
         protected virtual void NavigateToBaseUrl()
         {
-            BrowserSession.WebDriver.Navigate().GoToUrl(BaseUrl);
+            DriverSession.WebDriver.Navigate().GoToUrl(BaseUrl);
         }
     }
 }

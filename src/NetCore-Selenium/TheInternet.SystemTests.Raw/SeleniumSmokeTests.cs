@@ -17,10 +17,10 @@ namespace TheInternet.SystemTests.Raw
         }
 
         [TestMethod]
-        public void BrowserSessionExists()
+        public void DriverSessionExists()
         {
             Logger.Information($"Here I am");
-            BrowserSession.Should().NotBeNull(because: "the BrowserSession is instantiated in the Base Class. ");
+            DriverSession.Should().NotBeNull(because: "the DriverSession is instantiated in the Base Class. ");
             Logger.Information($"Here I am again");
         }
     }

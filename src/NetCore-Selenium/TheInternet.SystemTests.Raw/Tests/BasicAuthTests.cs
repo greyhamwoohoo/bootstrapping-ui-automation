@@ -29,7 +29,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             var basicAuthLinkLocator = By.XPath("//a[@href='/basic_auth']");
             var basicAuthPageContentLocator = By.XPath("//h3[text()='Basic Auth']");
 
-            BrowserSession.Waiter.AssertThatEventually(basicAuthLinkLocator, IsEnabled);
+            DriverSession.Waiter.AssertThatEventually(basicAuthLinkLocator, IsEnabled);
 
             // Arrange
             var element = Browser.FindElement(basicAuthLinkLocator);
@@ -40,7 +40,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             Browser.Navigate();
 
             // Assert
-            BrowserSession.Waiter.AssertThatEventually(basicAuthPageContentLocator, IsDisplayed);
+            DriverSession.Waiter.AssertThatEventually(basicAuthPageContentLocator, IsDisplayed);
         }
 
         protected string GetUriWithBasicAuthentication(Uri uri, string username, string password)

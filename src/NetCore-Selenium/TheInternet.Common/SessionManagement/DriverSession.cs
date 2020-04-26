@@ -7,14 +7,14 @@ using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.Common.SessionManagement
 {
-    public class BrowserSession : IBrowserSession
+    public class DriverSession : IDriverSession
     {
         public IWebDriver WebDriver { get; }
         public EnvironmentSettings EnvironmentSettings { get; }
         public IControlSettings ControlSettings { get; }
         public IWaiter Waiter { get; }
 
-        public BrowserSession(IWebDriver webDriver, EnvironmentSettings environmentSettings, ILogger logger, IControlSettings controlSettings) 
+        public DriverSession(IWebDriver webDriver, EnvironmentSettings environmentSettings, ILogger logger, IControlSettings controlSettings) 
         {
             if (webDriver == null) throw new System.ArgumentNullException(nameof(webDriver));
             if (environmentSettings == null) throw new System.ArgumentNullException(nameof(environmentSettings));

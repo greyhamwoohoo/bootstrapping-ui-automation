@@ -29,7 +29,7 @@ Environment variables can be set before running the tests to configure the Test 
 | Environment Variable | Default | Description |
 | -------------------- | ------- | ----------- |
 | THEINTERNET_BROWSERSETTINGS_FILES | chrome-default.json | Launches an incognito Chrome |
-| THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | localhost.json | Does not use a remote webdriver - launches locally |
+| THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | localhost-selenium.json | Does not use a remote webdriver - launches locally (Selenium) |
 | THEINTERNET_ENVIRONMENTSETTINGS_FILES | internet.json | The target environment for the tests. ie: where the application (baseUrl) will point to |
 | THEINTERNET_CONTROLSETTINGS_FILES | default.json | Element timeouts, polling frequency etc. |
 

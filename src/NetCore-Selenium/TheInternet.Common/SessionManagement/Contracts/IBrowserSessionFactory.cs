@@ -5,9 +5,9 @@ using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
 
 namespace TheInternet.Common.SessionManagement.Contracts
 {
-    public interface IBrowserSessionFactory
+    public interface IDriverSessionFactory
     {
         // TODO: Refactor - too many params
-        IBrowserSession Create(IBrowserProperties properties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger);
+        IDriverSession Create(IBrowserProperties properties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger);
     }
 }

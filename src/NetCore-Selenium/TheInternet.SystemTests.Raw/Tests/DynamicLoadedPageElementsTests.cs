@@ -23,7 +23,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             startButton.Click();
 
             var finishLocator = By.CssSelector("#finish");
-            BrowserSession.Waiter.AssertThatEventually(finishLocator, IsDisplayed);
+            DriverSession.Waiter.AssertThatEventually(finishLocator, IsDisplayed);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             startButton.Click();
 
             var finishLocator = By.CssSelector("#finish");
-            BrowserSession.Waiter.AssertThatEventually(finishLocator, IsDisplayed);
+            DriverSession.Waiter.AssertThatEventually(finishLocator, IsDisplayed);
         }
     }
 }
