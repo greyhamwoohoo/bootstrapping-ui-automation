@@ -1,0 +1,4 @@
+﻿{
+  "!description" : "By default, we use the Desktop device for all Selenium testing. This is just a place holder and means 'do not use Appium'",
+  "deviceName": "Desktop"
+}

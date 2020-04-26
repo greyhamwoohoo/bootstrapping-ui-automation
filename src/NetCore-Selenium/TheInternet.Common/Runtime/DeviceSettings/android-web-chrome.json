@@ -1,0 +1,4 @@
+﻿{
+  "!description": "Launches Google Chrome on an Android Device and uses whichever Browser Settings are configured for Chrome (ie: through the BROWSERSETTINGS environment variable)",
+  "deviceName": "Android"
+}

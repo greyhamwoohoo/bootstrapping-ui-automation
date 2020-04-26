@@ -2,7 +2,7 @@
   "testSettings": {
     "environmentVariables": {
       "THEINTERNET_BROWSERSETTINGS_FILES": "default-edge.json",
-      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "localhost.json"
+      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "localhost-selenium.json"
     }
   }
 }

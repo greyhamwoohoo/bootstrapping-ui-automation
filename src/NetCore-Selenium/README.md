@@ -32,6 +32,7 @@ Environment variables can be set before running the tests to configure the Test 
 | THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | localhost-selenium.json | Does not use a remote webdriver - launches locally (Selenium) |
 | THEINTERNET_ENVIRONMENTSETTINGS_FILES | internet.json | The target environment for the tests. ie: where the application (baseUrl) will point to |
 | THEINTERNET_CONTROLSETTINGS_FILES | default.json | Element timeouts, polling frequency etc. |
+| THEINTERNET_DEVICESETTINGS_FILES | desktop-selenium-default.json | The 'Selenium Happy Path' - we want to launch browsers on the Desktop |
 
 The following browsers (and configurations) are supported - choose the browser by setting THEINTERNET_BROWSERSETTINGS_FILES environment variable to one of these values:
 

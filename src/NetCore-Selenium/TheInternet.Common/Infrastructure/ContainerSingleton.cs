@@ -10,6 +10,8 @@ using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
+using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
+using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
 using TheInternet.Common.SessionManagement;
 using TheInternet.Common.SessionManagement.Contracts;
@@ -48,6 +50,7 @@ namespace TheInternet.Common.Infrastructure
 
             var services = new ServiceCollection();
 
+            ConfigureDeviceSettings(prefix, services);
             ConfigureBrowserSettings(prefix, services);
             ConfigureRemoteWebDriverSettings(prefix, services);
             ConfigureEnvironmentSettings(prefix, services);
@@ -84,6 +87,30 @@ namespace TheInternet.Common.Infrastructure
             beforeContainerBuild(prefix, services);
 
             _instance = services.BuildServiceProvider();
+        }
+
+        private static void ConfigureDeviceSettings(string prefix, IServiceCollection services)
+        {
+            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "DeviceSettings", "desktop-selenium-default.json");
+            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+
+            var deviceName = configurationRoot.GetSection("deviceName")?.Value?.ToUpper();
+            var deviceSettings = configurationRoot.GetSection("deviceSettings");
+
+            switch(deviceName)
+            {
+                case "DESKTOP":
+                    var instance = new DesktopSettings();
+
+                    instance.DeviceName = deviceName;
+
+                    services.AddSingleton(instance);
+                    services.AddSingleton<IDeviceProperties>(instance);
+                    break;
+                default:
+                    throw new System.ArgumentOutOfRangeException($"The device called {deviceName} is currently not supported. ");
+            }
         }
 
         private static void ConfigureBrowserSettings(string prefix, IServiceCollection services)
