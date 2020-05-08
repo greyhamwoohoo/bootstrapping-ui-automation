@@ -21,7 +21,7 @@ namespace TheInternet.SystemTests.Raw.Tests
         [TestInitialize]
         public void SetupDropdownList()
         {
-            _dropdown = Browser.FindElements(By.CssSelector("#dropdown")).Single();
+            _dropdown = WebDriver.FindElements(By.CssSelector("#dropdown")).Single();
             _selectElement = new SelectElement(_dropdown);
         }
 

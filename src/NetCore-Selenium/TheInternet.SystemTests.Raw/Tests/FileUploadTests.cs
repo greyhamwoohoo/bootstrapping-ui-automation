@@ -16,10 +16,10 @@ namespace TheInternet.SystemTests.Raw.Tests
         public void UploadFile()
         {
             var path = System.IO.Path.Combine(TestContext.TestDeploymentDir, "Content", "SampleFileToUpload.txt");
-            var fileuploadElement = Browser.FindElements(By.XPath("//input[@id='file-upload']")).Single();
+            var fileuploadElement = WebDriver.FindElements(By.XPath("//input[@id='file-upload']")).Single();
             fileuploadElement.SendKeys(path);
 
-            var uploadButton = Browser.FindElements(By.XPath("//input[@id='file-submit']")).Single();
+            var uploadButton = WebDriver.FindElements(By.XPath("//input[@id='file-submit']")).Single();
             uploadButton.Click();
 
             DriverSession.Waiter.AssertThatEventually(By.XPath("//div[@id='uploaded-files']"), Exists);

@@ -23,5 +23,11 @@ namespace TheInternet.SystemTests.Raw
             DriverSession.Should().NotBeNull(because: "the DriverSession is instantiated in the Base Class. ");
             Logger.Information($"Here I am again");
         }
+
+        [TestMethod]
+        public void WebDriverDoSomethingExists()
+        {
+            WebDriver.DoSomething();
+        }
     }
 }

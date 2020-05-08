@@ -16,7 +16,7 @@ namespace TheInternet.SystemTests.Raw.Tests
         [TestMethod]
         public void WhenOnAPageWithBrokenImages_ThereAreExactlyTwoBrokenImages()
         {
-            FindBrokenImages(Browser).Count().Should().Be(2, because: "there are two broken images on the page and at least two good ones");
+            FindBrokenImages(WebDriver).Count().Should().Be(2, because: "there are two broken images on the page and at least two good ones");
         }
 
         protected IEnumerable<IWebElement> FindBrokenImages(IWebDriver browser)
@@ -40,7 +40,7 @@ namespace TheInternet.SystemTests.Raw.Tests
         [Ignore(message: "this will be tackled in Selenium 4: https://github.com/SeleniumHQ/selenium/issues/7342")]
         public void WhenOnAPageWithBrokenImages_TheLogShows404Errors()
         {
-            LogsShow404Errors(Browser).Should().BeTrue(because: "the favicon and two broken images on the page are missing and the Logs capture those errors");
+            LogsShow404Errors(WebDriver).Should().BeTrue(because: "the favicon and two broken images on the page are missing and the Logs capture those errors");
         }
 
         protected bool LogsShow404Errors(IWebDriver driver)

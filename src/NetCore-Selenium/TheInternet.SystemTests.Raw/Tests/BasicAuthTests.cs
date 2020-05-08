@@ -13,13 +13,13 @@ namespace TheInternet.SystemTests.Raw.Tests
         [TestMethod]
         public void WhenWePassCorrectUserNamePasswordInRequest_ThenWeAreAuthenticated_Raw()
         {
-            var element = Browser.FindElement(By.XPath("//a[@href='/basic_auth']"));
+            var element = WebDriver.FindElement(By.XPath("//a[@href='/basic_auth']"));
             var targetUrl = new Uri(element.GetAttribute("href"));
 
-            Browser.Url = GetUriWithBasicAuthentication(targetUrl, "admin", "admin");
-            Browser.Navigate();
+            WebDriver.Url = GetUriWithBasicAuthentication(targetUrl, "admin", "admin");
+            WebDriver.Navigate();
 
-            Browser.FindElement(By.XPath("//h3[text()='Basic Auth']"));
+            WebDriver.FindElement(By.XPath("//h3[text()='Basic Auth']"));
         }
 
         [TestMethod]
@@ -32,12 +32,12 @@ namespace TheInternet.SystemTests.Raw.Tests
             DriverSession.Waiter.AssertThatEventually(basicAuthLinkLocator, IsEnabled);
 
             // Arrange
-            var element = Browser.FindElement(basicAuthLinkLocator);
+            var element = WebDriver.FindElement(basicAuthLinkLocator);
             var targetUrl = new Uri(element.GetAttribute("href"));
 
             // Act
-            Browser.Url = GetUriWithBasicAuthentication(targetUrl, "admin", "admin");
-            Browser.Navigate();
+            WebDriver.Url = GetUriWithBasicAuthentication(targetUrl, "admin", "admin");
+            WebDriver.Navigate();
 
             // Assert
             DriverSession.Waiter.AssertThatEventually(basicAuthPageContentLocator, IsDisplayed);

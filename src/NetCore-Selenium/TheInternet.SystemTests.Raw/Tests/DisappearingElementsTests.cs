@@ -20,7 +20,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             // TODO: Use a Probe for Exists, Displayed, Enabled directly
             foreach (var elementTitle in elementTitles)
             {
-                var exists = Browser.FindElements(By.XPath($"//a[text()='{elementTitle}']"));
+                var exists = WebDriver.FindElements(By.XPath($"//a[text()='{elementTitle}']"));
                 Console.WriteLine($"The element title {elementTitle} exists: {exists.Count() != 0}");
             }
         }

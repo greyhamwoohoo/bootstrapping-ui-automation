@@ -55,8 +55,8 @@ namespace TheInternet.SystemTests.Raw
         [TestCategory("HotReloadWorkflow")]
         public void HotReloadWorkflow()
         {
-            // Browser.Navigate().GoToUrl("http://www.google.com");
-            // Browser.FindElement(By.Name("q")).SendKeys("howdi!" + Keys.Enter);
+            // WebDriver.Navigate().GoToUrl("http://www.google.com");
+            // WebDriver.FindElement(By.Name("q")).SendKeys("howdi!" + Keys.Enter);
         }
     }
 }

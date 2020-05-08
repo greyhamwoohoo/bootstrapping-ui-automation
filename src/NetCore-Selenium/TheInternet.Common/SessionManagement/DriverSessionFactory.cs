@@ -10,6 +10,7 @@ using OpenQA.Selenium.Support.Events;
 using Serilog;
 using System;
 using System.Text;
+using TheInternet.Common.ElementOperations;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
@@ -75,7 +76,9 @@ namespace TheInternet.Common.SessionManagement
                         throw new System.ArgumentOutOfRangeException($"There is no support for starting browsers of type {browserProperties.Name}");
                 }
 
-                return new DriverSession(browser, environmentSettings, logger, controlSettings);
+                var decoratedWebDriver = new DecoratedWebDriver(browser);
+
+                return new DriverSession(decoratedWebDriver, environmentSettings, logger, controlSettings);
             }
 
             if(deviceProperties.Name == "ANDROID")
@@ -91,7 +94,7 @@ namespace TheInternet.Common.SessionManagement
 
                 var androidDriver = new AndroidDriver<AppiumWebElement>(new Uri(remoteWebDriverSettings.RemoteUri), options);
 
-                return new DriverSession(new EventFiringWebDriver(androidDriver), environmentSettings, logger, controlSettings);
+                return new DriverSession(new DecoratedWebDriver(new EventFiringWebDriver(androidDriver)), environmentSettings, logger, controlSettings);
             }
 
             throw new InvalidOperationException($"The device {deviceProperties.Name} is not supported as a Driver Session. ");

@@ -18,9 +18,9 @@ namespace TheInternet.SystemTests.Raw.Tests
         public void WhenThePageIsLoaded_ThenTheButtonsCanAlwaysBeIdentifiedByStyle_Raw()
         {
             // Implicitly: Single will throw if there is not exactly one element
-            var notAlertAndNotSuccessButton = Browser.FindElements(By.CssSelector(".button:not(.alert):not(.success)")).Single();
-            var alertButton = Browser.FindElements(By.CssSelector(".button.alert")).Single();
-            var successButton = Browser.FindElements(By.CssSelector(".button.success")).Single();
+            var notAlertAndNotSuccessButton = WebDriver.FindElements(By.CssSelector(".button:not(.alert):not(.success)")).Single();
+            var alertButton = WebDriver.FindElements(By.CssSelector(".button.alert")).Single();
+            var successButton = WebDriver.FindElements(By.CssSelector(".button.success")).Single();
         }
 
         [TestMethod]
@@ -39,14 +39,14 @@ namespace TheInternet.SystemTests.Raw.Tests
         [TestMethod]
         public void WeWantToSelectByWhenWeWantToEditARow_ThenWeCanEditADiceret_Raw()
         {
-            Browser.Url.Should().NotEndWith("#edit", because: "we will navigate to that location during the test");
+            WebDriver.Url.Should().NotEndWith("#edit", because: "we will navigate to that location during the test");
 
-            var phaeDrum4Cell = Browser.FindElements(By.XPath("//td[text()='Phaedrum4']")).Single();
-            var phaeDrum4Row = Browser.FindElements(By.XPath("//td[text()='Phaedrum4']/ancestor::tr[1]")).Single();
+            var phaeDrum4Cell = WebDriver.FindElements(By.XPath("//td[text()='Phaedrum4']")).Single();
+            var phaeDrum4Row = WebDriver.FindElements(By.XPath("//td[text()='Phaedrum4']/ancestor::tr[1]")).Single();
 
             var editRowElement = phaeDrum4Row.FindElements(By.XPath(".//*/a[text()='edit']")).Single();
             editRowElement.Click();
-            Browser.Url.Should().EndWith("#edit", because: "the 'edit' cell was clicked");
+            WebDriver.Url.Should().EndWith("#edit", because: "the 'edit' cell was clicked");
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             var phaeDrum4RowLocator = By.XPath("//td[text()='Phaedrum4']/ancestor::tr[1]");
 
             // Assume
-            Browser.Url.Should().NotEndWith("#edit", because: "we will navigate to that location during the test");
+            WebDriver.Url.Should().NotEndWith("#edit", because: "we will navigate to that location during the test");
             DriverSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
                 And(phaeDrum4RowLocator, IsDisplayed));
 
@@ -69,20 +69,20 @@ namespace TheInternet.SystemTests.Raw.Tests
             editRowElement.Click();
 
             // Assert
-            Browser.Url.Should().EndWith("#edit", because: "the 'edit' cell was clicked");
+            WebDriver.Url.Should().EndWith("#edit", because: "the 'edit' cell was clicked");
         }
 
         [TestMethod]
         public void WeWantToSelectByWhenWeWantToEditARow_ThenWeCanDeleteADiceret_Raw()
         {
-            Browser.Url.Should().NotEndWith("#delete", because: "we will navigate to that location during the test");
+            WebDriver.Url.Should().NotEndWith("#delete", because: "we will navigate to that location during the test");
 
-            var phaeDrum4Cell = Browser.FindElements(By.XPath("//td[text()='Phaedrum4']")).Single();
-            var phaeDrum4Row = Browser.FindElements(By.XPath("//td[text()='Phaedrum4']/ancestor::tr[1]")).Single();
+            var phaeDrum4Cell = WebDriver.FindElements(By.XPath("//td[text()='Phaedrum4']")).Single();
+            var phaeDrum4Row = WebDriver.FindElements(By.XPath("//td[text()='Phaedrum4']/ancestor::tr[1]")).Single();
 
             var deleteRowElement = phaeDrum4Row.FindElements(By.XPath(".//*/a[text()='delete']")).Single();
             deleteRowElement.Click();
-            Browser.Url.Should().EndWith("#delete", because: "the 'delete' cell was clicked");
+            WebDriver.Url.Should().EndWith("#delete", because: "the 'delete' cell was clicked");
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             var phaeDrum4RowLocator = By.XPath("//td[text()='Phaedrum4']/ancestor::tr[1]");
 
             // Assume
-            Browser.Url.Should().NotEndWith("#delete", because: "we will navigate to that location during the test");
+            WebDriver.Url.Should().NotEndWith("#delete", because: "we will navigate to that location during the test");
             DriverSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
                 And(phaeDrum4RowLocator, IsDisplayed));
 
@@ -105,7 +105,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             deleteRowElement.Click();
 
             // Assert
-            Browser.Url.Should().EndWith("#delete", because: "the 'delete' cell was clicked");
+            WebDriver.Url.Should().EndWith("#delete", because: "the 'delete' cell was clicked");
         }
         // TODO: Test Canvas; we could pull it from the page source with a RegEx (or use Tesseract?)
     }

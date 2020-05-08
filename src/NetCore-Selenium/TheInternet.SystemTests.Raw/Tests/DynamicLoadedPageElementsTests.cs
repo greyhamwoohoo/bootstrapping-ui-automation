@@ -16,10 +16,10 @@ namespace TheInternet.SystemTests.Raw.Tests
         [TestMethod]
         public void GivenAHiddenElement_WhenAnElementIsShown_ItWillBecomeVisible()
         {
-            var example1 = Browser.FindElements(By.XPath("//a[contains(text(), 'Example 1')]")).Single();
-            Browser.Navigate().GoToUrl(example1.GetAttribute("href"));
+            var example1 = WebDriver.FindElements(By.XPath("//a[contains(text(), 'Example 1')]")).Single();
+            WebDriver.Navigate().GoToUrl(example1.GetAttribute("href"));
 
-            var startButton = Browser.FindElements(By.XPath("//button[text()='Start']")).Single();
+            var startButton = WebDriver.FindElements(By.XPath("//button[text()='Start']")).Single();
             startButton.Click();
 
             var finishLocator = By.CssSelector("#finish");
@@ -29,10 +29,10 @@ namespace TheInternet.SystemTests.Raw.Tests
         [TestMethod]
         public void GivenAHiddenElement_WhenAnElementIsShown_ItWillBeRenderedBecomeVisible()
         {
-            var example2 = Browser.FindElements(By.XPath("//a[contains(text(), 'Example 2')]")).Single();
-            Browser.Navigate().GoToUrl(example2.GetAttribute("href"));
+            var example2 = WebDriver.FindElements(By.XPath("//a[contains(text(), 'Example 2')]")).Single();
+            WebDriver.Navigate().GoToUrl(example2.GetAttribute("href"));
 
-            var startButton = Browser.FindElements(By.XPath("//button[text()='Start']")).Single();
+            var startButton = WebDriver.FindElements(By.XPath("//button[text()='Start']")).Single();
             startButton.Click();
 
             var finishLocator = By.CssSelector("#finish");

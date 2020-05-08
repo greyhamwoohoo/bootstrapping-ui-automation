@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
 using System;
+using TheInternet.Common.ElementOperations.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.SessionManagement.Contracts;
 
@@ -13,7 +13,7 @@ namespace TheInternet.SystemTests.Raw
     public abstract class SeleniumTestBase : TestBase
     {
         protected virtual string BaseUrl => DriverSession.EnvironmentSettings.BaseUrl;
-        protected virtual IWebDriver Browser => DriverSession.WebDriver;
+        protected virtual IDecoratedWebDriver WebDriver => DriverSession.WebDriver;
         protected IDriverSession DriverSession { get; private set; }
 
         [TestInitialize]
