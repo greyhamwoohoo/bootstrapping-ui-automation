@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
 
 namespace TheInternet.SystemTests.Raw
@@ -29,6 +30,13 @@ namespace TheInternet.SystemTests.Raw
         public void WebDriverDoSomethingExists()
         {
             WebDriver.DoSomething();
+        }
+
+        [TestMethod]
+        public void InstrumentationSettingsExists()
+        {
+            var instrumentationSettingsExists = Resolve<IInstrumentationSettings>();
+            var controlSettings = Resolve<IControlSettings>();
         }
     }
 }

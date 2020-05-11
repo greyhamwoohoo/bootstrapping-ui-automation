@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using TheInternet.Common.ElementOperations;
+using TheInternet.Common.ExecutionContext.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
@@ -47,24 +48,25 @@ namespace TheInternet.Common.Infrastructure
             if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
             if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
-            System.Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
-            System.Environment.SetEnvironmentVariable("TESTDEPLOYMENTDIR", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TESTDEPLOYMENTDIR", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
 
             var services = new ServiceCollection();
 
             ConfigureDeviceSettings(prefix, services);
             ConfigureBrowserSettings(prefix, services);
-            ConfigureRemoteWebDriverSettings(prefix, services);
-            ConfigureEnvironmentSettings(prefix, services);
-            ConfigureControlSettings(prefix, services);
-            ConfigureInstrumentationSettings(prefix, services);
+
+            ConfigureSettings<RemoteWebDriverSettings>(prefix, "RemoteWebDriverSettings", "localhost-selenium.json", "remoteWebDriverSettings", services, registerInstance: true);
+            ConfigureSettings<EnvironmentSettings>(prefix, "EnvironmentSettings", "internet.json", "environmentSettings", services, registerInstance: true);
+            ConfigureSettings<IInstrumentationSettings, InstrumentationSettings>(prefix, "InstrumentationSettings", "default.json", "instrumentationSettings", services);
+            ConfigureSettings<IControlSettings, ControlSettings>(prefix, "ControlSettings", "default.json", "controlSettings", services);
 
             services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
             services.AddScoped(sp =>
             {
                 var serilogContext = BuildSerilogConfiguration();
 
-                Serilog.ILogger logger = new LoggerConfiguration()
+                ILogger logger = new LoggerConfiguration()
                     .ReadFrom
                     .Configuration(serilogContext)
                     .Enrich
@@ -197,80 +199,39 @@ namespace TheInternet.Common.Infrastructure
             }
         }
 
-        private static void ConfigureRemoteWebDriverSettings(string prefix, IServiceCollection services)
+        private static T ConfigureSettings<T>(string prefix, string settingsFolderName, string defaultFilename, string settingsName, IServiceCollection services, bool registerInstance = false) where T : class, new()
         {
             var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "RemoteWebDriverSettings", "localhost-selenium.json");
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), settingsFolderName, defaultFilename);
             var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
 
-            var remoteWebDriverSettings = configurationRoot.GetSection("remoteWebDriverSettings");
+            var controlSettings = configurationRoot.GetSection(settingsName);
 
-            var instance = new RemoteWebDriverSettings();
-
-            remoteWebDriverSettings.Bind(instance);
-
-            instance = SubstituteEnvironmentVariables<RemoteWebDriverSettings>(instance);
-
-            instance.Cleanse();
-
-            services.AddSingleton(instance);
-        }
-
-        private static void ConfigureControlSettings(string prefix, IServiceCollection services)
-        {
-            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "ControlSettings", "default.json");
-            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
-
-            var controlSettings = configurationRoot.GetSection("controlSettings");
-
-            var instance = new ControlSettings();
+            var instance = new T();
 
             controlSettings.Bind(instance);
 
-            instance = SubstituteEnvironmentVariables<ControlSettings>(instance);
+            instance = SubstituteEnvironmentVariables<T>(instance);
 
-            instance.Cleanse();
+            var cleansor = instance as ICleanse;
+            if (cleansor != null)
+            {
+                cleansor.Cleanse();
+            }
 
-            services.AddSingleton<IControlSettings, ControlSettings>(isp => instance);
+            if(registerInstance)
+            {
+                services.AddSingleton<T>(isp => instance);
+            }
+
+            return instance;
         }
 
-        private static void ConfigureInstrumentationSettings(string prefix, IServiceCollection services)
+        private static void ConfigureSettings<TI, T>(string prefix, string settingsFolderName, string defaultFilename, string settingsName, IServiceCollection services) where T : class, TI, new() where TI : class
         {
-            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "InstrumentationSettings", "default.json");
-            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+            var instance = ConfigureSettings<T>(prefix, settingsFolderName, defaultFilename, settingsFolderName, services, registerInstance: false);
 
-            var controlSettings = configurationRoot.GetSection("instrumentationSettings");
-
-            var instance = new InstrumentationSettings();
-
-            controlSettings.Bind(instance);
-
-            instance = SubstituteEnvironmentVariables<InstrumentationSettings>(instance);
-
-            instance.Cleanse();
-
-            services.AddSingleton<IInstrumentationSettings, InstrumentationSettings>(isp => instance);
-        }
-
-        private static void ConfigureEnvironmentSettings(string prefix, IServiceCollection services)
-        {
-            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "EnvironmentSettings", "internet.json");
-            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
-
-            var environmentSettings = configurationRoot.GetSection("EnvironmentSettings");
-
-            var instance = new EnvironmentSettings();
-
-            environmentSettings.Bind(instance);
-
-            instance = SubstituteEnvironmentVariables<EnvironmentSettings>(instance);
-
-            instance.Cleanse();
-
-            services.AddSingleton(instance);
+            services.AddSingleton<TI, T>(isp => instance);
         }
 
         /// <summary>

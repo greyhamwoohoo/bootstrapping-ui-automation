@@ -1,6 +1,8 @@
-﻿namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
+﻿using TheInternet.Common.ExecutionContext.Contracts;
+
+namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
 {
-    public class ControlSettings : IControlSettings
+    public class ControlSettings : IControlSettings, ICleanse
     {
         public ControlSettings()
         {
