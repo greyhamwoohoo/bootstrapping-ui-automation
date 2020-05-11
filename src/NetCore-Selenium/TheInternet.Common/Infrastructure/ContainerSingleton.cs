@@ -12,6 +12,7 @@ using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
 using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
+using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
 using TheInternet.Common.SessionManagement;
 using TheInternet.Common.SessionManagement.Contracts;
@@ -56,6 +57,7 @@ namespace TheInternet.Common.Infrastructure
             ConfigureRemoteWebDriverSettings(prefix, services);
             ConfigureEnvironmentSettings(prefix, services);
             ConfigureControlSettings(prefix, services);
+            ConfigureInstrumentationSettings(prefix, services);
 
             services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
             services.AddScoped(sp =>
@@ -231,6 +233,25 @@ namespace TheInternet.Common.Infrastructure
             instance.Cleanse();
 
             services.AddSingleton<IControlSettings, ControlSettings>(isp => instance);
+        }
+
+        private static void ConfigureInstrumentationSettings(string prefix, IServiceCollection services)
+        {
+            var runtimeSettingsUtilities = new RuntimeSettingsUtilities();
+            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "InstrumentationSettings", "default.json");
+            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+
+            var controlSettings = configurationRoot.GetSection("instrumentationSettings");
+
+            var instance = new InstrumentationSettings();
+
+            controlSettings.Bind(instance);
+
+            instance = SubstituteEnvironmentVariables<InstrumentationSettings>(instance);
+
+            instance.Cleanse();
+
+            services.AddSingleton<IInstrumentationSettings, InstrumentationSettings>(isp => instance);
         }
 
         private static void ConfigureEnvironmentSettings(string prefix, IServiceCollection services)

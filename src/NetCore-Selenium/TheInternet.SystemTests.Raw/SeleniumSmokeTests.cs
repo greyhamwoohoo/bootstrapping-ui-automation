@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
 
 namespace TheInternet.SystemTests.Raw
 {
