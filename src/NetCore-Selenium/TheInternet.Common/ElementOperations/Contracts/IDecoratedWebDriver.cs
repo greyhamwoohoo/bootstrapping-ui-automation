@@ -7,6 +7,6 @@ namespace TheInternet.Common.ElementOperations.Contracts
     /// </summary>
     public interface IDecoratedWebDriver : IWebDriver
     {
-        void DoSomething();
+        IWebDriverAssertions Assert { get; }
     }
 }

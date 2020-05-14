@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using TheInternet.Common.ElementOperations.Contracts;
+using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 
 namespace TheInternet.Common.ElementOperations
 {
@@ -10,16 +11,17 @@ namespace TheInternet.Common.ElementOperations
     public class DecoratedWebDriver : IDecoratedWebDriver
     {
         private readonly IWebDriver _original;
+        private readonly IControlSettings _controlSettings;
 
-        public DecoratedWebDriver(IWebDriver original)
+        public DecoratedWebDriver(IWebDriver original, IControlSettings controlSettings)
         {
-            if (null == original) throw new System.ArgumentNullException(nameof(original));
+            _original = original ?? throw new System.ArgumentNullException(nameof(original));
+            _controlSettings = controlSettings ?? throw new System.ArgumentNullException(nameof(controlSettings));
 
-            _original = original;
+            Assert = new WebDriverAssertions(this, _controlSettings);
         }
-        public void DoSomething()
-        {
-        }
+        
+        public IWebDriverAssertions Assert { get; }
 
         #region Wrap _original WebDriver properties and methods
 
@@ -32,6 +34,7 @@ namespace TheInternet.Common.ElementOperations
         public string CurrentWindowHandle => _original.CurrentWindowHandle;
 
         public ReadOnlyCollection<string> WindowHandles => _original.WindowHandles;
+
 
         public void Close()
         {

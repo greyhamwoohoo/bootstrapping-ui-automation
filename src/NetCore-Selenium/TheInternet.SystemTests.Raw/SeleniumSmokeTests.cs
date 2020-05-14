@@ -27,12 +27,6 @@ namespace TheInternet.SystemTests.Raw
         }
 
         [TestMethod]
-        public void WebDriverDoSomethingExists()
-        {
-            WebDriver.DoSomething();
-        }
-
-        [TestMethod]
         public void InstrumentationSettingsExists()
         {
             var instrumentationSettingsExists = Resolve<IInstrumentationSettings>();
