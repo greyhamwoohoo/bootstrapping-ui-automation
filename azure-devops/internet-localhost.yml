@@ -78,6 +78,7 @@ stages:
 
     - task: PublishTestResults@2
       displayName: 'Publish Test Results **/TheInternet-Tests.trx'
+      condition: succeededOrFailed()
       inputs:
         testResultsFormat: VSTest
         testResultsFiles: '**/TheInternet-Tests.trx'
