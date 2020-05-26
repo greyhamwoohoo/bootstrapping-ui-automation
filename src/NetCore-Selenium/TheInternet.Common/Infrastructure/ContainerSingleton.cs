@@ -5,7 +5,6 @@ using Serilog;
 using System;
 using System.IO;
 using System.Linq;
-using TheInternet.Common.ElementOperations;
 using TheInternet.Common.ExecutionContext.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
