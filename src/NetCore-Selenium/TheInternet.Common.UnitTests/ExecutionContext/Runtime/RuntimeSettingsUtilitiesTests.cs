@@ -2,6 +2,7 @@ using AutoFixture;
 using AutoFixture.Idioms;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Serilog;
 using System.IO;
 using System.Linq;
 using TheInternet.Common.ExecutionContext.Runtime;
@@ -18,7 +19,7 @@ namespace TheInternet.Common.UnitTests
         [TestInitialize]
         public void SetupRuntimeSettings()
         {
-            _utilities = new RuntimeSettingsUtilities();
+            _utilities = new RuntimeSettingsUtilities(NSubstitute.Substitute.For<ILogger>());
         }
 
         [TestMethod]

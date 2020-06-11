@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Serilog;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,15 @@ namespace TheInternet.Common.ExecutionContext.Runtime
 {
     public class RuntimeSettingsUtilities
     {
+        private readonly ILogger _logger;
+
+        public RuntimeSettingsUtilities(ILogger logger)
+        {
+            if (null == logger) throw new System.ArgumentNullException(nameof(logger));
+
+            _logger = logger;
+        }
+
         /// <summary>
         /// Will return a list of all settings files. 
         /// </summary>
@@ -24,10 +34,20 @@ namespace TheInternet.Common.ExecutionContext.Runtime
             if (category == null) throw new System.ArgumentNullException(nameof(category));
             if (defaultFilename == null) throw new System.ArgumentNullException(nameof(defaultFilename));
 
-            var candidateSettingFiles = System.Environment.ExpandEnvironmentVariables($"%{prefix}{category.ToUpper()}_FILES%");
+            _logger.Information($"GetSettingsFile. Prefix={prefix}, rootFolder={rootFolder}, category={category}, defaultFilename={defaultFilename}");
+
+            string environmentVariableName = $"%{prefix}{category.ToUpper()}_FILES%";
+            _logger.Information($"Environment variable that will contain (optional, non-default) variables is called: {environmentVariableName}");
+
+            var candidateSettingFiles = System.Environment.ExpandEnvironmentVariables(environmentVariableName);
             if (candidateSettingFiles == $"%{prefix}{category.ToUpper()}_FILES%")
             {
+                _logger.Information($"The environment variable '{environmentVariableName}' has not been set. Will use the default filename instead. ");
                 candidateSettingFiles = Path.Combine(rootFolder, category, defaultFilename);
+            }
+            else
+            {
+                _logger.Information($"The environment variable '{environmentVariableName}' is already set to {candidateSettingFiles}");
             }
 
             var settingsPaths = candidateSettingFiles.Split(";").ToList().Select(path =>
@@ -40,6 +60,12 @@ namespace TheInternet.Common.ExecutionContext.Runtime
                 {
                     return path;
                 }
+            });
+
+            _logger.Information($"Will use the following paths to retrieve settings: ");
+            settingsPaths.ToList().ForEach(path =>
+            {
+                _logger.Information($"   {path}");
             });
 
             return settingsPaths;
