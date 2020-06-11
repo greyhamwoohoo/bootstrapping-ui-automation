@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Internal;
 using System.Collections.ObjectModel;
 using TheInternet.Common.ElementOperations.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
@@ -8,7 +9,7 @@ namespace TheInternet.Common.ElementOperations
     /// <summary>
     /// Wraps the IWebDriver interface and enriches it. 
     /// </summary>
-    public class DecoratedWebDriver : IDecoratedWebDriver
+    public class DecoratedWebDriver : IDecoratedWebDriver, IWrapsDriver
     {
         private readonly IWebDriver _original;
         private readonly IControlSettings _controlSettings;
@@ -35,6 +36,7 @@ namespace TheInternet.Common.ElementOperations
 
         public ReadOnlyCollection<string> WindowHandles => _original.WindowHandles;
 
+        public IWebDriver WrappedDriver => _original;
 
         public void Close()
         {

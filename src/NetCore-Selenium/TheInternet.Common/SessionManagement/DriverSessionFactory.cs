@@ -34,7 +34,7 @@ namespace TheInternet.Common.SessionManagement
             if (controlSettings == null) throw new System.ArgumentNullException(nameof(controlSettings));
             if (logger == null) throw new System.ArgumentNullException(nameof(logger));
 
-            var browser = default(EventFiringWebDriver);
+            var browser = default(IWebDriver);
 
             // There are several kinds of platform we can create our software on:
             // 1. Desktop (ie: 'traditional' Web Browser Automation)
@@ -94,13 +94,13 @@ namespace TheInternet.Common.SessionManagement
 
                 var androidDriver = new AndroidDriver<AppiumWebElement>(new Uri(remoteWebDriverSettings.RemoteUri), options);
 
-                return new DriverSession(new DecoratedWebDriver(new EventFiringWebDriver(androidDriver), controlSettings), environmentSettings, logger, controlSettings);
+                return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings), environmentSettings, logger, controlSettings);
             }
 
             throw new InvalidOperationException($"The device {deviceProperties.Name} is not supported as a Driver Session. ");
         }
 
-        private EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteWebDriverSettings, ChromeBrowserSettings settings, IControlSettings controlSettings)
+        private IWebDriver StartBrowser(RemoteWebDriverSettings remoteWebDriverSettings, ChromeBrowserSettings settings, IControlSettings controlSettings)
         {
             var adapter = new ChromeBrowserSettingsAdapter();
             var chromeOptions = adapter.ToChromeOptions(settings);
@@ -113,14 +113,13 @@ namespace TheInternet.Common.SessionManagement
             if (!remoteWebDriverSettings.UseRemoteDriver)
             {
                 var chromeDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableChromeDriver(chromeOptions) : new ChromeDriver(chromeOptions);
-
-                return new EventFiringWebDriver(chromeDriver);
+                return chromeDriver;
             }
 
             return StartRemoteBrowser(remoteWebDriverSettings, chromeOptions, controlSettings);
         }
 
-        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, FireFoxBrowserSettings settings, IControlSettings controlSettings)
+        private static IWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, FireFoxBrowserSettings settings, IControlSettings controlSettings)
         {
             // Reference: https://stackoverflow.com/questions/41644381/python-set-firefox-preferences-for-selenium-download-location
             var adapter = new FireFoxBrowserSettingsAdapter();
@@ -135,13 +134,13 @@ namespace TheInternet.Common.SessionManagement
 
             if (!remoteDriverSettings.UseRemoteDriver)
             {
-                return new EventFiringWebDriver(new FirefoxDriver(options));
+                return new FirefoxDriver(options);
             }
 
             return StartRemoteBrowser(remoteDriverSettings, options, controlSettings);
         }
 
-        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, InternetExplorerBrowserSettings settings, IControlSettings controlSettings)
+        private static IWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, InternetExplorerBrowserSettings settings, IControlSettings controlSettings)
         {
             var adapter = new InternetExplorerBrowserSettingsAdapter();
             InternetExplorerOptions options = adapter.ToInternetExplorerOptions(settings);
@@ -150,13 +149,13 @@ namespace TheInternet.Common.SessionManagement
             {
                 var ieDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableInternetExplorerDriver(options) : new InternetExplorerDriver(options);
 
-                return new EventFiringWebDriver(ieDriver);
+                return ieDriver;
             }
 
             return StartRemoteBrowser(remoteDriverSettings, options, controlSettings);
         }
 
-        private static EventFiringWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, EdgeBrowserSettings settings, IControlSettings controlSettings)
+        private static IWebDriver StartBrowser(RemoteWebDriverSettings remoteDriverSettings, EdgeBrowserSettings settings, IControlSettings controlSettings)
         {
             var adapter = new EdgeBrowserSettingsAdapter();
             var options = adapter.ToEdgeOptions(settings);
@@ -165,16 +164,16 @@ namespace TheInternet.Common.SessionManagement
             {
                 var edgeDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableEdgeDriver(options) : new EdgeDriver(options);
 
-                return new EventFiringWebDriver(edgeDriver);
+                return edgeDriver;
             }
 
             return StartRemoteBrowser(remoteDriverSettings, options, controlSettings);
         }
 
-        private static EventFiringWebDriver StartRemoteBrowser(RemoteWebDriverSettings remoteDriverSettings, DriverOptions options, IControlSettings controlSettings)
+        private static IWebDriver StartRemoteBrowser(RemoteWebDriverSettings remoteDriverSettings, DriverOptions options, IControlSettings controlSettings)
         {
             RemoteWebDriver remoteWebDriver = controlSettings.AttachToExistingSessionIfItExists ? new AttachableRemoteWebDriver(new Uri(remoteDriverSettings.RemoteUri), options) : new RemoteWebDriver(new Uri(remoteDriverSettings.RemoteUri), options);
-            return new EventFiringWebDriver(remoteWebDriver);
+            return remoteWebDriver;
         }
     }
 }
