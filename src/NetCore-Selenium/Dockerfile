@@ -20,4 +20,4 @@ RUN cd TheInternet.SystemTests.Raw \
 FROM base AS package
 WORKDIR /app
 COPY --from=build-and-publish /app/publish .
-ENTRYPOINT ["dotnet", "vstest", "TheInternet.SystemTests.Raw.dll"]
+ENTRYPOINT ["dotnet", "test", "TheInternet.SystemTests.Raw.dll"]

@@ -146,6 +146,41 @@ Implementation Notes:
 2. The architecture and implementation of the WebDrivers makes it difficult / impossible to inject DI-resolved services.
    As a result, there's a lot of new-ing up going on and lots of cloned code. See Driver/*Driver.cs files for more information. 
 
+## Dockerizing Chrome and Tests
+To build a container with Chrome and the tests included:
+
+```
+docker build -t chrome-and-tests:local .
+```
+
+To run the tests, we always need to specify (at least) headless-chrome.json:
+
+```
+docker run -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=headless-chrome.json chrome-and-tests:local
+```
+
+To add extra 'dotnet test' parameters:
+
+```
+docker run -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=headless-chrome.json chrome-and-tests:local  --testcasefilter:"Name=DriverSessionExists"
+```
+
+To run the tests and capture the output / test results from the container (PowerShell)
+
+```
+New-Item -ItemType Directory -Name container-test-results -Force
+
+docker run -v "$($pwd)/container-test-results:/app/TestResults" -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=headless-chrome.json chrome-and-tests:local --logger:"trx;LogFileName=MyPsResults.trx"
+```
+
+To run the tests (CMD Prompt):
+
+```
+mkdir container-test-results
+
+docker run -v %CD%/container-test-results:/app/TestResults -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=headless-chrome.json chrome-and-tests:local --logger:"trx;LogFileName=MyCmdPromptResults.trx"
+```
+
 ### Reference
 | Reference | Link |
 | --------- | ---- |
