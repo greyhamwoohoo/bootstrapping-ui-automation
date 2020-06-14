@@ -61,7 +61,7 @@ namespace TheInternet.SystemTests.Raw
             });
 
             Log.Logger.Information("START: To initialize singleton container. ");
-            ContainerSingleton.Initialize(PREFIX, (prefix, services) =>
+            ContainerSingleton.Initialize(Log.Logger, PREFIX, (prefix, services) =>
             {
                 Log.Logger.Information($"    START: Callback before container is built. ");
                 services.AddSingleton(testExecutionContext);

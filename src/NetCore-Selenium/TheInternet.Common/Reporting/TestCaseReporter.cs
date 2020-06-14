@@ -5,11 +5,14 @@ namespace TheInternet.Common.Reporting
 {
     public class TestCaseReporter : ITestCaseReporter
     {
-        public string Name { get; private set; }
         protected ILogger Logger { get; }
-        public TestCaseReporter(ILogger logger)
+        public string Name { get; private set; }
+        public string LogPath { get; }
+
+        public TestCaseReporter(ILogger logger, string logPath)
         {
             Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            LogPath = logPath ?? throw new System.ArgumentNullException(nameof(logPath));
         }
 
         public void Initialize(string name)
@@ -22,7 +25,7 @@ namespace TheInternet.Common.Reporting
         public void Uninitialize()
         {
             Name = null;
-            Logger.Debug($"Uninitialize:");
+            Logger.Debug($"Uninitialize");
         }
     }
 }

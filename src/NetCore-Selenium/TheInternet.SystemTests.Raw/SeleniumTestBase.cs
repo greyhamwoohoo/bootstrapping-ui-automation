@@ -59,6 +59,19 @@ namespace TheInternet.SystemTests.Raw
 
             try
             {
+                var logPath = TestCaseReporter.LogPath;
+                if(System.IO.File.Exists(logPath))
+                {
+                    TestContext.AddResultFile(logPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"{ex}");
+            }
+
+            try
+            {
                 TestCaseReporter.Uninitialize();
             }
             catch(Exception ex)

@@ -12,7 +12,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings
 
         }
 
-        public bool Enabled { get; set; }
+        public bool LogFilePerTest { get; set; }
         public void Cleanse()
         {
         }

@@ -1,5 +1,5 @@
 ﻿{
   "instrumentationSettings": {
-    "enabled": false
+    "logFilePerTest": true
   }
 }
