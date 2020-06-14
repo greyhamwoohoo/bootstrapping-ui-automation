@@ -14,6 +14,8 @@ using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
 using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using TheInternet.Common.Reporting;
+using TheInternet.Common.Reporting.Contracts;
 using TheInternet.Common.SessionManagement;
 using TheInternet.Common.SessionManagement.Contracts;
 
@@ -61,6 +63,15 @@ namespace TheInternet.Common.Infrastructure
             ConfigureSettings<IControlSettings, ControlSettings>(Log.Logger, prefix, "ControlSettings", "default.json", "controlSettings", services);
 
             services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
+            services.AddSingleton<ITestRunReporter>(isp =>
+            {
+                return new TestRunReporter(isp.GetRequiredService<ILogger>(), testDeploymentFolder: Directory.GetCurrentDirectory());
+            });
+            services.AddScoped<ITestCaseReporter>(isp =>
+            {
+                // NOTE: We have no TestContext here - so we rely on this being initialized as early as possible in the test. 
+                return new TestCaseReporter(isp.GetRequiredService<ILogger>());
+            });
             services.AddScoped(sp =>
             {
                 var serilogContext = BuildSerilogConfiguration();
@@ -84,8 +95,9 @@ namespace TheInternet.Common.Infrastructure
                 var controlSettings = isp.GetRequiredService<IControlSettings>();
                 var deviceSettings = isp.GetRequiredService<IDeviceProperties>();
                 var logger = isp.GetRequiredService<ILogger>();
+                var testCaseReporter = isp.GetRequiredService<ITestCaseReporter>();
 
-                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
+                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger, testCaseReporter);
                 return driverSession;
             });
 

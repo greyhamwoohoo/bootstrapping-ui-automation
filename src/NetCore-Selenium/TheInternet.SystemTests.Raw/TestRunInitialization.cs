@@ -4,6 +4,7 @@ using Serilog;
 using System;
 using System.Linq;
 using TheInternet.Common.Infrastructure;
+using TheInternet.Common.Reporting.Contracts;
 using TheInternet.SystemTests.Raw.Infrastructure;
 
 namespace TheInternet.SystemTests.Raw
@@ -17,6 +18,7 @@ namespace TheInternet.SystemTests.Raw
         public const string TEST_EXECUTION_CONTEXT_KEY_NAME = "TestExecutionContext";
 
         static IServiceProvider _serviceProvider = default;
+        static ITestRunReporter _testRunReporter = default;
 
         [AssemblyInitialize]
         public static void Initialize(TestContext testContext)
@@ -68,11 +70,15 @@ namespace TheInternet.SystemTests.Raw
             Log.Logger.Information("END: Initializing singleton container. ");
 
             _serviceProvider = ContainerSingleton.Instance;
+
+            _testRunReporter = _serviceProvider.GetRequiredService<ITestRunReporter>();
+            _testRunReporter.Setup();
         }
 
         [AssemblyCleanup]
         public static void Teardown()
         {
+            _testRunReporter.Teardown();
         }
     }
 }
