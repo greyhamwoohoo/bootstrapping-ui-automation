@@ -17,6 +17,7 @@ using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
 using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using TheInternet.Common.Reporting.Contracts;
 using TheInternet.Common.SessionManagement.Contracts;
 using TheInternet.Common.WebDrivers;
 
@@ -25,7 +26,7 @@ namespace TheInternet.Common.SessionManagement
     public class DriverSessionFactory : IDriverSessionFactory
     {
         // TODO: Refactor. Too many parameters. 
-        public IDriverSession Create(IDeviceProperties deviceProperties, IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger)
+        public IDriverSession Create(IDeviceProperties deviceProperties, IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger, ITestCaseReporter testCaseReporter)
         {
             if (deviceProperties == null) throw new System.ArgumentNullException(nameof(deviceProperties));
             if (browserProperties == null) throw new System.ArgumentNullException(nameof(browserProperties));
@@ -33,6 +34,7 @@ namespace TheInternet.Common.SessionManagement
             if (environmentSettings == null) throw new System.ArgumentNullException(nameof(environmentSettings));
             if (controlSettings == null) throw new System.ArgumentNullException(nameof(controlSettings));
             if (logger == null) throw new System.ArgumentNullException(nameof(logger));
+            if (testCaseReporter == null) throw new System.ArgumentNullException(nameof(testCaseReporter));
 
             var browser = default(IWebDriver);
 
@@ -78,7 +80,7 @@ namespace TheInternet.Common.SessionManagement
 
                 var decoratedWebDriver = new DecoratedWebDriver(browser, controlSettings);
 
-                return new DriverSession(decoratedWebDriver, environmentSettings, logger, controlSettings);
+                return new DriverSession(decoratedWebDriver, environmentSettings, logger, controlSettings, testCaseReporter);
             }
 
             if(deviceProperties.Name == "ANDROID")
@@ -94,7 +96,7 @@ namespace TheInternet.Common.SessionManagement
 
                 var androidDriver = new AndroidDriver<AppiumWebElement>(new Uri(remoteWebDriverSettings.RemoteUri), options);
 
-                return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings), environmentSettings, logger, controlSettings);
+                return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings), environmentSettings, logger, controlSettings, testCaseReporter);
             }
 
             throw new InvalidOperationException($"The device {deviceProperties.Name} is not supported as a Driver Session. ");

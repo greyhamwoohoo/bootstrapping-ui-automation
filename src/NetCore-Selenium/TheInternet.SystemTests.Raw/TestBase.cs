@@ -10,7 +10,7 @@ namespace TheInternet.SystemTests.Raw
     public abstract class TestBase
     {
         protected IServiceScope Scope;
-        protected ILogger Logger => Scope.ServiceProvider.GetRequiredService<ILogger>();
+        protected ILogger Logger => Resolve<ILogger>();
 
         public TestContext TestContext { get; set; }
 

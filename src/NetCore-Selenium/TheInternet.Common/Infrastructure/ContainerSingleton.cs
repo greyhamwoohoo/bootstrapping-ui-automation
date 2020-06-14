@@ -14,6 +14,8 @@ using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
 using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
 using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using TheInternet.Common.Reporting;
+using TheInternet.Common.Reporting.Contracts;
 using TheInternet.Common.SessionManagement;
 using TheInternet.Common.SessionManagement.Contracts;
 
@@ -36,12 +38,12 @@ namespace TheInternet.Common.Infrastructure
                 }
             }
         }
-        public static void Initialize(string prefix)
+        public static void Initialize(ILogger bootstrappingLogger, string prefix)
         {
-            Initialize(prefix, (prefix, services) => { });
+            Initialize(bootstrappingLogger, prefix, (prefix, services) => { });
         }
 
-        public static void Initialize(string prefix, Action<string, IServiceCollection> beforeContainerBuild)
+        public static void Initialize(ILogger bootstrappingLogger, string prefix, Action<string, IServiceCollection> beforeContainerBuild)
         {
             if (_instance != null) throw new InvalidOperationException($"The Initialize method has already been called. ");
             if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
@@ -50,27 +52,55 @@ namespace TheInternet.Common.Infrastructure
             Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("TESTDEPLOYMENTDIR", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
 
+            //
+            // TODO: When this gets too big, look at Factories
+            //
+
             var services = new ServiceCollection();
 
-            ConfigureDeviceSettings(Log.Logger, prefix, services);
-            ConfigureBrowserSettings(Log.Logger, prefix, services);
+            ConfigureDeviceSettings(bootstrappingLogger, prefix, services);
+            ConfigureBrowserSettings(bootstrappingLogger, prefix, services);
 
-            ConfigureSettings<RemoteWebDriverSettings>(Log.Logger, prefix, "RemoteWebDriverSettings", "localhost-selenium.json", "remoteWebDriverSettings", services, registerInstance: true);
-            ConfigureSettings<EnvironmentSettings>(Log.Logger, prefix, "EnvironmentSettings", "internet.json", "environmentSettings", services, registerInstance: true);
-            ConfigureSettings<IInstrumentationSettings, InstrumentationSettings>(Log.Logger, prefix, "InstrumentationSettings", "default.json", "instrumentationSettings", services);
-            ConfigureSettings<IControlSettings, ControlSettings>(Log.Logger, prefix, "ControlSettings", "default.json", "controlSettings", services);
+            ConfigureSettings<RemoteWebDriverSettings>(bootstrappingLogger, prefix, "RemoteWebDriverSettings", "localhost-selenium.json", "remoteWebDriverSettings", services, registerInstance: true);
+            ConfigureSettings<EnvironmentSettings>(bootstrappingLogger, prefix, "EnvironmentSettings", "internet.json", "environmentSettings", services, registerInstance: true);
+            ConfigureSettings<IInstrumentationSettings, InstrumentationSettings>(bootstrappingLogger, prefix, "InstrumentationSettings", "default.json", "instrumentationSettings", services);
+            ConfigureSettings<IControlSettings, ControlSettings>(bootstrappingLogger, prefix, "ControlSettings", "default.json", "controlSettings", services);
 
             services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
-            services.AddScoped(sp =>
+            services.AddSingleton<ITestRunReporter>(isp =>
+            {
+                return new TestRunReporter(bootstrappingLogger, testDeploymentFolder: Directory.GetCurrentDirectory());
+            });
+            services.AddScoped<ITestCaseReporterContext>(isp =>
+            {
+                var candidatePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Logs", $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.log");
+
+                return new TestCaseReporterContext(logPath: candidatePath);
+            });
+            services.AddScoped<ITestCaseReporter>(isp =>
+            {
+                // NOTE: We have no TestContext here - so we cannot set the name; Initialize will be called as early as possible in the test execution. 
+                return new TestCaseReporter(isp.GetRequiredService<ILogger>(), isp.GetRequiredService<ITestCaseReporterContext>().LogPath);
+            });
+            services.AddScoped(isp =>
             {
                 var serilogContext = BuildSerilogConfiguration();
 
-                ILogger logger = new LoggerConfiguration()
+                var logPath = isp.GetRequiredService<ITestCaseReporterContext>().LogPath;
+
+                LoggerConfiguration loggerConfiguration = new LoggerConfiguration()
                     .ReadFrom
                     .Configuration(serilogContext)
                     .Enrich
-                    .FromLogContext()
-                    .CreateLogger();
+                    .FromLogContext();
+
+                if(isp.GetRequiredService<IInstrumentationSettings>().LogFilePerTest)
+                {
+                    loggerConfiguration.WriteTo
+                        .File(logPath);
+                };
+                    
+                ILogger logger = loggerConfiguration.CreateLogger();
 
                 return logger;
             });
@@ -84,8 +114,9 @@ namespace TheInternet.Common.Infrastructure
                 var controlSettings = isp.GetRequiredService<IControlSettings>();
                 var deviceSettings = isp.GetRequiredService<IDeviceProperties>();
                 var logger = isp.GetRequiredService<ILogger>();
+                var testCaseReporter = isp.GetRequiredService<ITestCaseReporter>();
 
-                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger);
+                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger, testCaseReporter);
                 return driverSession;
             });
 
