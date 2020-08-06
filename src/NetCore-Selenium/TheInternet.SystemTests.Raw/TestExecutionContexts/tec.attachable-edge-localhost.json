@@ -1,8 +1,8 @@
 {
   "testExecutionContext": {
     "environmentVariables": {
-      "THEINTERNET_BROWSERSETTINGS_FILES": "default-edge.json",
-      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "localhost-selenium.json",
+      "THEINTERNET_BROWSERSETTINGS_FILES": "common-edge.json",
+      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-selenium.json",
       "THEINTERNET_CONTROLSETTINGS__ATTACHTOEXISTINGSESSIONIFITEXISTS": true
     }
   }
