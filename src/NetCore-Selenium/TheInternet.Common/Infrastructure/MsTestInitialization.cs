@@ -3,26 +3,32 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
 using System;
 using System.Linq;
-using TheInternet.Common.Infrastructure;
 using TheInternet.Common.Reporting.Contracts;
-using TheInternet.SystemTests.Raw.Infrastructure;
 
-namespace TheInternet.SystemTests.Raw
+namespace TheInternet.Common.Infrastructure
 {
-    [TestClass]
-    public class TestRunInitialization
+    /// <summary>
+    /// Core Framework Initialization 
+    /// </summary>
+    public static class MsTestInitialization
     {
-        const string PREFIX = "THEINTERNET_";
-
-        public const string DEFAULT_TEST_EXECUTION_CONTEXT = "default-chrome-localhost";
         public const string TEST_EXECUTION_CONTEXT_KEY_NAME = "TestExecutionContext";
 
         static IServiceProvider _serviceProvider = default;
         static ITestRunReporter _testRunReporter = default;
 
-        [AssemblyInitialize]
-        public static void Initialize(TestContext testContext)
+        public static void Initialize(string prefix, string defaultTestExecutionContext, TestContext testContext)
         {
+            Initialize(prefix, defaultTestExecutionContext, testContext, (p, sc) => { });
+        }
+        
+        public static void Initialize(string prefix, string defaultTestExecutionContext, TestContext testContext, Action<string, IServiceCollection> callback)
+        {
+            if (null == prefix) throw new System.ArgumentNullException(nameof(prefix));
+            if (null == defaultTestExecutionContext) throw new System.ArgumentNullException(nameof(defaultTestExecutionContext));
+            if (null == testContext) throw new System.ArgumentNullException(nameof(testContext));
+            if (null == callback) throw new System.ArgumentNullException(nameof(callback));
+
             // Initialize this early on (for bootstrapping) and keep it simple: console output only (MsTest will capture this)
             Log.Logger = new LoggerConfiguration()
                         .Enrich
@@ -36,7 +42,7 @@ namespace TheInternet.SystemTests.Raw
             // 1. {PREFIX}TEST_EXECUTION_CONTEXT
             // 2. DEFAULT_TEST_EXECUTION_CONTEXT
             // 3. .runsettings is the fallback (if in the solution root)
-            var testExecutionContextName = $"{Environment.GetEnvironmentVariable($"{PREFIX}TEST_EXECUTION_CONTEXT") ?? DEFAULT_TEST_EXECUTION_CONTEXT}";
+            var testExecutionContextName = $"{Environment.GetEnvironmentVariable($"{prefix}TEST_EXECUTION_CONTEXT") ?? defaultTestExecutionContext}";
             Log.Logger.Information($"Candidate Test Exection Context to use: {testExecutionContextName}");
 
             if (testContext.Properties.Contains(TEST_EXECUTION_CONTEXT_KEY_NAME))
@@ -61,11 +67,13 @@ namespace TheInternet.SystemTests.Raw
             });
 
             Log.Logger.Information("START: To initialize singleton container. ");
-            ContainerSingleton.Initialize(Log.Logger, PREFIX, (prefix, services) =>
+            ContainerSingleton.Initialize(Log.Logger, prefix, (prefix, services) =>
             {
                 Log.Logger.Information($"    START: Callback before container is built. ");
                 services.AddSingleton(testExecutionContext);
                 Log.Logger.Information($"    END: Callback after container is built. ");
+
+                callback(prefix, services);
             });
             Log.Logger.Information("END: Initializing singleton container. ");
 
@@ -75,8 +83,7 @@ namespace TheInternet.SystemTests.Raw
             _testRunReporter.Setup();
         }
 
-        [AssemblyCleanup]
-        public static void Teardown()
+        public static void Uninitialize()
         {
             _testRunReporter.Teardown();
         }

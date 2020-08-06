@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace TheInternet.SystemTests.Raw.Infrastructure
+namespace TheInternet.Common.Infrastructure
 {
     public static class TestExecutionContextFactory
     {

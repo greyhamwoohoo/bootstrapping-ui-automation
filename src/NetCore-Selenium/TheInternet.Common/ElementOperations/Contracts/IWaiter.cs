@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TheInternet.Common.ElementOperations
+namespace TheInternet.Common.ElementOperations.Contracts
 {
     public interface IWaiter
     {

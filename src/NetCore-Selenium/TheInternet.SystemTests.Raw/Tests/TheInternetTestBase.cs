@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using TheInternet.Common;
 
 namespace TheInternet.SystemTests.Raw.Tests
 {
