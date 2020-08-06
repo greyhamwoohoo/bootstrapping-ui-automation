@@ -15,7 +15,7 @@ variables:
   - name: THEINTERNET_TEST_EXECUTION_CONTEXT
     value: empty    
   - name: THEINTERNET_BROWSERSETTINGS_FILES
-    value: commonheadless-chrome.json
+    value: common-headless-chrome.json
   - name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
     value: common-localhost-selenium.json
   - name: THEINTERNET_ENVIRONMENTSETTINGS_FILES
