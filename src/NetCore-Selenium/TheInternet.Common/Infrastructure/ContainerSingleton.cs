@@ -58,19 +58,22 @@ namespace TheInternet.Common.Infrastructure
 
             var services = new ServiceCollection();
 
-            ConfigureDeviceSettings(bootstrappingLogger, prefix, services);
-            ConfigureBrowserSettings(bootstrappingLogger, prefix, services);
+            RegisterDeviceSettings(bootstrappingLogger, prefix, services);
+            RegisterBrowserSettings(bootstrappingLogger, prefix, services);
 
-            ConfigureSettings<RemoteWebDriverSettings>(bootstrappingLogger, prefix, "RemoteWebDriverSettings", "localhost-selenium.json", "remoteWebDriverSettings", services, registerInstance: true);
-            ConfigureSettings<EnvironmentSettings>(bootstrappingLogger, prefix, "EnvironmentSettings", "internet.json", "environmentSettings", services, registerInstance: true);
-            ConfigureSettings<IInstrumentationSettings, InstrumentationSettings>(bootstrappingLogger, prefix, "InstrumentationSettings", "default.json", "instrumentationSettings", services);
-            ConfigureSettings<IControlSettings, ControlSettings>(bootstrappingLogger, prefix, "ControlSettings", "default.json", "controlSettings", services);
+            RegisterSettings<RemoteWebDriverSettings>(bootstrappingLogger, prefix, "RemoteWebDriverSettings", "common-localhost-selenium.json", "remoteWebDriverSettings", services, registerInstance: true);
+            RegisterSettings<EnvironmentSettings>(bootstrappingLogger, prefix, "EnvironmentSettings", "internet.json", "environmentSettings", services, registerInstance: true);
+            ConfigureSettings<IInstrumentationSettings, InstrumentationSettings>(bootstrappingLogger, prefix, "InstrumentationSettings", "common.json", "instrumentationSettings", services);
+            ConfigureSettings<IControlSettings, ControlSettings>(bootstrappingLogger, prefix, "ControlSettings", "common.json", "controlSettings", services);
 
+            // Singletons: statics that are instantiated once for the lifetime of the entire test run
             services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
             services.AddSingleton<ITestRunReporter>(isp =>
             {
                 return new TestRunReporter(bootstrappingLogger, testDeploymentFolder: Directory.GetCurrentDirectory());
             });
+
+            // Scoped: per test
             services.AddScoped<ITestCaseReporterContext>(isp =>
             {
                 var candidatePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Logs", $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.log");
@@ -125,11 +128,11 @@ namespace TheInternet.Common.Infrastructure
             _instance = services.BuildServiceProvider();
         }
 
-        private static void ConfigureDeviceSettings(ILogger logger, string prefix, IServiceCollection services)
+        private static void RegisterDeviceSettings(ILogger logger, string prefix, IServiceCollection services)
         {
-            var runtimeSettingsUtilities = new RuntimeSettingsUtilities(logger);
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "DeviceSettings", "desktop-selenium-default.json");
-            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+            var runtimeSettingsUtilities = new RuntimeSettings(logger);
+            var paths = runtimeSettingsUtilities.CalculatePathsOfSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "DeviceSettings", "common-desktop-selenium.json");
+            var configurationRoot = runtimeSettingsUtilities.BuildConfiguration(prefix, paths);
 
             var platformName = configurationRoot.GetSection("platformName")?.Value?.ToUpper();
 
@@ -161,11 +164,11 @@ namespace TheInternet.Common.Infrastructure
             }
         }
 
-        private static void ConfigureBrowserSettings(ILogger logger, string prefix, IServiceCollection services)
+        private static void RegisterBrowserSettings(ILogger logger, string prefix, IServiceCollection services)
         {
-            var runtimeSettingsUtilities = new RuntimeSettingsUtilities(logger);
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "BrowserSettings", "default-chrome.json");
-            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+            var runtimeSettingsUtilities = new RuntimeSettings(logger);
+            var paths = runtimeSettingsUtilities.CalculatePathsOfSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), "BrowserSettings", "common-chrome.json");
+            var configurationRoot = runtimeSettingsUtilities.BuildConfiguration(prefix, paths);
 
             var browserName = configurationRoot.GetSection("browserName")?.Value?.ToUpper();
             var browserSettings = configurationRoot.GetSection("browserSettings");
@@ -229,11 +232,11 @@ namespace TheInternet.Common.Infrastructure
             }
         }
 
-        private static T ConfigureSettings<T>(ILogger logger, string prefix, string settingsFolderName, string defaultFilename, string settingsName, IServiceCollection services, bool registerInstance = false) where T : class, new()
+        private static T RegisterSettings<T>(ILogger logger, string prefix, string settingsFolderName, string defaultFilename, string settingsName, IServiceCollection services, bool registerInstance = false) where T : class, new()
         {
-            var runtimeSettingsUtilities = new RuntimeSettingsUtilities(logger);
-            var paths = runtimeSettingsUtilities.GetSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), settingsFolderName, defaultFilename);
-            var configurationRoot = runtimeSettingsUtilities.Buildconfiguration(prefix, paths);
+            var runtimeSettingsUtilities = new RuntimeSettings(logger);
+            var paths = runtimeSettingsUtilities.CalculatePathsOfSettingsFiles(prefix, Path.Combine(Directory.GetCurrentDirectory(), "Runtime"), settingsFolderName, defaultFilename);
+            var configurationRoot = runtimeSettingsUtilities.BuildConfiguration(prefix, paths);
 
             var controlSettings = configurationRoot.GetSection(settingsName);
 
@@ -259,7 +262,7 @@ namespace TheInternet.Common.Infrastructure
 
         private static void ConfigureSettings<TI, T>(ILogger logger, string prefix, string settingsFolderName, string defaultFilename, string settingsName, IServiceCollection services) where T : class, TI, new() where TI : class
         {
-            var instance = ConfigureSettings<T>(logger, prefix, settingsFolderName, defaultFilename, settingsFolderName, services, registerInstance: false);
+            var instance = RegisterSettings<T>(logger, prefix, settingsFolderName, defaultFilename, settingsFolderName, services, registerInstance: false);
 
             services.AddSingleton<TI, T>(isp => instance);
         }

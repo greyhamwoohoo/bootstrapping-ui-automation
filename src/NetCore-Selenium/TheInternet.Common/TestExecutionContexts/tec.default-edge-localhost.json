@@ -1,0 +1,8 @@
+{
+  "testExecutionContext": {
+    "environmentVariables": {
+      "THEINTERNET_BROWSERSETTINGS_FILES": "common-edge.json",
+      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-selenium.json"
+    }
+  }
+}

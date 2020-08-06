@@ -15,13 +15,13 @@ variables:
   - name: THEINTERNET_TEST_EXECUTION_CONTEXT
     value: empty    
   - name: THEINTERNET_BROWSERSETTINGS_FILES
-    value: headless-chrome.json
+    value: common-headless-chrome.json
   - name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
-    value: localhost-selenium.json
+    value: common-localhost-selenium.json
   - name: THEINTERNET_ENVIRONMENTSETTINGS_FILES
     value: internet.json
   - name: THEINTERNET_CONTROLSETTINGS_FILES
-    value: default.json
+    value: common.json
   - name: TEST_TARGET_FOLDER
     value: NetCore-Selenium
 

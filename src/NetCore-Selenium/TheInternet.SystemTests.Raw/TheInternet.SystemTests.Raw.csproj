@@ -9,62 +9,10 @@
 
   <ItemGroup>
     <None Remove="Content\SampleFileToUpload.txt" />
-    <None Remove="TestExecutionContexts\tec.attachable-chrome-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.attachable-edge-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.attachable-ie11-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.default-android-chrome-web-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.default-chrome-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.default-edge-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.default-firefox-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.default-ie11-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.empty.json" />
-    <None Remove="TestExecutionContexts\tec.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Content\SampleFileToUpload.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.default-android-chrome-web-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.empty.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.attachable-ie11-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.default-ie11-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.attachable-edge-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.attachable-chrome-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.default-chrome-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.default-edge-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.default-firefox-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>  

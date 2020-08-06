@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -8,50 +8,63 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Runtime\BrowserSettings\default-chrome.json" />
-    <None Remove="Runtime\BrowserSettings\default-edge.json" />
-    <None Remove="Runtime\BrowserSettings\default-firefox.json" />
-    <None Remove="Runtime\BrowserSettings\default-ie11.json" />
-    <None Remove="Runtime\BrowserSettings\headless-chrome.json" />
-    <None Remove="Runtime\BrowserSettings\performance-chrome.json" />
-    <None Remove="Runtime\ControlSettings\default.json" />
-    <None Remove="Runtime\DeviceSettings\android-web-chrome.json" />
-    <None Remove="Runtime\DeviceSettings\desktop-selenium-default.json" />
+    <None Remove="Runtime\BrowserSettings\common-chrome.json" />
+    <None Remove="Runtime\BrowserSettings\common-edge.json" />
+    <None Remove="Runtime\BrowserSettings\common-firefox.json" />
+    <None Remove="Runtime\BrowserSettings\common-headless-chrome.json" />
+    <None Remove="Runtime\BrowserSettings\common-ie11.json" />
+    <None Remove="Runtime\BrowserSettings\common-performance-chrome.json" />
+    <None Remove="Runtime\ControlSettings\common.json" />
+    <None Remove="Runtime\DeviceSettings\common-android-web-chrome.json" />
+    <None Remove="Runtime\DeviceSettings\common-desktop-selenium.json" />
     <None Remove="Runtime\EnvironmentSettings\internet-localhost.json" />
     <None Remove="Runtime\EnvironmentSettings\internet.json" />
-    <None Remove="Runtime\InstrumentationSettings\default.json" />
-    <None Remove="Runtime\RemoteWebDriverSettings\localhost-appium.json" />
-    <None Remove="Runtime\RemoteWebDriverSettings\localhost-selenium.json" />
-    <None Remove="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json" />
+    <None Remove="Runtime\InstrumentationSettings\common.json" />
+    <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-appium.json" />
+    <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-selenium.json" />
+    <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-zalenium-docker.json" />
     <None Remove="serilogSettings.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-chrome-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-edge-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.attachable-ie11-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-android-chrome-web-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-chrome-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-edge-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-firefox-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.default-ie11-localhost.json" />
+    <None Remove="TestExecutionContexts\tec.empty.json" />
+    <None Remove="TestExecutionContexts\tec.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Runtime\BrowserSettings\default-ie11.json">
+    <Content Include="Runtime\BrowserSettings\common-ie11.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\BrowserSettings\default-firefox.json">
+    <Content Include="Runtime\BrowserSettings\common-firefox.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\BrowserSettings\default-edge.json">
+    <Content Include="Runtime\BrowserSettings\common-edge.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\BrowserSettings\performance-chrome.json">
+    <Content Include="Runtime\BrowserSettings\common-performance-chrome.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\BrowserSettings\headless-chrome.json">
+    <Content Include="Runtime\BrowserSettings\common-headless-chrome.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\BrowserSettings\default-chrome.json">
+    <Content Include="Runtime\BrowserSettings\common-chrome.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\ControlSettings\default.json">
+    <Content Include="Runtime\ControlSettings\common.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\DeviceSettings\desktop-selenium-default.json">
+    <Content Include="Runtime\DeviceSettings\common-desktop-selenium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\DeviceSettings\android-web-chrome.json">
+    <Content Include="Runtime\DeviceSettings\common-android-web-chrome.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\EnvironmentSettings\internet-localhost.json">
@@ -60,19 +73,58 @@
     <Content Include="Runtime\EnvironmentSettings\internet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\InstrumentationSettings\default.json">
+    <Content Include="Runtime\InstrumentationSettings\common.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\RemoteWebDriverSettings\localhost-appium.json">
+    <Content Include="Runtime\RemoteWebDriverSettings\common-localhost-appium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\RemoteWebDriverSettings\zalenium-docker-localhost.json">
+    <Content Include="Runtime\RemoteWebDriverSettings\common-localhost-zalenium-docker.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\RemoteWebDriverSettings\localhost-selenium.json">
+    <Content Include="Runtime\RemoteWebDriverSettings\common-localhost-selenium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="serilogsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.attachable-chrome-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.attachable-edge-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.attachable-ie11-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.default-android-chrome-web-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.default-chrome-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.default-edge-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.default-firefox-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.default-ie11-localhost.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.empty.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\tec.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -88,6 +140,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="RestSharp" Version="106.10.1" />
     <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.26.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />

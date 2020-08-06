@@ -87,7 +87,7 @@ namespace TheInternet.Common.SessionManagement
             {
                 if (!remoteWebDriverSettings.UseRemoteDriver)
                 {
-                    throw new System.InvalidOperationException($"For Appium, we always configure the RemoteWebDriver settings. If running Appium locally, use the 'localhost-appium.json' file. ");
+                    throw new System.InvalidOperationException($"For Appium, we always configure the RemoteWebDriver settings. If running Appium locally, use the 'common-localhost-appium.json' file. ");
                 }
 
                 var appiumSettings = deviceProperties.DeviceSettings as AppiumSettings;

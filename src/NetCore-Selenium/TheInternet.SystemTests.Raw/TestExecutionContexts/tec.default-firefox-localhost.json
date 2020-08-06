@@ -1,8 +1,0 @@
-{
-  "testExecutionContext": {
-    "environmentVariables": {
-      "THEINTERNET_BROWSERSETTINGS_FILES": "default-firefox.json",
-      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "localhost-selenium.json"
-    }
-  }
-}

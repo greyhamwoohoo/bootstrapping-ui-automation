@@ -5,7 +5,7 @@ using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 using TheInternet.Common.Reporting.Contracts;
 using TheInternet.Common.SessionManagement.Contracts;
 
-namespace TheInternet.SystemTests.Raw
+namespace TheInternet.Common
 {
     /// <summary>
     /// Base class for all Web based tests: use for Selenium and Device Web Browsing
@@ -33,7 +33,7 @@ namespace TheInternet.SystemTests.Raw
         [TestCleanup]
         public void TeardownSeleniumTest()
         {
-            if(Resolve<IControlSettings>().AttachToExistingSessionIfItExists)
+            if (Resolve<IControlSettings>().AttachToExistingSessionIfItExists)
             {
                 Logger.Information($"The Control Settings want to attach to an existing session if it exists. Therefore, we will not close the browser at this time. ");
                 return;
@@ -52,7 +52,7 @@ namespace TheInternet.SystemTests.Raw
             {
                 DriverSession?.WebDriver?.Dispose();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Error($"{ex}");
             }
@@ -60,7 +60,7 @@ namespace TheInternet.SystemTests.Raw
             try
             {
                 var logPath = TestCaseReporter.LogPath;
-                if(System.IO.File.Exists(logPath))
+                if (System.IO.File.Exists(logPath))
                 {
                     TestContext.AddResultFile(logPath);
                 }
@@ -74,7 +74,7 @@ namespace TheInternet.SystemTests.Raw
             {
                 TestCaseReporter.Uninitialize();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Error($"{ex}");
             }

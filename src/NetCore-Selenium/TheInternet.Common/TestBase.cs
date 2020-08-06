@@ -4,7 +4,7 @@ using Serilog;
 using System;
 using TheInternet.Common.Infrastructure;
 
-namespace TheInternet.SystemTests.Raw
+namespace TheInternet.Common
 {
     [TestClass]
     public abstract class TestBase

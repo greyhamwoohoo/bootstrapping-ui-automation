@@ -1,9 +1,0 @@
-{
-  "testExecutionContext": {
-    "environmentVariables": {
-      "THEINTERNET_DEVICESETTINGS_FILES": "android-web-chrome.json",
-      "THEINTERNET_BROWSERSETTINGS_FILES": "default-chrome.json",
-      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "localhost-appium.json"
-    }
-  }
-}

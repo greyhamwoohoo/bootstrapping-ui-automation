@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace TheInternet.Common.ExecutionContext.Runtime
 {
-    public class RuntimeSettingsUtilities
+    public class RuntimeSettings
     {
         private readonly ILogger _logger;
 
-        public RuntimeSettingsUtilities(ILogger logger)
+        public RuntimeSettings(ILogger logger)
         {
             if (null == logger) throw new System.ArgumentNullException(nameof(logger));
 
@@ -27,7 +27,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime
         /// <param name="rootFolder">Root folder. Typically: the test execution folder. </param>
         /// <param name="defaultFilename">Default settings filename. </param>
         /// <returns></returns>
-        public IEnumerable<string> GetSettingsFiles(string prefix, string rootFolder, string category, string defaultFilename)
+        public IEnumerable<string> CalculatePathsOfSettingsFiles(string prefix, string rootFolder, string category, string defaultFilename)
         {
             if (rootFolder == null) throw new System.ArgumentNullException(nameof(rootFolder));
             if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
@@ -77,7 +77,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime
         /// <param name="prefix">Environment variable prefix to use for overrides. </param>
         /// <param name="paths">Fully qualified paths for the configuration. Must exist. </param>
         /// <returns></returns>
-        public IConfigurationRoot Buildconfiguration(string prefix, IEnumerable<string> paths)
+        public IConfigurationRoot BuildConfiguration(string prefix, IEnumerable<string> paths)
         {
             if (null == prefix) throw new System.ArgumentNullException(nameof(prefix));
             if (null == paths) throw new System.ArgumentNullException(nameof(paths));
