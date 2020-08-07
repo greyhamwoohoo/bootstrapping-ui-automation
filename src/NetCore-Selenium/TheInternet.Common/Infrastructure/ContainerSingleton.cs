@@ -50,7 +50,7 @@ namespace TheInternet.Common.Infrastructure
             if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
             Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("TESTDEPLOYMENTDIR", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TEST_DEPLOYMENT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
 
             //
             // TODO: When this gets too big, look at Factories

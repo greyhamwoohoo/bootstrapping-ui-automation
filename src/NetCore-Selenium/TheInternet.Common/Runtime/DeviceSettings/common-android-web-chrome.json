@@ -20,7 +20,7 @@
       },
       "androidCapabilities": {
         "!chromedriverExecutableNote": "By specifying this, we are using the Chromedriver based on the Project NuGET Reference. This is (usually) find if with the -R- (latest) Android AVD Images",
-        "chromedriverExecutable": "%TESTDEPLOYMENTDIR%/chromedriver.exe"
+        "chromedriverExecutable": "%TEST_DEPLOYMENT_FOLDER%/chromedriver.exe"
       }
     }
   }
