@@ -1,17 +1,15 @@
-﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TheInternet.Common;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 
 namespace TheInternet.SystemTests.Raw
 {
     [TestClass]
-    public class SmokeTest : SeleniumTestBase
+    public class SmokeTests : SeleniumTestBase
     {
         protected override string BaseUrl => "https://www.google.com";
 
         [TestMethod]
-        public void Will_Log_One_Of_Each_Level()
+        public void Can_Report_Each_Level()
         {
             Reporter.Debug("Debug");
             Reporter.Information("Information");
