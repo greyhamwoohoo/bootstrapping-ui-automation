@@ -1,4 +1,6 @@
-﻿namespace TheInternet.Common.Reporting.Contracts
+﻿using System;
+
+namespace TheInternet.Common.Reporting.Contracts
 {
     /// <summary>
     /// Represents the running test case. 
@@ -29,5 +31,10 @@
         /// Reporter used for the entire test run (not just this test case)
         /// </summary>
         ITestRunReporter TestRunReporter { get; }
+        void Debug(string message);
+        void Information(string message);
+        void Warning(string message);
+        void Error(string message);
+        void Error(string message, Exception ex);
     }
 }

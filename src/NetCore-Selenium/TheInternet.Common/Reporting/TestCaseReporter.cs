@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using System;
 using TheInternet.Common.Reporting.Contracts;
 
 namespace TheInternet.Common.Reporting
@@ -29,6 +30,31 @@ namespace TheInternet.Common.Reporting
         {
             Name = null;
             Logger.Debug($"Uninitialize");
+        }
+
+        public void Debug(string message)
+        {
+            Logger.Debug($"{message}");
+        }
+
+        public void Information(string message)
+        {
+            Logger.Information($"{message}");
+        }
+
+        public void Warning(string message)
+        {
+            Logger.Warning($"{message}");
+        }
+
+        public void Error(string message)
+        {
+            Logger.Error($"{message}");
+        }
+
+        public void Error(string message, Exception exception)
+        {
+            Logger.Error($"{exception}");
         }
     }
 }

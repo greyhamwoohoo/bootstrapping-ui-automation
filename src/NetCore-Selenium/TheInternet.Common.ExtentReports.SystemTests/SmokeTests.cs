@@ -11,9 +11,13 @@ namespace TheInternet.SystemTests.Raw
         protected override string BaseUrl => "https://www.google.com";
 
         [TestMethod]
-        public void ItIsChrome()
+        public void Will_Log_One_Of_Each_Level()
         {
-            Resolve<IBrowserProperties>().Name.Should().BeOneOf("CHROME", "EDGE", "FIREFOX");
+            Reporter.Debug("Debug");
+            Reporter.Information("Information");
+            Reporter.Warning("Warning");
+            Reporter.Error("Error");
+            Reporter.Error("MyException", new System.IO.FileNotFoundException($"The file was not found"));
         }
     }
 }

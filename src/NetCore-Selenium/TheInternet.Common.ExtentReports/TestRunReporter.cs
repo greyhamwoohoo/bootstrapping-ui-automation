@@ -35,7 +35,7 @@ namespace TheInternet.Common.ExtentReports
 
         public ITestCaseReporter CreateTestCaseReporter(ILogger logger, ITestCaseReporterContext testCaseReporterContext)
         {
-            return new TestCaseReporter(this);
+            return new TestCaseReporter(logger, this);
         }
     }
 }
