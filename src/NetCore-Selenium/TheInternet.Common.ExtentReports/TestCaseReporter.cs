@@ -2,7 +2,6 @@
 using OpenQA.Selenium;
 using Serilog;
 using System;
-using System.IO;
 using TheInternet.Common.Reporting.Contracts;
 using TheInternet.Common.SessionManagement.Contracts;
 
