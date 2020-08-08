@@ -42,7 +42,7 @@ namespace TheInternet.Common.Reporting
         {
             _services.AddSingleton<ITestRunReporter>(isp =>
             {
-                return new TestRunReporter(_bootstrappingLogger, testOutputFolder: _testRunReporterContext.RootOutputFolder, _testRunReporterContext.TestRunIdentity);
+                return new TestRunReporter(_bootstrappingLogger, testOutputFolder: _testRunReporterContext.RootReportingFolder, _testRunReporterContext.TestRunIdentity);
             });
 
             _services.AddScoped<ITestCaseReporterContext>(isp =>

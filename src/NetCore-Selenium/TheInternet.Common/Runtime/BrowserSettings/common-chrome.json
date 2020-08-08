@@ -3,7 +3,7 @@
   "browserSettings": {
     "options": {
       "captureChromeLogFile": false,
-      "chromeLogPath": "%TEST_OUTPUT_FOLDER%\\Chrome_debug.log",
+      "chromeLogPath": "%TEST_OUTPUT_FOLDER%\\Logs\\Chrome_debug.log",
       "arguments": [
         "incognito",
         "--no-sandbox",

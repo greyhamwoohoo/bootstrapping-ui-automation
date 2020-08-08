@@ -12,6 +12,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings
         }
 
         public bool LogFilePerTest { get; set; }
+        public string RootReportingFolder { get; set; }
 
         public ReportingSettings ReportingSettings { get; set; }
 

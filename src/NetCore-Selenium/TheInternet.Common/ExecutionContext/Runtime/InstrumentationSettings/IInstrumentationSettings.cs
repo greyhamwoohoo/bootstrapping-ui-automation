@@ -3,6 +3,7 @@
     public interface IInstrumentationSettings
     {
         bool LogFilePerTest {get; }
+        public string RootReportingFolder { get; }
         IReportingSettings ReportingSettings { get; }
     }
 

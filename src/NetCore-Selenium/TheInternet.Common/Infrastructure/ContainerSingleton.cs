@@ -79,7 +79,7 @@ namespace TheInternet.Common.Infrastructure
             var testRunReporterContext = new TestRunReporterContext()
             {
                 InstrumentationSettings = instrumentationSettings,
-                RootOutputFolder = System.IO.Path.Combine(testOutputFolder, "Logs"),
+                RootReportingFolder = instrumentationSettings.RootReportingFolder,
                 TestRunIdentity = DateTime.Now.ToString("yyyyMMdd-HHmmss")
             };
 

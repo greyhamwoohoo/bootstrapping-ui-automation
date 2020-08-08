@@ -1,6 +1,7 @@
 ﻿{
   "instrumentationSettings": {
     "logFilePerTest": true,
+    "rootReportingFolder": "%TEST_OUTPUT_FOLDER%/Logs",
     "!reportingSettings": "Will do for now; but these settings are report engine specific",
     "reportingSettings": {
       "enabled": true,

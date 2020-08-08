@@ -34,7 +34,7 @@ namespace TheInternet.Common.ExtentReports.SystemTests.Infrastructure
                 return;
             }
 
-            var testRunReporter = new TestRunReporter(testRunReporterContext.RootOutputFolder, testRunReporterContext.TestRunIdentity);
+            var testRunReporter = new TestRunReporter(testRunReporterContext.RootReportingFolder, testRunReporterContext.TestRunIdentity);
 
             serviceCollection.AddSingleton<ITestRunReporter>(isp =>
             {
