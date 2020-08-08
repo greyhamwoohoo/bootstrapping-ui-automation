@@ -61,6 +61,15 @@ stages:
         testRunTitle: Common.UnitTests
 
     - task: DotNetCoreCLI@2
+      displayName: 'Run Common.SystemTests'
+      inputs:
+        command: test
+        workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+        arguments: TheInternet.Common.SystemTests.dll
+        publishTestResults: true
+        testRunTitle: Common.SystemTests        
+
+    - task: DotNetCoreCLI@2
       displayName: 'Run ExtentReports.System Tests'
       inputs:
         command: test
