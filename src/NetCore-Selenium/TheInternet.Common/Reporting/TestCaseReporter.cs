@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using System;
 using TheInternet.Common.Reporting.Contracts;
+using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.Common.Reporting
 {
@@ -8,19 +9,20 @@ namespace TheInternet.Common.Reporting
     {
         public string Name { get; private set; }
         public string LogFilePath { get; }
-        public ITestRunReporter TestRunReporter { get; }
         protected ILogger Logger { get; }
+        public bool AlwaysCaptureScreenshots { get; set; }
+        public IDriverSession DriverSession { get; private set; }
 
         internal TestCaseReporter(ITestRunReporter testRunReporter, ILogger logger, ITestCaseReporterContext testCaseReporterContext)
         {
-            TestRunReporter = testRunReporter ?? throw new System.ArgumentNullException(nameof(testRunReporter));
             Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
 
             LogFilePath = testCaseReporterContext.LogFilePath;
         }
 
-        public void Initialize(string name)
+        public void Initialize(IDriverSession driverSession, string name)
         {
+            DriverSession = driverSession ?? throw new System.ArgumentNullException(nameof(driverSession));
             Name = name ?? throw new System.ArgumentNullException(nameof(name));
 
             Logger.Debug($"Initialize: Name={name}");

@@ -29,6 +29,11 @@ namespace TheInternet.Common.ExtentReports.SystemTests.Infrastructure
 
         private static void RegisterExtentReporting(string prefix, IServiceCollection serviceCollection, ITestRunReporterContext testRunReporterContext)
         {
+            if(!testRunReporterContext.InstrumentationSettings.ReportingSettings.Enabled)
+            {
+                return;
+            }
+
             var testRunReporter = new TestRunReporter(testRunReporterContext.RootOutputFolder, testRunReporterContext.TestRunIdentity);
 
             serviceCollection.AddSingleton<ITestRunReporter>(isp =>
@@ -47,7 +52,9 @@ namespace TheInternet.Common.ExtentReports.SystemTests.Infrastructure
                 var testCaseReporterContext = isp.GetRequiredService<ITestCaseReporterContext>();
                 var logger = isp.GetRequiredService<ILogger>();
 
-                return testRunReporter.CreateTestCaseReporter(logger, testCaseReporterContext);
+                var result = testRunReporter.CreateTestCaseReporter(logger, testCaseReporterContext);
+                result.AlwaysCaptureScreenshots = testRunReporterContext.InstrumentationSettings.ReportingSettings.AlwaysCaptureScreenshots;
+                return result;
             });
         }
     }

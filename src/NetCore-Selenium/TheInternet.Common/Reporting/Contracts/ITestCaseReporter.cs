@@ -1,4 +1,6 @@
 ﻿using System;
+using TheInternet.Common.SessionManagement;
+using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.Common.Reporting.Contracts
 {
@@ -11,7 +13,8 @@ namespace TheInternet.Common.Reporting.Contracts
         /// Initialize the reporter for the given test. 
         /// </summary>
         /// <param name="name">Test name</param>
-        void Initialize(string name);
+        /// <param name="driverSession">The driver session this TestCase belongs to. </param>
+        void Initialize(IDriverSession driverSession, string name);
 
         /// <summary>
         /// Uninitialize / tear down. 
@@ -27,10 +30,8 @@ namespace TheInternet.Common.Reporting.Contracts
         /// Fully qualified path to the .log file that will be created for this test case. 
         /// </summary>
         string LogFilePath { get; }
-        /// <summary>
-        /// Reporter used for the entire test run (not just this test case)
-        /// </summary>
-        ITestRunReporter TestRunReporter { get; }
+        bool AlwaysCaptureScreenshots { get; set; }
+        IDriverSession DriverSession { get; }
         void Debug(string message);
         void Information(string message);
         void Warning(string message);

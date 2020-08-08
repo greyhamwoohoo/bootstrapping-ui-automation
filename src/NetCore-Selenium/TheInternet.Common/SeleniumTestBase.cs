@@ -25,7 +25,7 @@ namespace TheInternet.Common
         {
             DriverSession = Resolve<IDriverSession>();
 
-            TestCaseReporter.Initialize(TestContext.TestName);
+            TestCaseReporter.Initialize(DriverSession, TestContext.TestName);
 
             NavigateToBaseUrl();
         }

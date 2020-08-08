@@ -1,5 +1,10 @@
 ﻿{
   "instrumentationSettings": {
-    "logFilePerTest": true
+    "logFilePerTest": true,
+    "!reportingSettings": "Will do for now; but these settings are report engine specific",
+    "reportingSettings": {
+      "enabled": true,
+      "alwaysCaptureScreenshots": true
+    }
   }
 }

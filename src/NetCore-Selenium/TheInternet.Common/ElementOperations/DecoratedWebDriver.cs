@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
+using OpenQA.Selenium.Support.Extensions;
 using System.Collections.ObjectModel;
 using TheInternet.Common.ElementOperations.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
@@ -9,7 +10,7 @@ namespace TheInternet.Common.ElementOperations
     /// <summary>
     /// Wraps the IWebDriver interface and enriches it. 
     /// </summary>
-    public class DecoratedWebDriver : IDecoratedWebDriver, IWrapsDriver
+    public class DecoratedWebDriver : IDecoratedWebDriver, IWrapsDriver, ITakesScreenshot
     {
         private readonly IWebDriver _original;
         private readonly IControlSettings _controlSettings;
@@ -56,6 +57,11 @@ namespace TheInternet.Common.ElementOperations
         public ReadOnlyCollection<IWebElement> FindElements(By by)
         {
             return _original.FindElements(by);
+        }
+
+        public Screenshot GetScreenshot()
+        {
+            return _original.TakeScreenshot();
         }
 
         public IOptions Manage()
