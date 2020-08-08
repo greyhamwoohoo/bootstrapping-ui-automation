@@ -1,0 +1,87 @@
+# Purpose: PR Pipeline
+#
+# Run .Common.*Tests projects
+trigger: none
+pr:
+- master
+
+name: 1.0$(Rev:.r)
+
+variables:
+  - name: Build.Configuration
+    value: Release
+  - name: THEINTERNET_TEST_EXECUTION_CONTEXT
+    value: empty    
+  - name: THEINTERNET_BROWSERSETTINGS_FILES
+    value: common-headless-chrome.json
+  - name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
+    value: common-localhost-selenium.json
+  - name: THEINTERNET_ENVIRONMENTSETTINGS_FILES
+    value: internet.json
+  - name: THEINTERNET_CONTROLSETTINGS_FILES
+    value: common.json
+  - name: TEST_TARGET_FOLDER
+    value: NetCore-Selenium
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
+    timeoutInMinutes: 12
+    cancelTimeoutInMinutes: 2
+    pool:
+      vmImage: windows-2019
+
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Dotnet Restore'
+      inputs:
+        command: restore
+        projects: '**/*.sln'
+    - task: DotNetCoreCLI@2
+      displayName: 'Dotnet Publish'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: |
+           **/*.sln
+        
+        arguments: '--no-restore --configuration $(Build.Configuration)'
+        zipAfterPublish: false  
+
+    - powershell: 'Get-ChildItem -Recurse'
+      workingDirectory: src/$(TEST_TARGET_FOLDER)
+      displayName: 'PowerShell Script'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run Common.UnitTests'
+      inputs:
+        command: custom
+        custom: vstest
+        arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.UnitTests/bin/$(Build.Configuration)/netcoreapp3.1/publish/TheInternet.Common.UnitTests.dll --logger:"trx;LogFileName=Common-Unit-Tests.trx"'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run ExtentReports.System Tests'
+      inputs:
+        command: custom
+        custom: vstest
+        arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.ExtentReports.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish/TheInternet.Common.ExtentReports.SystemTests.dll --logger:"trx;LogFileName=Common-Extent-Reports-System-Tests.trx"'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results **/Common-Unit-Tests.trx'
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '**/Common-Unit-Tests.trx'
+        failTaskOnFailedTests: true
+        testRunTitle: 'Common.UnitTests'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results **/Common-Extent-Reports-System-Tests.trx.trx'
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '**/Common-Extent-Reports-System-Tests.trx.trx'
+        failTaskOnFailedTests: true
+        testRunTitle: 'Common.ExtentReports.SystemTests'
