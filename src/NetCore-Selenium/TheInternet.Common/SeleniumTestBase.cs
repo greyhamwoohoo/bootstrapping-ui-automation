@@ -16,16 +16,16 @@ namespace TheInternet.Common
         protected virtual string BaseUrl => DriverSession.EnvironmentSettings.BaseUrl;
         protected virtual IDecoratedWebDriver WebDriver => DriverSession.WebDriver;
         protected IDriverSession DriverSession { get; private set; }
-        protected ITestRunReporter TestRunReporter { get; private set; }
-        protected ITestCaseReporter TestCaseReporter { get; private set; }
+        protected ITestCaseReporter Reporter => TestCaseReporter;
+        private ITestCaseReporter TestCaseReporter => DriverSession.TestCaseReporter;
+        
 
         [TestInitialize]
         public void SetupSeleniumTest()
         {
             DriverSession = Resolve<IDriverSession>();
 
-            TestCaseReporter = Resolve<ITestCaseReporter>();
-            TestCaseReporter.Initialize(TestContext.TestName);
+            TestCaseReporter.Initialize(DriverSession, TestContext.TestName);
 
             NavigateToBaseUrl();
         }
@@ -59,7 +59,7 @@ namespace TheInternet.Common
 
             try
             {
-                var logPath = TestCaseReporter.LogPath;
+                var logPath = TestCaseReporter.LogFilePath;
                 if (System.IO.File.Exists(logPath))
                 {
                     TestContext.AddResultFile(logPath);

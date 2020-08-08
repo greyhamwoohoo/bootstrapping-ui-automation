@@ -9,10 +9,27 @@ namespace TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings
     {
         public InstrumentationSettings()
         {
-
         }
 
         public bool LogFilePerTest { get; set; }
+        public string RootReportingFolder { get; set; }
+
+        public ReportingSettings ReportingSettings { get; set; }
+
+        IReportingSettings IInstrumentationSettings.ReportingSettings => ReportingSettings;
+
+        public void Cleanse()
+        {
+            ReportingSettings ??= new ReportingSettings();
+
+            (ReportingSettings as ICleanse)?.Cleanse();
+        }
+    }
+
+    public class ReportingSettings : ICleanse, IReportingSettings
+    {
+        public bool Enabled { get; set; }
+        public bool AlwaysCaptureScreenshots { get; set; }
         public void Cleanse()
         {
         }

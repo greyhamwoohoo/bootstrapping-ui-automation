@@ -21,6 +21,9 @@ using TheInternet.Common.SessionManagement.Contracts;
 
 namespace TheInternet.Common.Infrastructure
 {
+    /// <summary>
+    /// TODO: This is becoming a monster. Refactor. 
+    /// </summary>
     public static class ContainerSingleton
     {
         private static IServiceProvider _instance;
@@ -40,17 +43,17 @@ namespace TheInternet.Common.Infrastructure
         }
         public static void Initialize(ILogger bootstrappingLogger, string prefix)
         {
-            Initialize(bootstrappingLogger, prefix, (prefix, services) => { });
+            Initialize(bootstrappingLogger, prefix, (prefix, services, testRunReporterContext) => { });
         }
 
-        public static void Initialize(ILogger bootstrappingLogger, string prefix, Action<string, IServiceCollection> beforeContainerBuild)
+        public static void Initialize(ILogger bootstrappingLogger, string prefix, Action<string, IServiceCollection, ITestRunReporterContext> beforeContainerBuild)
         {
             if (_instance != null) throw new InvalidOperationException($"The Initialize method has already been called. ");
             if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
             if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
             Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("TESTDEPLOYMENTDIR", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TEST_DEPLOYMENT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
 
             //
             // TODO: When this gets too big, look at Factories
@@ -61,35 +64,34 @@ namespace TheInternet.Common.Infrastructure
             RegisterDeviceSettings(bootstrappingLogger, prefix, services);
             RegisterBrowserSettings(bootstrappingLogger, prefix, services);
 
+            var instrumentationSettings = ConfigureSettings<IInstrumentationSettings, InstrumentationSettings>(bootstrappingLogger, prefix, "InstrumentationSettings", "common.json", "instrumentationSettings", services);
+
             RegisterSettings<RemoteWebDriverSettings>(bootstrappingLogger, prefix, "RemoteWebDriverSettings", "common-localhost-selenium.json", "remoteWebDriverSettings", services, registerInstance: true);
             RegisterSettings<EnvironmentSettings>(bootstrappingLogger, prefix, "EnvironmentSettings", "internet.json", "environmentSettings", services, registerInstance: true);
-            ConfigureSettings<IInstrumentationSettings, InstrumentationSettings>(bootstrappingLogger, prefix, "InstrumentationSettings", "common.json", "instrumentationSettings", services);
             ConfigureSettings<IControlSettings, ControlSettings>(bootstrappingLogger, prefix, "ControlSettings", "common.json", "controlSettings", services);
+
+            // Clear the variables so they do not creep into the rest of our implementation
+            Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", null, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TEST_DEPLOYMENT_FOLDER", null, EnvironmentVariableTarget.Process);
 
             // Singletons: statics that are instantiated once for the lifetime of the entire test run
             services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
-            services.AddSingleton<ITestRunReporter>(isp =>
+
+            var testRunReporterContext = new TestRunReporterContext()
             {
-                return new TestRunReporter(bootstrappingLogger, testDeploymentFolder: Directory.GetCurrentDirectory());
-            });
+                InstrumentationSettings = instrumentationSettings,
+                RootReportingFolder = instrumentationSettings.RootReportingFolder,
+                TestRunIdentity = DateTime.Now.ToString("yyyyMMdd-HHmmss")
+            };
+
+            services.AddSingleton<ITestRunReporterContext>(testRunReporterContext);
 
             // Scoped: per test
-            services.AddScoped<ITestCaseReporterContext>(isp =>
-            {
-                var candidatePath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Logs", $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.log");
-
-                return new TestCaseReporterContext(logPath: candidatePath);
-            });
-            services.AddScoped<ITestCaseReporter>(isp =>
-            {
-                // NOTE: We have no TestContext here - so we cannot set the name; Initialize will be called as early as possible in the test execution. 
-                return new TestCaseReporter(isp.GetRequiredService<ILogger>(), isp.GetRequiredService<ITestCaseReporterContext>().LogPath);
-            });
             services.AddScoped(isp =>
             {
                 var serilogContext = BuildSerilogConfiguration();
 
-                var logPath = isp.GetRequiredService<ITestCaseReporterContext>().LogPath;
+                var logPath = isp.GetRequiredService<ITestCaseReporterContext>().LogFilePath;
 
                 LoggerConfiguration loggerConfiguration = new LoggerConfiguration()
                     .ReadFrom
@@ -97,12 +99,12 @@ namespace TheInternet.Common.Infrastructure
                     .Enrich
                     .FromLogContext();
 
-                if(isp.GetRequiredService<IInstrumentationSettings>().LogFilePerTest)
+                if (isp.GetRequiredService<IInstrumentationSettings>().LogFilePerTest)
                 {
                     loggerConfiguration.WriteTo
                         .File(logPath);
                 };
-                    
+
                 ILogger logger = loggerConfiguration.CreateLogger();
 
                 return logger;
@@ -123,7 +125,15 @@ namespace TheInternet.Common.Infrastructure
                 return driverSession;
             });
 
-            beforeContainerBuild(prefix, services);
+            beforeContainerBuild(prefix, services, testRunReporterContext);
+
+            var reportingContextManager = new ReportingContextRegistrationManager(bootstrappingLogger, services, testRunReporterContext);
+
+            reportingContextManager.AssertIsNotPartiallyConfigured();
+            if(!reportingContextManager.IsConfigured)
+            {
+                reportingContextManager.PopulateDefaultReportingContexts();
+            }
 
             _instance = services.BuildServiceProvider();
         }
@@ -136,7 +146,7 @@ namespace TheInternet.Common.Infrastructure
 
             var platformName = configurationRoot.GetSection("platformName")?.Value?.ToUpper();
 
-            switch(platformName)
+            switch (platformName)
             {
                 case "DESKTOP":
                     var instance = new DesktopSettings();
@@ -173,11 +183,11 @@ namespace TheInternet.Common.Infrastructure
             var browserName = configurationRoot.GetSection("browserName")?.Value?.ToUpper();
             var browserSettings = configurationRoot.GetSection("browserSettings");
 
-            switch(browserName)
+            switch (browserName)
             {
                 case "CHROME":
                     var instance = new ChromeBrowserSettings();
-                    
+
                     browserSettings.Bind(instance);
 
                     instance = SubstituteEnvironmentVariables<ChromeBrowserSettings>(instance);
@@ -252,7 +262,7 @@ namespace TheInternet.Common.Infrastructure
                 cleansor.Cleanse();
             }
 
-            if(registerInstance)
+            if (registerInstance)
             {
                 services.AddSingleton<T>(isp => instance);
             }
@@ -260,11 +270,13 @@ namespace TheInternet.Common.Infrastructure
             return instance;
         }
 
-        private static void ConfigureSettings<TI, T>(ILogger logger, string prefix, string settingsFolderName, string defaultFilename, string settingsName, IServiceCollection services) where T : class, TI, new() where TI : class
+        private static TI ConfigureSettings<TI, T>(ILogger logger, string prefix, string settingsFolderName, string defaultFilename, string settingsName, IServiceCollection services) where T : class, TI, new() where TI : class
         {
             var instance = RegisterSettings<T>(logger, prefix, settingsFolderName, defaultFilename, settingsFolderName, services, registerInstance: false);
 
             services.AddSingleton<TI, T>(isp => instance);
+
+            return instance;
         }
 
         /// <summary>
@@ -274,7 +286,7 @@ namespace TheInternet.Common.Infrastructure
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        private static T SubstituteEnvironmentVariables<T>(T value) where T: class
+        private static T SubstituteEnvironmentVariables<T>(T value) where T : class
         {
             var variables = System.Environment.GetEnvironmentVariables();
             var content = JsonConvert.SerializeObject(value);
@@ -287,10 +299,10 @@ namespace TheInternet.Common.Infrastructure
                 }
 
                 return JsonConvert.DeserializeObject<T>(content);
-            } 
+            }
             else
             {
-                return value;    
+                return value;
             }
         }
 
