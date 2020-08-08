@@ -52,11 +52,8 @@ namespace TheInternet.Common.Infrastructure
             if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
             if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
 
-            var testOutputFolder = Directory.GetCurrentDirectory();
-            var testDeploymentFolder = Directory.GetCurrentDirectory();
-
-            Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", testOutputFolder, EnvironmentVariableTarget.Process);
-            Environment.SetEnvironmentVariable("TEST_DEPLOYMENT_FOLDER", testDeploymentFolder, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TEST_DEPLOYMENT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
 
             //
             // TODO: When this gets too big, look at Factories
@@ -72,6 +69,10 @@ namespace TheInternet.Common.Infrastructure
             RegisterSettings<RemoteWebDriverSettings>(bootstrappingLogger, prefix, "RemoteWebDriverSettings", "common-localhost-selenium.json", "remoteWebDriverSettings", services, registerInstance: true);
             RegisterSettings<EnvironmentSettings>(bootstrappingLogger, prefix, "EnvironmentSettings", "internet.json", "environmentSettings", services, registerInstance: true);
             ConfigureSettings<IControlSettings, ControlSettings>(bootstrappingLogger, prefix, "ControlSettings", "common.json", "controlSettings", services);
+
+            // Clear the variables so they do not creep into the rest of our implementation
+            Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", null, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("TEST_DEPLOYMENT_FOLDER", null, EnvironmentVariableTarget.Process);
 
             // Singletons: statics that are instantiated once for the lifetime of the entire test run
             services.AddSingleton<IDriverSessionFactory, DriverSessionFactory>();
