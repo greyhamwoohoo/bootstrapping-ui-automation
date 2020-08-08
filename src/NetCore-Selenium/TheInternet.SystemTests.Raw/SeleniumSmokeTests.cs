@@ -32,8 +32,10 @@ namespace TheInternet.SystemTests.Raw
         [TestMethod]
         public void InstrumentationSettingsExists()
         {
+            Logger.Information($"Here I am - again");
             var instrumentationSettingsExists = Resolve<IInstrumentationSettings>();
             var controlSettings = Resolve<IControlSettings>();
+            Logger.Information($"Here I am - yet again");
         }
 
         [TestMethod]
@@ -41,7 +43,7 @@ namespace TheInternet.SystemTests.Raw
         {
             var folder = System.IO.Path.GetDirectoryName(typeof(SeleniumSmokeTests).Assembly.Location);
 
-            Resolve<ITestRunReporter>().TestDeploymentFolder.Should().Be(folder, because: "the test deployment folder is where the tests are deployed. ");
+            Resolve<ITestRunReporter>().RootOutputFolder.Should().StartWith(folder, because: "the test deployment folder is where the tests are deployed. ");
         }
     }
 }

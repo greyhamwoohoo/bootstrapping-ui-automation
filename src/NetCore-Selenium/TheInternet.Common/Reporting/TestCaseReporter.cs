@@ -5,14 +5,17 @@ namespace TheInternet.Common.Reporting
 {
     public class TestCaseReporter : ITestCaseReporter
     {
-        protected ILogger Logger { get; }
         public string Name { get; private set; }
-        public string LogPath { get; }
+        public string LogFilePath { get; }
+        public ITestRunReporter TestRunReporter { get; }
+        protected ILogger Logger { get; }
 
-        public TestCaseReporter(ILogger logger, string logPath)
+        internal TestCaseReporter(ITestRunReporter testRunReporter, ILogger logger, ITestCaseReporterContext testCaseReporterContext)
         {
+            TestRunReporter = testRunReporter ?? throw new System.ArgumentNullException(nameof(testRunReporter));
             Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
-            LogPath = logPath ?? throw new System.ArgumentNullException(nameof(logPath));
+
+            LogFilePath = testCaseReporterContext.LogFilePath;
         }
 
         public void Initialize(string name)

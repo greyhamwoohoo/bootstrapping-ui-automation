@@ -24,6 +24,7 @@ namespace TheInternet.Common
         {
             DriverSession = Resolve<IDriverSession>();
 
+            TestRunReporter = Resolve<ITestRunReporter>();
             TestCaseReporter = Resolve<ITestCaseReporter>();
             TestCaseReporter.Initialize(TestContext.TestName);
 
@@ -59,7 +60,7 @@ namespace TheInternet.Common
 
             try
             {
-                var logPath = TestCaseReporter.LogPath;
+                var logPath = TestCaseReporter.LogFilePath;
                 if (System.IO.File.Exists(logPath))
                 {
                     TestContext.AddResultFile(logPath);

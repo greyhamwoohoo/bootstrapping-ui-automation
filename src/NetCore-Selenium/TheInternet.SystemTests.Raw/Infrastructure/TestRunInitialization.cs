@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Serilog;
+using System;
 using TheInternet.Common.Infrastructure;
+using TheInternet.Common.Reporting;
+using TheInternet.Common.Reporting.Contracts;
 
 namespace TheInternet.SystemTests.Raw.Infrastructure
 {
@@ -14,7 +18,7 @@ namespace TheInternet.SystemTests.Raw.Infrastructure
         [AssemblyInitialize]
         public static void Initialize(TestContext testContext)
         {
-            MsTestInitialization.Initialize(PREFIX, DEFAULT_TEST_EXECUTION_CONTEXT, testContext, PopulateContainer);
+            MsTestInitialization.Initialize(PREFIX, DEFAULT_TEST_EXECUTION_CONTEXT, testContext, UseDefaultReportingContexts);
         }
 
         [AssemblyCleanup]
@@ -23,8 +27,9 @@ namespace TheInternet.SystemTests.Raw.Infrastructure
             MsTestInitialization.Uninitialize();
         }
 
-        private static void PopulateContainer(string prefix, IServiceCollection serviceCollection)
+        private static void UseDefaultReportingContexts(string prefix, IServiceCollection serviceCollection, ITestRunReporterContext testRunReporterContext)
         {
+            // By doing nothing, the container will be populated with the default services. 
         }
     }
 }

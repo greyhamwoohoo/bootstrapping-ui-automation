@@ -22,8 +22,12 @@
         string Name { get; }
 
         /// <summary>
-        /// Log path for the current test case. All Logger calls are written to this file. 
+        /// Fully qualified path to the .log file that will be created for this test case. 
         /// </summary>
-        string LogPath { get; }
+        string LogFilePath { get; }
+        /// <summary>
+        /// Reporter used for the entire test run (not just this test case)
+        /// </summary>
+        ITestRunReporter TestRunReporter { get; }
     }
 }

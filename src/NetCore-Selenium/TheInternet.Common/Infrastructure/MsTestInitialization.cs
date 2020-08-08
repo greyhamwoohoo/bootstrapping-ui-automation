@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TheInternet.Common.Reporting.Contracts;
 
@@ -15,14 +16,14 @@ namespace TheInternet.Common.Infrastructure
         public const string TEST_EXECUTION_CONTEXT_KEY_NAME = "TestExecutionContext";
 
         static IServiceProvider _serviceProvider = default;
-        static ITestRunReporter _testRunReporter = default;
+        static IEnumerable<ITestRunReporter> _testRunReporters = default;
 
         public static void Initialize(string prefix, string defaultTestExecutionContext, TestContext testContext)
         {
-            Initialize(prefix, defaultTestExecutionContext, testContext, (p, sc) => { });
+            Initialize(prefix, defaultTestExecutionContext, testContext, (prefix, serviceCollection, testRunReporterContext) => { });
         }
         
-        public static void Initialize(string prefix, string defaultTestExecutionContext, TestContext testContext, Action<string, IServiceCollection> callback)
+        public static void Initialize(string prefix, string defaultTestExecutionContext, TestContext testContext, Action<string, IServiceCollection, ITestRunReporterContext> callback)
         {
             if (null == prefix) throw new System.ArgumentNullException(nameof(prefix));
             if (null == defaultTestExecutionContext) throw new System.ArgumentNullException(nameof(defaultTestExecutionContext));
@@ -67,25 +68,31 @@ namespace TheInternet.Common.Infrastructure
             });
 
             Log.Logger.Information("START: To initialize singleton container. ");
-            ContainerSingleton.Initialize(Log.Logger, prefix, (prefix, services) =>
+            ContainerSingleton.Initialize(Log.Logger, prefix, (prefix, services, testRunReporterContext) =>
             {
                 Log.Logger.Information($"    START: Callback before container is built. ");
                 services.AddSingleton(testExecutionContext);
                 Log.Logger.Information($"    END: Callback after container is built. ");
 
-                callback(prefix, services);
+                callback(prefix, services, testRunReporterContext);
             });
             Log.Logger.Information("END: Initializing singleton container. ");
 
             _serviceProvider = ContainerSingleton.Instance;
 
-            _testRunReporter = _serviceProvider.GetRequiredService<ITestRunReporter>();
-            _testRunReporter.Setup();
+            _testRunReporters = _serviceProvider.GetServices<ITestRunReporter>();
+            _testRunReporters.ToList().ForEach(testRunReporter =>
+            {
+                testRunReporter.Initialize();
+            });
         }
 
         public static void Uninitialize()
         {
-            _testRunReporter.Teardown();
+            _testRunReporters?.ToList().ForEach(testRunReporter =>
+            {
+                testRunReporter.Uninitialize();
+            });
         }
     }
 }
