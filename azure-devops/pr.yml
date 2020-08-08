@@ -1,6 +1,7 @@
 # Purpose: PR Pipeline
 #
-# Run .Common.*Tests projects
+# Uses dotnet test to run all *.UnitTests.dll;*.SystemTests.dll
+#
 trigger: none
 pr:
 - master
@@ -50,38 +51,20 @@ stages:
         arguments: '--no-restore --configuration $(Build.Configuration)'
         zipAfterPublish: false  
 
-    - powershell: 'Get-ChildItem -Recurse'
-      workingDirectory: src/$(TEST_TARGET_FOLDER)
-      displayName: 'PowerShell Script'
-
     - task: DotNetCoreCLI@2
       displayName: 'Run Common.UnitTests'
       inputs:
-        command: custom
-        custom: vstest
-        arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.UnitTests/bin/$(Build.Configuration)/netcoreapp3.1/publish/TheInternet.Common.UnitTests.dll --logger:"trx;LogFileName=Common-Unit-Tests.trx"'
+        command: test
+        workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.UnitTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+        arguments: TheInternet.Common.UnitTests.dll
+        publishTestResults: true
+        testRunTitle: Common.UnitTests
 
     - task: DotNetCoreCLI@2
       displayName: 'Run ExtentReports.System Tests'
       inputs:
-        command: custom
-        custom: vstest
-        arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.ExtentReports.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish/TheInternet.Common.ExtentReports.SystemTests.dll --logger:"trx;LogFileName=Common-Extent-Reports-System-Tests.trx"'
-
-    - task: PublishTestResults@2
-      displayName: 'Publish Test Results **/Common-Unit-Tests.trx'
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFormat: VSTest
-        testResultsFiles: '**/Common-Unit-Tests.trx'
-        failTaskOnFailedTests: true
-        testRunTitle: 'Common.UnitTests'
-
-    - task: PublishTestResults@2
-      displayName: 'Publish Test Results **/Common-Extent-Reports-System-Tests.trx.trx'
-      condition: succeededOrFailed()
-      inputs:
-        testResultsFormat: VSTest
-        testResultsFiles: '**/Common-Extent-Reports-System-Tests.trx.trx'
-        failTaskOnFailedTests: true
-        testRunTitle: 'Common.ExtentReports.SystemTests'
+        command: test
+        workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.ExtentReports.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+        arguments: TheInternet.Common.ExtentReports.SystemTests.dll
+        publishTestResults: true
+        testRunTitle: Common.ExtentReports.SystemTests
