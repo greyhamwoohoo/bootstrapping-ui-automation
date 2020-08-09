@@ -13,9 +13,10 @@ namespace TheInternet.Common.Reporting
         public bool AlwaysCaptureScreenshots { get; set; }
         public IDriverSession DriverSession { get; private set; }
 
-        internal TestCaseReporter(ITestRunReporter testRunReporter, ILogger logger, ITestCaseReporterContext testCaseReporterContext)
+        public TestCaseReporter(ILogger logger, ITestCaseReporterContext testCaseReporterContext)
         {
             Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            if(null == testCaseReporterContext) throw new System.ArgumentNullException(nameof(testCaseReporterContext));
 
             LogFilePath = testCaseReporterContext.LogFilePath;
         }

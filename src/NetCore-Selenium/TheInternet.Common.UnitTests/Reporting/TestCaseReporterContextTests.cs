@@ -2,12 +2,12 @@
 using AutoFixture.AutoNSubstitute;
 using AutoFixture.Idioms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TheInternet.Common.SessionManagement;
+using TheInternet.Common.Reporting;
 
 namespace TheInternet.Common.UnitTests.SessionManagement
 {
     [TestClass]
-    public class DriverSessionFactoryTests
+    public class TestCaseReporterContextTests
     {
         [TestMethod]
         public void All_Methods_Have_Guards()
@@ -20,7 +20,7 @@ namespace TheInternet.Common.UnitTests.SessionManagement
             var assertThatAllMembersHaveGuards = new GuardClauseAssertion(fixture);
 
             // Act, Assert
-            assertThatAllMembersHaveGuards.Verify(typeof(DriverSessionFactory).GetMembers());
+            assertThatAllMembersHaveGuards.Verify(typeof(TestCaseReporterContext).GetMembers());
         }
     }
 }

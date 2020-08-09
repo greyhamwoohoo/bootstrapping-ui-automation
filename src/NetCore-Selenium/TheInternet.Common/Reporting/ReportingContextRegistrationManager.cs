@@ -2,8 +2,10 @@
 using Serilog;
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using TheInternet.Common.Reporting.Contracts;
 
+[assembly: InternalsVisibleTo("TheInternet.Common.UnitTests")]
 namespace TheInternet.Common.Reporting
 {
     /// <summary>
@@ -14,9 +16,9 @@ namespace TheInternet.Common.Reporting
         private readonly ILogger _bootstrappingLogger;
         private readonly IServiceCollection _services;
         private readonly ITestRunReporterContext _testRunReporterContext;
-        private readonly bool _testRunReporter;
-        private readonly bool _testCaseReporterContext;
-        private readonly bool _testCaseReporter;
+        private bool _testRunReporter;
+        private bool _testCaseReporterContext;
+        private bool _testCaseReporter;
 
         internal ReportingContextRegistrationManager(ILogger bootstrappingLogger, IServiceCollection services, ITestRunReporterContext testRunReporterContext)
         {
@@ -24,9 +26,7 @@ namespace TheInternet.Common.Reporting
             _services = services ?? throw new System.ArgumentNullException(nameof(services));
             _testRunReporterContext = testRunReporterContext ?? throw new System.ArgumentNullException(nameof(testRunReporterContext));
 
-            _testRunReporter = services.Any(x => x.ServiceType == typeof(ITestRunReporter));
-            _testCaseReporterContext = services.Any(x => x.ServiceType == typeof(ITestCaseReporterContext));
-            _testCaseReporter = services.Any(x => x.ServiceType == typeof(ITestCaseReporter));
+            RefreshRegistrationState();
         }
 
         internal bool IsConfigured => _testRunReporter && _testCaseReporterContext && _testCaseReporter;
@@ -38,8 +38,14 @@ namespace TheInternet.Common.Reporting
                 throw new System.InvalidOperationException($"The ReportingContext is not correctly configured. {typeof(ITestRunReporter).FullName},{typeof(ITestCaseReporterContext).FullName} and {typeof(ITestCaseReporter).FullName} must be registered together; or not at all. ");
             }
         }
+
         internal void PopulateDefaultReportingContexts()
         {
+            if(IsConfigured || IsPartiallyConfigured)
+            {
+                throw new System.InvalidOperationException($"The Reporting Contexts are already configured. ");
+            }
+
             _services.AddSingleton<ITestRunReporter>(isp =>
             {
                 return new TestRunReporter(_bootstrappingLogger, testOutputFolder: _testRunReporterContext.RootReportingFolder, _testRunReporterContext.TestRunIdentity);
@@ -60,6 +66,15 @@ namespace TheInternet.Common.Reporting
 
                 return testRunReporter.CreateTestCaseReporter(logger, testCaseReporterContext);
             });
+
+            RefreshRegistrationState();
+        }
+
+        private void RefreshRegistrationState()
+        {
+            _testRunReporter = _services.Where(x => x.ServiceType == typeof(ITestRunReporter)).Count() == 1;
+            _testCaseReporterContext = _services.Where(x => x.ServiceType == typeof(ITestCaseReporterContext)).Count() == 1;
+            _testCaseReporter = _services.Where(x => x.ServiceType == typeof(ITestCaseReporter)).Count() == 1;
         }
     }
 }

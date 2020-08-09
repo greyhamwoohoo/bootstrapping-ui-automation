@@ -47,7 +47,7 @@ namespace TheInternet.Common.Reporting
             if (null == testCaseReportingContext) throw new System.ArgumentNullException(nameof(testCaseReportingContext));
             if (null == logger) throw new System.ArgumentNullException(nameof(logger));
 
-            return new TestCaseReporter(this, logger, testCaseReportingContext);
+            return new TestCaseReporter(logger, testCaseReportingContext);
         }
     }
 }
