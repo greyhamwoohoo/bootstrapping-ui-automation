@@ -1,0 +1,16 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet Restore'
+  inputs:
+    command: restore
+    projects: '**/*.sln'
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet Publish'
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: |
+        **/*.sln
+    
+    arguments: '--no-restore --configuration $(Build.Configuration)'
+    zipAfterPublish: false  
