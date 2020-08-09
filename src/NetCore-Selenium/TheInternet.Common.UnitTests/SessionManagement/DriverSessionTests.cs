@@ -10,7 +10,7 @@ namespace TheInternet.Common.UnitTests.SessionManagement
     public class DriverSessionTests
     {
         [TestMethod]
-        public void GuardTests()
+        public void All_Methods_Have_Guards()
         {
             // Arrange
             var fixture = new Fixture();
