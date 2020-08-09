@@ -1,0 +1,9 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Run Common.UnitTests'
+  inputs:
+    command: test
+    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.UnitTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+    arguments: TheInternet.Common.UnitTests.dll
+    publishTestResults: true
+    testRunTitle: Common.UnitTests

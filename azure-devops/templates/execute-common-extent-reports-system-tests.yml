@@ -1,0 +1,9 @@
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Run ExtentReports.System Tests'
+  inputs:
+    command: test
+    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.ExtentReports.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+    arguments: TheInternet.Common.ExtentReports.SystemTests.dll
+    publishTestResults: true
+    testRunTitle: Common.ExtentReports.SystemTests

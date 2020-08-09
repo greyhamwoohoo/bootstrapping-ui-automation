@@ -36,25 +36,7 @@ stages:
       vmImage: windows-2019
 
     steps:
-    - task: DotNetCoreCLI@2
-      displayName: 'Dotnet Restore'
-      inputs:
-        command: restore
-        projects: '**/*.sln'
-    - task: DotNetCoreCLI@2
-      displayName: 'Dotnet Publish'
-      inputs:
-        command: publish
-        publishWebProjects: false
-        projects: |
-           **/*.sln
-        
-        arguments: '--no-restore --configuration $(Build.Configuration)'
-        zipAfterPublish: false  
-
-    - powershell: 'Get-ChildItem -Recurse'
-      workingDirectory: src/$(TEST_TARGET_FOLDER)
-      displayName: 'PowerShell Script'
+    - template: templates/build-and-publish.yml
 
     - task: DotNetCoreCLI@2
       displayName: 'Run Raw SystemTests'
