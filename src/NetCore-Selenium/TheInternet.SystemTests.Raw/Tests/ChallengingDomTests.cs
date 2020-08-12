@@ -31,7 +31,7 @@ namespace TheInternet.SystemTests.Raw.Tests
             var successButtonLocator = By.CssSelector(".button.success");
 
             // Assume
-            DriverSession.Waiter.AssertThatEventually(notAlertAndNotSuccessButtonLocator, IsDisplayed,
+            WebDriver.Assert.State(notAlertAndNotSuccessButtonLocator, IsDisplayed,
                 And(alertButtonLocator, IsDisplayed),
                 And(successButtonLocator, IsDisplayed));
         }
@@ -57,14 +57,14 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             // Assume
             WebDriver.Url.Should().NotEndWith("#edit", because: "we will navigate to that location during the test");
-            DriverSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
+            WebDriver.Assert.State(phaeDrum4CellLocator, IsDisplayed,
                 And(phaeDrum4RowLocator, IsDisplayed));
 
             // Arrange
             By editRowElementLocator = By.XPath(".//*/a[text()='edit']");
 
             // Act
-            var phaeDrum4Row = DriverSession.Waiter.AssertThatEventually(phaeDrum4RowLocator, IsDisplayed);
+            var phaeDrum4Row = WebDriver.Assert.State(phaeDrum4RowLocator, IsDisplayed);
             var editRowElement = phaeDrum4Row.FindElements(editRowElementLocator).Single();
             editRowElement.Click();
 
@@ -93,11 +93,11 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             // Assume
             WebDriver.Url.Should().NotEndWith("#delete", because: "we will navigate to that location during the test");
-            DriverSession.Waiter.AssertThatEventually(phaeDrum4CellLocator, IsDisplayed,
+            WebDriver.Assert.State(phaeDrum4CellLocator, IsDisplayed,
                 And(phaeDrum4RowLocator, IsDisplayed));
 
             // Arrange
-            var phaeDrum4Row = DriverSession.Waiter.AssertThatEventually(phaeDrum4RowLocator, IsDisplayed);
+            var phaeDrum4Row = WebDriver.Assert.State(phaeDrum4RowLocator, IsDisplayed);
 
             // Act
             By deleteRowElementLocator = By.XPath(".//*/a[text()='delete']");

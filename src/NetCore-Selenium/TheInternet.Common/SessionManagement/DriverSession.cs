@@ -14,10 +14,9 @@ namespace TheInternet.Common.SessionManagement
         public IDecoratedWebDriver WebDriver { get; }
         public EnvironmentSettings EnvironmentSettings { get; }
         public IControlSettings ControlSettings { get; }
-        public IWaiter Waiter { get; }
         public ITestCaseReporter TestCaseReporter { get; }
 
-        public DriverSession(IDecoratedWebDriver webDriver, EnvironmentSettings environmentSettings, ILogger logger, IControlSettings controlSettings, ITestCaseReporter testCaseReporter) 
+        public DriverSession(IDecoratedWebDriver webDriver, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ITestCaseReporter testCaseReporter) 
         {
             if (webDriver == null) throw new System.ArgumentNullException(nameof(webDriver));
             if (environmentSettings == null) throw new System.ArgumentNullException(nameof(environmentSettings));
@@ -27,7 +26,6 @@ namespace TheInternet.Common.SessionManagement
             WebDriver = webDriver;
             EnvironmentSettings = environmentSettings;
             ControlSettings = controlSettings;
-            Waiter = new Waiter(webDriver, logger, controlSettings);
             TestCaseReporter = testCaseReporter;
         }
     }

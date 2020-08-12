@@ -78,9 +78,9 @@ namespace TheInternet.Common.SessionManagement
                         throw new System.ArgumentOutOfRangeException($"There is no support for starting browsers of type {browserProperties.Name}");
                 }
 
-                var decoratedWebDriver = new DecoratedWebDriver(browser, controlSettings, testCaseReporter);
+                var decoratedWebDriver = new DecoratedWebDriver(browser, controlSettings, testCaseReporter, logger);
 
-                return new DriverSession(decoratedWebDriver, environmentSettings, logger, controlSettings, testCaseReporter);
+                return new DriverSession(decoratedWebDriver, environmentSettings, controlSettings, testCaseReporter);
             }
 
             if(deviceProperties.Name == "ANDROID")
@@ -96,7 +96,7 @@ namespace TheInternet.Common.SessionManagement
 
                 var androidDriver = new AndroidDriver<AppiumWebElement>(new Uri(remoteWebDriverSettings.RemoteUri), options);
 
-                return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings, testCaseReporter), environmentSettings, logger, controlSettings, testCaseReporter);
+                return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings, testCaseReporter, logger), environmentSettings, controlSettings, testCaseReporter);
             }
 
             throw new InvalidOperationException($"The device {deviceProperties.Name} is not supported as a Driver Session. ");

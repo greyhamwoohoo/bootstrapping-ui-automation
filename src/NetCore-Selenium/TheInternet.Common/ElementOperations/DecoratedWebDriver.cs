@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Serilog;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.Extensions;
 using System.Collections.ObjectModel;
@@ -16,14 +17,16 @@ namespace TheInternet.Common.ElementOperations
         private readonly IWebDriver _original;
         private readonly IControlSettings _controlSettings;
         private readonly ITestCaseReporter _testCaseReporter;
+        private readonly ILogger _logger;
 
-        public DecoratedWebDriver(IWebDriver original, IControlSettings controlSettings, ITestCaseReporter testCaseReporter)
+        public DecoratedWebDriver(IWebDriver original, IControlSettings controlSettings, ITestCaseReporter testCaseReporter, ILogger logger)
         {
             _original = original ?? throw new System.ArgumentNullException(nameof(original));
             _controlSettings = controlSettings ?? throw new System.ArgumentNullException(nameof(controlSettings));
             _testCaseReporter = testCaseReporter ?? throw new System.ArgumentNullException(nameof(testCaseReporter));
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
 
-            Assert = new WebDriverAssertions(this, _controlSettings, _testCaseReporter);
+            Assert = new WebDriverAssertions(this, _controlSettings, _testCaseReporter, _logger);
         }
         
         public IWebDriverAssertions Assert { get; }
