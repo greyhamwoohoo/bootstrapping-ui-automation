@@ -11,5 +11,7 @@ namespace TheInternet.Common.ElementOperations.Contracts
     {
         IWebElement Click(By locator);
         IWebElement Click(By locator, string because);
+        IWebElement Type(By locator, string keys, bool andPressEnter);
+        IWebElement Type(By locator, string keys, bool andPressEnter, string because);
     }
 }

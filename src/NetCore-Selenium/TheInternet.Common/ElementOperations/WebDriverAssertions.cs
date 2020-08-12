@@ -39,6 +39,29 @@ namespace TheInternet.Common.ElementOperations
             return element;
         }
 
+        public IWebElement Type(By locator, string keys, bool andPressEnter)
+        {
+            return Type(locator, keys, andPressEnter, because: $"{typeof(IWebDriverAssertions).Name}.Type({locator}, keys: '{keys}', andPressEnter: {andPressEnter})");
+        }
+
+        public IWebElement Type(By locator, string keys, bool andPressEnter, string because)
+        {
+            IWebElement element = default;
+
+            AssertThatEventually(driver =>
+            {
+                element = AssertExactlyOneElementExists(_webDriver, locator);
+
+                element.SendKeys(keys);
+                if(andPressEnter)
+                {
+                    element.SendKeys(Keys.Enter);
+                }
+            }, because);
+
+            return element;
+        }
+
         private IWebElement AssertExactlyOneElementExists(IDecoratedWebDriver webDriver, By locator)
         {
             var elements = webDriver.FindElements(locator);

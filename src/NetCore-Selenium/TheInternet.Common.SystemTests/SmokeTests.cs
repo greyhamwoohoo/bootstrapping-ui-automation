@@ -13,5 +13,11 @@ namespace TheInternet.Common.SystemTests
         {
            WebDriver.Assert.Click(By.Name("q"));
         }
+
+        [TestMethod]
+        public void Google_Can_Be_Searched()
+        {
+            WebDriver.Assert.Type(By.Name("q"), "greyhamwoohoo", andPressEnter: true);
+        }
     }
 }
