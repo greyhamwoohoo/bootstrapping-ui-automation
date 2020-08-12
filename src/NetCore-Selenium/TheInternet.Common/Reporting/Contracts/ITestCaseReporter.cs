@@ -37,5 +37,8 @@ namespace TheInternet.Common.Reporting.Contracts
         void Warning(string message);
         void Error(string message);
         void Error(string message, Exception ex);
+        void Pass(string message);
+        void Fail(string message);
+        void Fail(string message, Exception ex);
     }
 }

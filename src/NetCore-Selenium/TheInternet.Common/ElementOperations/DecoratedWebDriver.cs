@@ -4,6 +4,7 @@ using OpenQA.Selenium.Support.Extensions;
 using System.Collections.ObjectModel;
 using TheInternet.Common.ElementOperations.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
+using TheInternet.Common.Reporting.Contracts;
 
 namespace TheInternet.Common.ElementOperations
 {
@@ -14,13 +15,15 @@ namespace TheInternet.Common.ElementOperations
     {
         private readonly IWebDriver _original;
         private readonly IControlSettings _controlSettings;
+        private readonly ITestCaseReporter _testCaseReporter;
 
-        public DecoratedWebDriver(IWebDriver original, IControlSettings controlSettings)
+        public DecoratedWebDriver(IWebDriver original, IControlSettings controlSettings, ITestCaseReporter testCaseReporter)
         {
             _original = original ?? throw new System.ArgumentNullException(nameof(original));
             _controlSettings = controlSettings ?? throw new System.ArgumentNullException(nameof(controlSettings));
+            _testCaseReporter = testCaseReporter ?? throw new System.ArgumentNullException(nameof(testCaseReporter));
 
-            Assert = new WebDriverAssertions(this, _controlSettings);
+            Assert = new WebDriverAssertions(this, _controlSettings, _testCaseReporter);
         }
         
         public IWebDriverAssertions Assert { get; }

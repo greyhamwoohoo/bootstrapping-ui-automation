@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using TheInternet.Common.ElementOperations.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
+using TheInternet.Common.Reporting.Contracts;
 
 namespace TheInternet.Common.ElementOperations
 {
@@ -10,11 +11,13 @@ namespace TheInternet.Common.ElementOperations
     {
         private readonly IDecoratedWebDriver _webDriver;
         private readonly IControlSettings _controlSettings;
+        private readonly ITestCaseReporter _testCaseReporter;
 
-        public WebDriverAssertions(IDecoratedWebDriver webDriver, IControlSettings controlSettings)
+        public WebDriverAssertions(IDecoratedWebDriver webDriver, IControlSettings controlSettings, ITestCaseReporter testCaseReporter)
         {
-            _webDriver = webDriver;
-            _controlSettings = controlSettings;
+            _testCaseReporter = testCaseReporter ?? throw new System.ArgumentNullException(nameof(testCaseReporter));
+            _webDriver = webDriver ?? throw new System.ArgumentNullException(nameof(webDriver)); ; 
+            _controlSettings = controlSettings ?? throw new System.ArgumentNullException(nameof(controlSettings)); ;
         }
 
         public IWebElement Click(By locator)
@@ -31,7 +34,7 @@ namespace TheInternet.Common.ElementOperations
                 element = AssertExactlyOneElementExists(_webDriver, locator);
 
                 element.Click();
-            });
+            }, because);
 
             return element;
         }
@@ -50,7 +53,7 @@ namespace TheInternet.Common.ElementOperations
         /// The callback usually contains one or more assertions. 
         /// </summary>
         /// <param name="callback"></param>
-        private void AssertThatEventually(Action<IDecoratedWebDriver> callback)
+        private void AssertThatEventually(Action<IDecoratedWebDriver> callback, string because)
         {
             if (null == callback) throw new System.ArgumentNullException(nameof(callback));
 
@@ -62,6 +65,7 @@ namespace TheInternet.Common.ElementOperations
                 try
                 {
                     callback(_webDriver);
+                    _testCaseReporter.Pass(because);
                     return;
                 }
                 catch (Exception ex)
@@ -72,6 +76,8 @@ namespace TheInternet.Common.ElementOperations
                 System.Threading.Thread.Sleep(_controlSettings.PollingTimeInMilliseconds);
 
             } while (DateTime.Now < endMatch);
+
+            _testCaseReporter.Fail(because, lastException);
 
             throw lastException;
         }

@@ -11,7 +11,7 @@ namespace TheInternet.Common.SystemTests
         [TestMethod]
         public void Google_Can_Be_Reached()
         {
-            WebDriver.Assert.Click(By.Name("q"));
+           WebDriver.Assert.Click(By.Name("q"));
         }
     }
 }

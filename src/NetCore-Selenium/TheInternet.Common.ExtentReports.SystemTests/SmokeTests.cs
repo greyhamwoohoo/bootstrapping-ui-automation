@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using TheInternet.Common;
 
 namespace TheInternet.SystemTests.Raw
@@ -16,6 +17,9 @@ namespace TheInternet.SystemTests.Raw
             Reporter.Warning("Warning");
             Reporter.Error("Error");
             Reporter.Error("MyException", new System.IO.FileNotFoundException($"The file was not found"));
+            Reporter.Pass("This passed");
+            Reporter.Fail("This failed");
+            Reporter.Fail("This failed", new System.IO.FileNotFoundException($"With an exception"));
         }
     }
 }
