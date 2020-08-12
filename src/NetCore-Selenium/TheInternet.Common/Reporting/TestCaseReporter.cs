@@ -59,5 +59,20 @@ namespace TheInternet.Common.Reporting
         {
             Logger.Error($"{exception}");
         }
+
+        public void Pass(string message)
+        {
+            Logger.Information($"Pass: {message}");
+        }
+
+        public void Fail(string message)
+        {
+            Logger.Error($"Fail: {message}");
+        }
+
+        public void Fail(string message, Exception exception)
+        {
+            Logger.Error($"Fail: {message}\r\n{exception}");
+        }
     }
 }

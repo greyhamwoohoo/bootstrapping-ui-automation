@@ -30,7 +30,7 @@ namespace TheInternet.SystemTests.Raw.Tests
         {
             By dropdownLocator = By.CssSelector("#dropdown");
 
-            var dropdown = DriverSession.Waiter.AssertThatEventually(dropdownLocator, IsDisplayed);
+            var dropdown = WebDriver.Assert.State(dropdownLocator, IsDisplayed);
             _selectElement = new SelectElement(dropdown);
         }
 

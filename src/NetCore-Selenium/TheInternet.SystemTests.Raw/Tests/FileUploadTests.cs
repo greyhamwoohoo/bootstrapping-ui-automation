@@ -22,9 +22,9 @@ namespace TheInternet.SystemTests.Raw.Tests
             var uploadButton = WebDriver.FindElements(By.XPath("//input[@id='file-submit']")).Single();
             uploadButton.Click();
 
-            DriverSession.Waiter.AssertThatEventually(By.XPath("//div[@id='uploaded-files']"), Exists);
+            WebDriver.Assert.State(By.XPath("//div[@id='uploaded-files']"), Exists);
 
-            DriverSession.Waiter.AssertThatEventually(browser =>
+            WebDriver.Assert.Eventually(browser =>
             {
                 browser.PageSource.Should().Contain("SampleFileToUpload.txt", because: "that was the filename uploaded");
             });

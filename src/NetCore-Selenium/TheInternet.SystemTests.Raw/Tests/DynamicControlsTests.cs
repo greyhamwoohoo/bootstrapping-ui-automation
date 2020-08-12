@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.Linq;
+using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 
 namespace TheInternet.SystemTests.Raw.Tests
 {
@@ -20,11 +23,12 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             var removeButton = WebDriver.FindElements(By.XPath("//button[text()='Remove']")).Single();
             removeButton.Click();
-            DriverSession.Waiter.AssertThatEventually(browser => !Exists(WebDriver, By.CssSelector("#checkbox")));
+
+            WebDriver.Assert.Eventually(browser => !Exists(WebDriver, By.CssSelector("#checkbox")));
 
             var addButton = WebDriver.FindElements(By.XPath("//button[text()='Add']")).Single();
             addButton.Click();
-            DriverSession.Waiter.AssertThatEventually(browser => Exists(browser, By.CssSelector("#checkbox")));
+            WebDriver.Assert.Eventually(browser => Exists(browser, By.CssSelector("#checkbox")));
         }
 
         [TestMethod]
@@ -34,7 +38,7 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             var enableButton = WebDriver.FindElements(By.XPath("//button[text()='Enable']")).Single();
             enableButton.Click();
-            DriverSession.Waiter.AssertThatEventually(driver => Exists(WebDriver, By.XPath("//input[@type='text' and not(@disabled)]")));
+            WebDriver.Assert.Eventually(driver => Exists(WebDriver, By.XPath("//input[@type='text' and not(@disabled)]")));
 
             var enabledTextBox = WebDriver.FindElements(By.XPath("//input[@type='text' and not(@disabled)]")).Single();
             enabledTextBox.SendKeys("Some Text Is Typed");
@@ -42,7 +46,7 @@ namespace TheInternet.SystemTests.Raw.Tests
 
             var disableButton = WebDriver.FindElements(By.XPath("//button[text()='Disable']")).Single();
             disableButton.Click();
-            DriverSession.Waiter.AssertThatEventually(driver => Exists(WebDriver, By.XPath("//input[@type='text' and @disabled]")));
+            WebDriver.Assert.Eventually(driver => Exists(WebDriver, By.XPath("//input[@type='text' and @disabled]")));
         }
 
         private bool Exists(IWebDriver driver, By locator)

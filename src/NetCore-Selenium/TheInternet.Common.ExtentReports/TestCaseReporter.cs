@@ -62,7 +62,23 @@ namespace TheInternet.Common.ExtentReports
 
         public void Error(string message, Exception exception)
         {
-            Log(Status.Error, $"{message}\r\n{exception}");
+            Log(Status.Error, $"{message}<br/>{exception}");
+        }
+
+
+        public void Pass(string message)
+        {
+            Log(Status.Pass, message);
+        }
+
+        public void Fail(string message)
+        {
+            Log(Status.Fail, message);
+        }
+
+        public void Fail(string message, Exception exception)
+        {
+            Log(Status.Fail, $"{message}<br/>{exception}");
         }
 
         private void Log(Status status, string message)

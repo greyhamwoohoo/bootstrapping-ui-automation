@@ -10,7 +10,6 @@ namespace TheInternet.Common.SessionManagement.Contracts
     {
         EnvironmentSettings EnvironmentSettings { get; }
         IControlSettings ControlSettings { get; }
-        IWaiter Waiter { get; }
         IDecoratedWebDriver WebDriver { get; }
         ITestCaseReporter TestCaseReporter { get; }
     }
