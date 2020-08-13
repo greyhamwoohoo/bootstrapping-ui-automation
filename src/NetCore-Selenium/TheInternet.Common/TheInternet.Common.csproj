@@ -24,6 +24,17 @@
     <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-selenium.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-zalenium-docker.json" />
     <None Remove="serilogSettings.json" />
+    <None Remove="TestExecutionContexts\Attachable-Chrome-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Attachable-Chrome-Zalenium-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Attachable-Edge-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Attachable-Firefox-Zalenium-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Attachable-IE11-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Default-Android-Web-Chrome-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Default-Chrome-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Default-Edge-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Default-FireFox-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Default-FireFox-Zalenium-Localhost.runsettings" />
+    <None Remove="TestExecutionContexts\Default-IE11-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\tec.attachable-chrome-localhost.json" />
     <None Remove="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\tec.attachable-edge-localhost.json" />
@@ -86,6 +97,39 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="serilogsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Attachable-Chrome-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Attachable-Chrome-Zalenium-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Attachable-Edge-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Attachable-Firefox-Zalenium-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Attachable-IE11-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Default-Android-Web-Chrome-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Default-Chrome-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Default-Edge-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Default-FireFox-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Default-FireFox-Zalenium-Localhost.runsettings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestExecutionContexts\Default-IE11-Localhost.runsettings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestExecutionContexts\tec.attachable-chrome-localhost.json">

@@ -7,6 +7,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DataSource\RuntimeFilePathTestData\OneMatchingFile\thisOneMatches.json" />
+    <None Remove="DataSource\RuntimeFilePathTestData\OneMatchingFile\thisOneNeverMatches.xml" />
+    <None Remove="DataSource\RuntimeFilePathTestData\TwoMatchingFiles\thisMatches.json" />
+    <None Remove="DataSource\RuntimeFilePathTestData\TwoMatchingFiles\thisMatchesToo.json" />
+    <None Remove="DataSource\RuntimeFilePathTestData\TwoMatchingFiles\thisNeverMatches.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DataSource\RuntimeFilePathTestData\OneMatchingFile\thisOneMatches.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataSource\RuntimeFilePathTestData\OneMatchingFile\thisOneNeverMatches.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataSource\RuntimeFilePathTestData\TwoMatchingFiles\thisMatches.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataSource\RuntimeFilePathTestData\TwoMatchingFiles\thisMatchesToo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataSource\RuntimeFilePathTestData\TwoMatchingFiles\thisNeverMatches.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.11.0" />
     <PackageReference Include="AutoFixture.AutoNSubstitute" Version="4.11.0" />
     <PackageReference Include="AutoFixture.Idioms" Version="4.11.0" />
