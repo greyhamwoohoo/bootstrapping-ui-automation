@@ -5,8 +5,9 @@
     /// </summary>
     public interface IControlSettings
     {
-        public int WaitUntilTimeoutInSeconds { get; }
-        public int PollingTimeInMilliseconds { get; }
-        public bool AttachToExistingSessionIfItExists { get; }
+        int WaitUntilTimeoutInSeconds { get; }
+        int PollingTimeInMilliseconds { get; }
+        bool AttachToExistingSessionIfItExists { get; }
+        int AppiumDriverCreationRetries { get; }
     }
 }

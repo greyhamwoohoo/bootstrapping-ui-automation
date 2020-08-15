@@ -9,6 +9,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Events;
 using Serilog;
 using System;
+using System.Linq;
 using System.Text;
 using TheInternet.Common.ElementOperations;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
@@ -95,7 +96,27 @@ namespace TheInternet.Common.SessionManagement
                 var appiumSettingsAdapter = new AppiumSettingsAdapter();
                 var options = appiumSettingsAdapter.ToAppiumOptions(appiumSettings);
 
-                var androidDriver = new AndroidDriver<AppiumWebElement>(httpCommandExecutor, options);
+                var androidDriver = default(AndroidDriver<AppiumWebElement>);
+
+                foreach(var currentAttempt in Enumerable.Range(1, controlSettings.AppiumDriverCreationRetries))
+                {
+                    try
+                    {
+                        androidDriver = new AndroidDriver<AppiumWebElement>(httpCommandExecutor, options);
+
+                        break;
+                    }
+                    catch(Exception ex)
+                    {
+                        logger.Error($"ERROR: Starting Android Driver attempt {currentAttempt}");
+                        logger.Error($"ERROR: {ex}");
+
+                        if (currentAttempt == controlSettings.AppiumDriverCreationRetries)
+                        {
+                            throw;
+                        }
+                    }
+                }
 
                 return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings, testCaseReporter, logger), environmentSettings, controlSettings, testCaseReporter);
             }
