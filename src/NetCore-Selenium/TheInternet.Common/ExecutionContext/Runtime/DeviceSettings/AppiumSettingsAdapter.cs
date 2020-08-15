@@ -6,6 +6,8 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 {
     public class AppiumSettingsAdapter
     {
+        // TODO: Farm these out somewhere
+
         private Dictionary<string, string> RecognizedGeneralCapabilities = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
             { "app", "string" },
@@ -29,6 +31,79 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
             { "locale", "string" }
         };
 
+        private Dictionary<string, string> RecognizedAndroidCapabilities = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            { "chromedriverExecutable", "string" },
+            { "appActivity", "string" },
+            { "appPackage", "string" },
+            { "appWaitActivity", "string" },
+            { "appWaitPackage", "string" },
+            { "appWaitDuration", "integer" },
+            { "deviceReadyTimeout", "integer" },
+            { "allowTestPackages", "boolean" },
+            { "androidCoverage", "string" },
+            { "androidCoverageEndIntent", "string" },
+            { "androidDeviceReadyTimeout", "integer" },
+            { "androidInstallTimeout", "integer" },
+            { "androidInstallPath", "string" },
+            { "adbPort", "integer" },
+            { "systemPort", "integer" },
+            { "remoteAdbHost", "string" },
+            { "androidDeviceSocker", "string" },
+            { "avd", "string" },
+            { "avdLaunchTimeout", "integer" },
+            { "avdReadyTimeout", "integer" },
+            { "avdArgs", "string" },
+            { "useKeystore", "boolean" },
+            { "keystorePath", "string" },
+            { "keystorePassword", "string" },
+            { "keyAlias", "string" },
+            { "keyPassword", "string" },
+            { "chromedriverArgs", "string" },
+            { "chromedriverExecutableDir", "string" },
+            { "chromedriverChromeMappingFile", "string" },
+            { "chromedriverUseSystemExecutable", "boolean" },
+            { "autoWebviewTimeout", "integer" },
+            { "chromedriverPort", "integer" },
+            { "chromedriverPorts", "array" },
+            { "ensureWebviewsHavePages", "boolean" },
+            { "webviewDevtoolsPort", "integer" },
+            { "enableWebviewDetailsCollection", "boolean" },
+            { "dontStopAppOnReset", "boolean" },
+            { "unicodeKeyboard", "boolean" },
+            { "resetKeyboard", "boolean" },
+            { "noSign", "boolean" },
+            { "ignoreUnimportantViews", "boolean" },
+            { "disableAndroidWatchers", "boolean" },
+            { "chromeOptions", "object" },
+            { "recreateChromeDriverSessions", "boolean" },
+            { "nativeScreenshot", "boolean" },
+            { "androidScreenshotPath", "string" },
+            { "autoGrantPermissions", "boolean" },
+            { "networkSpeed", "string" },
+            { "gpsEnabled", "boolean" },
+            { "isHeadless", "boolean" },
+            { "adbExecTimeout", "integer" },
+            { "localeScript", "string" },
+            { "skipDeviceInitialization", "boolean" },
+            { "chromedriverDisableBuildCheck", "boolean" },
+            { "skipUnlock", "boolean" },
+            { "unlockType", "string" },
+            { "unlockKey", "string" },
+            { "autoLaunch", "boolean" },
+            { "skipLogcatCapture", "boolean" },
+            { "uninstallOtherPackages", "string" },
+            { "disableWindowAnimations", "boolean" },
+            { "remoteAppsCacheLimit", "integer" },
+            { "buildToolsVersion", "string" },
+            { "androidNaturalOrientation", "boolean" },
+            { "enforceAppInstall", "boolean" },
+            { "ignoreHiddenApiPolicyError", "boolean" },
+            { "mockLocationApp", "string" },
+            { "logcatFormat", "string" },
+            { "logcatFilterSpecs", "array" }
+        };
+
         public OpenQA.Selenium.Appium.AppiumOptions ToAppiumOptions(AppiumSettings settings)
         {
             if (settings == null) throw new System.ArgumentNullException(nameof(settings));
@@ -39,15 +114,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
             PopulateCapabilities(inOptions: result, withWellKnownCapabilities: RecognizedGeneralCapabilities, from: settings?.DeviceSettings?.Options?.GeneralCapabilities);
 
             // Android Capabilities
-            if (settings.DeviceSettings?.Options?.AndroidCapabilities != null)
-            {
-                settings.DeviceSettings.Options.AndroidCapabilities.ToList().ForEach(pair =>
-                {
-                    if (pair.Key.StartsWith("!")) return;
-
-                    result.AddAdditionalCapability(pair.Key, pair.Value);
-                });
-            }
+            PopulateCapabilities(inOptions: result, withWellKnownCapabilities: RecognizedAndroidCapabilities, from: settings?.DeviceSettings?.Options?.AndroidCapabilities);
 
             return result;
         }
@@ -89,6 +156,9 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
         {
             var result = candidateValue;
 
+            // Don't be clever if the original value is null - just pass it through
+            if (result == null) return result;
+
             switch(type.ToLower())
             {
                 case "string":
@@ -99,7 +169,12 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
                 case "integer":
                     result = System.Convert.ToInt32(candidateValue);
                     break;
-
+                case "array":
+                    // Leave it as is
+                    break;
+                case "object":
+                    // Leave it as is
+                    break;
                 default:
                     break;
             }

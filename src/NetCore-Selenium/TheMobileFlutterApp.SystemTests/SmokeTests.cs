@@ -5,8 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TheMobileFlutterApp.SystemTests
 {
     /// <summary>
-    /// The Test App (and system tests) can be found at this page:
-    /// https://github.com/greyhamwoohoo/appium-flutter-driver-net-bindings
+    /// The Test App can be found here: https://github.com/greyhamwoohoo/appium-flutter-driver-net-bindings-test-app
+    /// The full test suite can be found here (SystemTests): https://github.com/greyhamwoohoo/appium-flutter-driver-net-bindings
     /// </summary>
     [TestClass]
     public class SmokeTests : FlutterMobileTestBase
