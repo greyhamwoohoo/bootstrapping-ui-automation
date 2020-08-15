@@ -4,6 +4,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings
 {
     public class RemoteWebDriverSettings : ICleanse
     {
+        public int HttpCommandExecutorTimeoutInSeconds { get; set; }
         public bool UseRemoteDriver { get; set;  }
         public string RemoteUri { get; set; }
 
@@ -12,7 +13,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings
         }
         public void Cleanse()
         {
-            if (RemoteUri == null) RemoteUri = "http://localhost/no-remoteuri-was-specified-in-the-remote-driver-settings-json-file";
+            RemoteUri ??= "http://localhost/no-remoteuri-was-specified-in-the-remote-driver-settings-json-file";
         }
     }
 }

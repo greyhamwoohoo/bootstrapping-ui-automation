@@ -9,6 +9,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Events;
 using Serilog;
 using System;
+using System.Linq;
 using System.Text;
 using TheInternet.Common.ElementOperations;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
@@ -26,7 +27,7 @@ namespace TheInternet.Common.SessionManagement
     public class DriverSessionFactory : IDriverSessionFactory
     {
         // TODO: Refactor. Too many parameters. 
-        public IDriverSession Create(IDeviceProperties deviceProperties, IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger, ITestCaseReporter testCaseReporter)
+        public IDriverSession Create(IDeviceProperties deviceProperties, IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger, ITestCaseReporter testCaseReporter, ICommandExecutor httpCommandExecutor)
         {
             if (deviceProperties == null) throw new System.ArgumentNullException(nameof(deviceProperties));
             if (browserProperties == null) throw new System.ArgumentNullException(nameof(browserProperties));
@@ -35,6 +36,7 @@ namespace TheInternet.Common.SessionManagement
             if (controlSettings == null) throw new System.ArgumentNullException(nameof(controlSettings));
             if (logger == null) throw new System.ArgumentNullException(nameof(logger));
             if (testCaseReporter == null) throw new System.ArgumentNullException(nameof(testCaseReporter));
+            if (httpCommandExecutor == null) throw new System.ArgumentNullException(nameof(httpCommandExecutor));
 
             var browser = default(IWebDriver);
 
@@ -94,7 +96,27 @@ namespace TheInternet.Common.SessionManagement
                 var appiumSettingsAdapter = new AppiumSettingsAdapter();
                 var options = appiumSettingsAdapter.ToAppiumOptions(appiumSettings);
 
-                var androidDriver = new AndroidDriver<AppiumWebElement>(new Uri(remoteWebDriverSettings.RemoteUri), options);
+                var androidDriver = default(AndroidDriver<AppiumWebElement>);
+
+                foreach(var currentAttempt in Enumerable.Range(1, controlSettings.AppiumDriverCreationRetries))
+                {
+                    try
+                    {
+                        androidDriver = new AndroidDriver<AppiumWebElement>(httpCommandExecutor, options);
+
+                        break;
+                    }
+                    catch(Exception ex)
+                    {
+                        logger.Error($"ERROR: Starting Android Driver attempt {currentAttempt}");
+                        logger.Error($"ERROR: {ex}");
+
+                        if (currentAttempt == controlSettings.AppiumDriverCreationRetries)
+                        {
+                            throw;
+                        }
+                    }
+                }
 
                 return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings, testCaseReporter, logger), environmentSettings, controlSettings, testCaseReporter);
             }

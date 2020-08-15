@@ -1,5 +1,7 @@
 {
   "controlSettings": {
+    "!appiumDriverCreationRetries": "The number of times to retry creating an Appium driver (addresses issues with FlutterDriver 1.0.23). 1 suffices (mostly) on fast desktops. For CI/CD or slow machines, set to 2+",
+    "appiumDriverCreationRetries": 1,
     "pollingTimeInMilliseconds": 250,
     "waitUntilTimeoutInSeconds": 60,
     "attachToExistingSessionIfItExists": false

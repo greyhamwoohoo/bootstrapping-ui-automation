@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using OpenQA.Selenium.Remote;
 using Serilog;
 using System;
 using System.IO;
 using System.Linq;
+using System.Windows.Input;
 using TheInternet.Common.ExecutionContext.Contracts;
 using TheInternet.Common.ExecutionContext.Runtime;
 using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
@@ -110,6 +112,15 @@ namespace TheInternet.Common.Infrastructure
                 return logger;
             });
 
+            services.AddScoped<ICommandExecutor>(isp =>
+            {
+                var remoteWebDriverSettings = isp.GetRequiredService<RemoteWebDriverSettings>();
+
+                var commandExecutor = new HttpCommandExecutor(new Uri(remoteWebDriverSettings.RemoteUri), TimeSpan.FromSeconds(remoteWebDriverSettings.HttpCommandExecutorTimeoutInSeconds));
+
+                return commandExecutor;
+            });
+
             services.AddScoped(isp =>
             {
                 var factory = isp.GetRequiredService<IDriverSessionFactory>();
@@ -120,8 +131,9 @@ namespace TheInternet.Common.Infrastructure
                 var deviceSettings = isp.GetRequiredService<IDeviceProperties>();
                 var logger = isp.GetRequiredService<ILogger>();
                 var testCaseReporter = isp.GetRequiredService<ITestCaseReporter>();
+                var httpCommandExecutor = isp.GetRequiredService<ICommandExecutor>();
 
-                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger, testCaseReporter);
+                var driverSession = factory.Create(deviceSettings, browserProperties, remoteWebDriverSettings, environmentSettings, controlSettings, logger, testCaseReporter, httpCommandExecutor);
                 return driverSession;
             });
 

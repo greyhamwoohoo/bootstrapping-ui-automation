@@ -1,5 +1,6 @@
 ﻿{
   "remoteWebDriverSettings": {
+    "httpCommandExecutorTimeoutInSeconds": 60,
     "useRemoteDriver": true,
     "remoteUri": "http://localhost:4444/wd/hub"
   }

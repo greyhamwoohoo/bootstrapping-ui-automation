@@ -1,0 +1,196 @@
+#
+# Pipeline: Consume the 'app-debug.apk' artifact from another pipeline and test it via Appium using an Android Virtual Device. 
+#
+# Author: Greyhamwoohoo
+#
+trigger: none
+pr: none
+
+variables:
+- name: Build.Configuration
+  value: Release
+- name: System.Debug
+  value: true
+- name: THEINTERNET_TEST_EXECUTION_CONTEXT
+  value: empty    
+- name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
+  value: common-localhost-appium.json
+- name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
+  value: common-localhost-appium.json  
+- name: THEINTERNET_REMOTEWEBDRIVERSETTINGS__HTTPCOMMANDEXECUTORTIMEOUTINSECONDS
+  value: 120
+- name: THEINTERNET_DEVICESETTINGS_FILES
+  value: common-android-app.json
+- name: THEINTERNET_CONTROLSETTINGS_FILES
+  value: common.json
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__ANDROIDCAPABILITIES__BUILDTOOLSVERSION
+  value: 28.0.3
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__ANDROIDCAPABILITIES__ADBEXECTIMEOUT
+  value: 60000
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__AUTOMATIONNAME
+  value: Flutter
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__NORESET
+  value: false
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__FULLRESET
+  value: true
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__DEVICENAME
+  value: Pixel 2
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__PLATFORMNAME
+  value: Android
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__PLATFORMVERSION
+  value: 10
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__UIAUTOMATORCAPABILITIES__UIAUTOMATOR2SERVERINSTALLTIMEOUT
+  value: 60001
+- name: THEINTERNET_DEVICESETTINGS__OPTIONS__UIAUTOMATORCAPABILITIES__UIAUTOMATOR2SERVERLAUNCHTIMEOUT
+  value: 60002  
+- name: THEINTERNET_CONTROLSETTINGS__APPIUMDRIVERCREATIONRETRIES
+  value: 5
+
+# Reference: The artifacts are published from this pipeline:
+# https://github.com/greyhamwoohoo/appium-flutter-driver-net-bindings-test-app/blob/master/azure-devops/release.yml
+resources:
+  pipelines:
+  - pipeline: appium_flutter_driver_test_app
+    source: appium-flutter-driver-net-bindings-test-app-build-publish
+    project: Public-Automation-Examples
+
+stages:
+- stage: RunFlutterAppSystemTests
+  jobs:
+  - job: RunFlutterAppSystemTests
+    # Fail hard after 60 minutes incase anything goes wrong (TODO: add a timeout on adb wait-for-device)
+    timeoutInMinutes: 20
+    pool:
+      vmImage: macOS-10.15
+
+    steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: "Download .apk"
+      inputs:
+        
+        source: specific
+        project: $(resources.pipeline.appium_flutter_driver_test_app.projectID)
+        pipeline: $(resources.pipeline.appium_flutter_driver_test_app.pipelineName)
+
+        runVersion: specific
+        runId: $(resources.pipeline.appium_flutter_driver_test_app.runID)
+        
+        artifact: fat-debug
+        path: $(Pipeline.Workspace)/Input/TestApp/fat-debug
+
+    - powershell: |
+        Write-Host "##vso[task.setvariable variable=THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP]$(Pipeline.Workspace)/Input/TestApp/fat-debug/app-debug.apk"
+      displayName: 'Set THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP location'  
+
+    - template: templates/build-and-publish.yml
+
+    # We need to install 'mono-libgdiplus' else all of our Screenshots will fail with this error:
+    # System.TypeInitializationException: The type initializer for 'Gdip' threw an exception. ---> System.DllNotFoundException: Unable to load DLL 'libgdiplus': The specified module could not be found.
+    - task: Bash@3
+      inputs:
+        targetType: inline
+        script: |
+          brew install mono-libgdiplus
+      displayName: Install GDI+ (Support Screenshots on MacOS for .Net Core)
+
+    #
+    # Time for Java fun. 
+    #
+    # Appium: Needs Version 11 (technically: > 8 - so I just use the default) so that the apksigner will work from the latest Android Build Tools (30.x+ in this case)
+    #         Without using Version 11, we get this error:
+    #
+    #         Exception in thread "main" java.lang.UnsupportedClassVersionError: com/android/apksigner/ApkSignerTool has been compiled by a more recent version of the Java Runtime (class file version 53.0), this version of the Java Runtime only recognizes class file versions up to 52.0    #
+    - task: Bash@3
+      inputs:
+        targetType: inline
+        script: |
+          export PATH=$JAVA_HOME/bin:$PATH
+
+          npm install -g appium@1.18.0
+          npm install -g appium-flutter-driver@0.0.25
+          npm install -g appium-doctor@1.15.3
+
+          appium-doctor >$(Build.StagingDirectory)/appium-doctor-output.txt 2>&1
+
+          appium -a 0.0.0.0 -p 4723 --log-level debug --log-timestamp >$(Build.StagingDirectory)/appium-output.txt 2>&1 &
+      displayName: Install and Start Appium
+
+    - task: PowerShell@2
+      displayName: 'Wait For Appium'
+      inputs:
+        targetType: filePath
+        filePath: $(Build.SourcesDirectory)/azure-devops/wait-until-uri-is-ready.ps1
+        arguments: '-TimeoutInSeconds 30 -Uri http://127.0.0.1:4723/wd/hub/status -ExpectStatusCode 200 -Verbose'
+        failOnStderr: true      
+
+    - powershell: |
+        adb --version
+        cd "$($env:ANDROID_HOME)/emulator"
+        emulator -version
+        npm ls -g appium
+        npm ls -g appium-flutter-driver
+      displayName: 'Dump version information'
+
+    #
+    # Time for(more) Java fun. 
+    #
+    # Android SDK requires JDK 8 else we will get an error similar to this:
+    #
+    # https://stackoverflow.com/questions/46402772/failed-to-install-android-sdk-java-lang-noclassdeffounderror-javax-xml-bind-a/51644855#51644855
+    #
+    - powershell: |
+        Write-Host "##vso[task.setvariable variable=JAVA_HOME]$($env:JAVA_HOME_8_X64)"
+      displayName: 'Set JAVA_HOME to v8 location'    
+
+    # Reference: http://93days.me/running-javascript-appium-on-azure-devops/
+    - task: Bash@3
+      displayName: Install and Start AVD Emulator
+      inputs:
+        targetType: inline
+        script: |
+          echo "y" | $ANDROID_HOME/tools/bin/sdkmanager --install 'system-images;android-29;google_apis;x86'
+
+          $ANDROID_HOME/platform-tools/adb devices
+          $ANDROID_HOME/platform-tools/adb devices | grep "emulator-" | while read -r emulator device; do $ANDROID_HOME/platform-tools/adb -s $emulator emu kill; done
+          $ANDROID_HOME/platform-tools/adb kill-server
+          $ANDROID_HOME/tools/bin/avdmanager delete avd -n test_android_emulator
+          $ANDROID_HOME/platform-tools/adb devices
+
+          echo "TRY: To create AVD"
+          echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd -n test_android_emulator -k 'system-images;android-29;google_apis;x86' --force
+          echo "DONE: AVD Created. "
+
+          echo "TRY: To start emulator asynchronously"
+          $ANDROID_HOME/emulator/emulator -memory 2500 -avd test_android_emulator -skin 768x1280 -no-snapshot -no-window >$(Build.StagingDirectory)/start-emulator-output.txt 2>&1 &
+          echo "DONE: Emulator started asynchronously. "
+
+          echo "TRY: To wait for device to start"
+          $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done;'
+          echo "DONE: Device has started. Devices: "
+
+          $ANDROID_HOME/platform-tools/adb devices
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Run System Tests'
+      inputs:
+        command: test
+        arguments: --no-restore --no-build --configuration $(Build.Configuration)
+        projects: |
+          **/TheMobileFlutterApp.SystemTests.csproj
+        
+        testRunTitle: 'System Tests'
+
+    - task: Bash@3
+      condition: succeededOrFailed()
+      displayName: Dump Logcat
+      inputs:
+        targetType: inline
+        script: |
+          $ANDROID_HOME/platform-tools/adb logcat -d > $(Build.StagingDirectory)/logcat.txt
+
+    - task: PublishPipelineArtifact@1
+      displayName: Publish Logs Output
+      condition: succeededOrFailed()
+      inputs:
+        targetPath: $(Build.StagingDirectory)
+        artifactName: 'logs'

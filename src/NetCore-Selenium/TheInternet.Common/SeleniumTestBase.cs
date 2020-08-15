@@ -41,7 +41,7 @@ namespace TheInternet.Common
 
             try
             {
-                DriverSession?.WebDriver?.Close();
+                CloseDriverSessionWebDriver();
             }
             catch (Exception ex)
             {
@@ -83,6 +83,11 @@ namespace TheInternet.Common
         protected virtual void NavigateToBaseUrl()
         {
             DriverSession.WebDriver.Navigate().GoToUrl(BaseUrl);
+        }
+
+        protected virtual void CloseDriverSessionWebDriver()
+        {
+            DriverSession?.WebDriver?.Close();
         }
     }
 }

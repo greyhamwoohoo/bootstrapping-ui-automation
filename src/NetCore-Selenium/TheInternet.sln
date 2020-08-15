@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.ExtentRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.ExtentReports.SystemTests", "TheInternet.Common.ExtentReports.SystemTests\TheInternet.Common.ExtentReports.SystemTests.csproj", "{C4DA267F-C173-4F66-B45C-C901759D22FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheInternet.Common.SystemTests", "TheInternet.Common.SystemTests\TheInternet.Common.SystemTests.csproj", "{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.SystemTests", "TheInternet.Common.SystemTests\TheInternet.Common.SystemTests.csproj", "{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheMobileFlutterApp.SystemTests", "TheMobileFlutterApp.SystemTests\TheMobileFlutterApp.SystemTests.csproj", "{22440B4C-244F-4D4B-89CD-AE5DE4F73484}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22440B4C-244F-4D4B-89CD-AE5DE4F73484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22440B4C-244F-4D4B-89CD-AE5DE4F73484}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22440B4C-244F-4D4B-89CD-AE5DE4F73484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22440B4C-244F-4D4B-89CD-AE5DE4F73484}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
