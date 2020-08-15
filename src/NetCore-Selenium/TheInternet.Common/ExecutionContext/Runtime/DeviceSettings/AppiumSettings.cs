@@ -35,8 +35,8 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 
     public class AppiumSettingsOptions
     {
-        [JsonProperty("mobileCapabilities")]
-        public Dictionary<string, object> MobileCapabilities { get; set; }
+        [JsonProperty("generalCapabilities")]
+        public Dictionary<string, object> GeneralCapabilities { get; set; }
 
         [JsonProperty("androidCapabilities")]
         public Dictionary<string, object> AndroidCapabilities { get; set; }
@@ -47,8 +47,8 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 
         public void Cleanse()
         {
-            if (MobileCapabilities == null) MobileCapabilities = new Dictionary<string, object>();
-            if (AndroidCapabilities == null) AndroidCapabilities = new Dictionary<string, object>();
+            GeneralCapabilities ??= new Dictionary<string, object>();
+            AndroidCapabilities ??= new Dictionary<string, object>();
         }
     }
 }

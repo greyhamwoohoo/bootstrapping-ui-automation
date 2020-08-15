@@ -1,0 +1,33 @@
+﻿{
+  "!comment": "See this reference for all capabilities: http://appium.io/docs/en/writing-running-appium/caps/",
+  "platformName": "Android",
+  "deviceSettings": {
+    "options": {
+      "generalCapabilities": {
+        "app": "override with THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP variable",
+        "automationName": "UiAutomator2",
+        "autoWebView": false,
+        "deviceName": "Pixel_2_API_R",
+        "fullReset": false,
+        "newCommandTimeout": 60000,
+        "noReset": true,
+        "orientation": "PORTRAIT",
+        "platformName": "Android",
+        "platformVersion": "10",
+        "udid": "emulator-5554",
+        "eventTimings": false,
+        "enablePerformanceLogging": false,
+        "printPageSourceOnFindFailure": false,
+        "clearSystemFiles": false,
+        "!otherApps": "",
+        "!browserName": "Chrome",
+        "!language": "en",
+        "!locale": "en_US"
+      },
+      "androidCapabilities": {
+        "!chromedriverExecutableNote": "By specifying this, we are using the Chromedriver based on the Project NuGET Reference. This is (usually) find if with the -R- (latest) Android AVD Images",
+        "chromedriverExecutable": "%TEST_DEPLOYMENT_FOLDER%/chromedriver.exe"
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@ namespace TheInternet.Common.SessionManagement
     public class DriverSessionFactory : IDriverSessionFactory
     {
         // TODO: Refactor. Too many parameters. 
-        public IDriverSession Create(IDeviceProperties deviceProperties, IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger, ITestCaseReporter testCaseReporter)
+        public IDriverSession Create(IDeviceProperties deviceProperties, IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger, ITestCaseReporter testCaseReporter, ICommandExecutor httpCommandExecutor)
         {
             if (deviceProperties == null) throw new System.ArgumentNullException(nameof(deviceProperties));
             if (browserProperties == null) throw new System.ArgumentNullException(nameof(browserProperties));
@@ -35,6 +35,7 @@ namespace TheInternet.Common.SessionManagement
             if (controlSettings == null) throw new System.ArgumentNullException(nameof(controlSettings));
             if (logger == null) throw new System.ArgumentNullException(nameof(logger));
             if (testCaseReporter == null) throw new System.ArgumentNullException(nameof(testCaseReporter));
+            if (httpCommandExecutor == null) throw new System.ArgumentNullException(nameof(httpCommandExecutor));
 
             var browser = default(IWebDriver);
 
@@ -94,7 +95,7 @@ namespace TheInternet.Common.SessionManagement
                 var appiumSettingsAdapter = new AppiumSettingsAdapter();
                 var options = appiumSettingsAdapter.ToAppiumOptions(appiumSettings);
 
-                var androidDriver = new AndroidDriver<AppiumWebElement>(new Uri(remoteWebDriverSettings.RemoteUri), options);
+                var androidDriver = new AndroidDriver<AppiumWebElement>(httpCommandExecutor, options);
 
                 return new DriverSession(new DecoratedWebDriver(androidDriver, controlSettings, testCaseReporter, logger), environmentSettings, controlSettings, testCaseReporter);
             }

@@ -15,6 +15,7 @@
     <None Remove="Runtime\BrowserSettings\common-ie11.json" />
     <None Remove="Runtime\BrowserSettings\common-performance-chrome.json" />
     <None Remove="Runtime\ControlSettings\common.json" />
+    <None Remove="Runtime\DeviceSettings\common-android-app.json" />
     <None Remove="Runtime\DeviceSettings\common-android-web-chrome.json" />
     <None Remove="Runtime\DeviceSettings\common-desktop-selenium.json" />
     <None Remove="Runtime\EnvironmentSettings\internet-localhost.json" />
@@ -70,6 +71,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\ControlSettings\common.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Runtime\DeviceSettings\common-android-app.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Runtime\DeviceSettings\common-desktop-selenium.json">

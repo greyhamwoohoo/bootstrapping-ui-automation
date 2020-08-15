@@ -1,0 +1,10 @@
+{
+  "testExecutionContext": {
+    "environmentVariables": {
+      "THEINTERNET_DEVICESETTINGS_FILES": "common-android-app.json",
+      "THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP": "C:\\dev.git\\appium-flutter-driver-net-bindings-test-app\\src\\howdi_welt\\build\\app\\outputs\\apk\\debug\\app-debug.apk",
+      "THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__AUTOMATIONNAME": "Flutter",
+      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-appium.json"
+    }
+  }
+}
