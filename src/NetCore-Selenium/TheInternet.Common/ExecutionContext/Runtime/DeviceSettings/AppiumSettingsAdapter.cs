@@ -104,6 +104,21 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
             { "logcatFilterSpecs", "array" }
         };
 
+        private Dictionary<string, string> RecognizedUIAutomatorCapabilities = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+        {
+            { "intentActions", "string" },
+            { "intentCategory", "string" },
+            { "intentFlags", "integer" },
+            { "optionalIntentArguments", "string" },
+            { "appWaitForLaunch", "boolean" },
+            { "disableSuppressAccessibilityService", "string" },
+            { "mjpegServerPort", "integer" },
+            { "skipServerInstallation", "boolean" },
+            { "uiautomator2ServerInstallTimeout", "integer" },
+            { "uiautomator2ServerLaunchTimeout", "integer" },
+            { "userProfile", "integer" }
+        };
+
         public OpenQA.Selenium.Appium.AppiumOptions ToAppiumOptions(AppiumSettings settings)
         {
             if (settings == null) throw new System.ArgumentNullException(nameof(settings));
@@ -115,6 +130,9 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 
             // Android Capabilities
             PopulateCapabilities(inOptions: result, withWellKnownCapabilities: RecognizedAndroidCapabilities, from: settings?.DeviceSettings?.Options?.AndroidCapabilities);
+
+            // UIAutomatorCapabilities
+            PopulateCapabilities(inOptions: result, withWellKnownCapabilities: RecognizedUIAutomatorCapabilities, from: settings?.DeviceSettings?.Options?.UIAutomatorCapabilities);
 
             return result;
         }
@@ -134,10 +152,10 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
                 //       ie: ...__APP will set the APP capability (it needs to be 'app')
                 var candidateKey = pair.Key;
 
-                var keyIsKnown = RecognizedGeneralCapabilities.ContainsKey(candidateKey);
+                var keyIsKnown = withWellKnownCapabilities.ContainsKey(candidateKey);
                 if (keyIsKnown)
                 {
-                    candidateKey = RecognizedGeneralCapabilities.Keys.First(k => string.Compare(k, pair.Key, StringComparison.InvariantCultureIgnoreCase) == 0);
+                    candidateKey = withWellKnownCapabilities.Keys.First(k => string.Compare(k, pair.Key, StringComparison.InvariantCultureIgnoreCase) == 0);
                 }
 
                 if (!keyIsKnown)
@@ -147,7 +165,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
                 }
                 else
                 {
-                    inOptions.AddAdditionalCapability(candidateKey, CoerceValueToType(candidateKey, RecognizedGeneralCapabilities[candidateKey], pair.Value));
+                    inOptions.AddAdditionalCapability(candidateKey, CoerceValueToType(candidateKey, withWellKnownCapabilities[candidateKey], pair.Value));
                 }
             });
         }

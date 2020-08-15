@@ -40,7 +40,8 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 
         [JsonProperty("androidCapabilities")]
         public Dictionary<string, object> AndroidCapabilities { get; set; }
-
+        [JsonProperty("uiAutomatorCapabilities")]
+        public Dictionary<string, object> UIAutomatorCapabilities { get; set; }
         public AppiumSettingsOptions()
         {
         }
@@ -49,6 +50,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
         {
             GeneralCapabilities ??= new Dictionary<string, object>();
             AndroidCapabilities ??= new Dictionary<string, object>();
+            UIAutomatorCapabilities ??= new Dictionary<string, object>();
         }
     }
 }

@@ -95,6 +95,19 @@
         "!mockLocationApp": "",
         "!logcatFormat": "process",
         "!logcatFilterSpecs": []
+      },
+      "uiAutomatorCapabilities": {
+        "!intentActions": "",
+        "!intentCategory": "",
+        "!intentFlags": 0,
+        "!optionalIntentArguments": "",
+        "!appWaitForLaunch": true,
+        "!disableSuppressAccessibilityService": "",
+        "!mjpegServerPort": 0,
+        "!skipServerInstallation": false,
+        "!uiautomator2ServerInstallTimeout": 20000,
+        "!uiautomator2ServerLaunchTimeout": 20000,
+        "!userProfile": 11
       }
     }
   }
