@@ -1,9 +1,9 @@
 {
   "testExecutionContext": {
     "environmentVariables": {
-      "THEINTERNET_BROWSERSETTINGS_FILES": "common-ie11.json",
-      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-selenium.json",
-      "THEINTERNET_CONTROLSETTINGS__ATTACHTOEXISTINGSESSIONIFITEXISTS": true
+      "YASF_BROWSERSETTINGS_FILES": "common-ie11.json",
+      "YASF_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-selenium.json",
+      "YASF_CONTROLSETTINGS__ATTACHTOEXISTINGSESSIONIFITEXISTS": true
     }
   }
 }

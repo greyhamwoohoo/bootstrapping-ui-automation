@@ -4,7 +4,7 @@
   "deviceSettings": {
     "options": {
       "generalCapabilities": {
-        "app": "override with THEINTERNET_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP variable",
+        "app": "override with YASF_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP variable",
         "automationName": "UiAutomator2",
         "autoWebView": false,
         "deviceName": "Pixel_2_API_R",

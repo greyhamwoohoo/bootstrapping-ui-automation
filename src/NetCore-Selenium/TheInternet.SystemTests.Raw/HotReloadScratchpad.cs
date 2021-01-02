@@ -25,11 +25,11 @@ namespace TheInternet.SystemTests.Raw
     /// To automatically run the test every time this file is saved, do this from a command line from this folder:
     /// 
     /// Cmd Prompt:
-    /// SET THEINTERNET_TEST_EXECUTION_CONTEXT=attachable-chrome-localhost
+    /// SET YASF_TEST_EXECUTION_CONTEXT=attachable-chrome-localhost
     /// dotnet watch test --filter "Name=HotReloadWorkflow"
     ///
     /// PowerShell:
-    /// $env:THEINTERNET_TEST_EXECUTION_CONTEXT="attachable-chrome-localhost"
+    /// $env:YASF_TEST_EXECUTION_CONTEXT="attachable-chrome-localhost"
     /// dotnet watch test --filter "Name=HotReloadWorkflow"
     /// </remarks>
     [TestClass]

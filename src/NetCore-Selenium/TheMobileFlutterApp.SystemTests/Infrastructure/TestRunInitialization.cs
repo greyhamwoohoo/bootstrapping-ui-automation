@@ -8,7 +8,7 @@ namespace TheMobileFlutterApp.SystemTests.Infrastructure
     [TestClass]
     public class TestRunInitialization
     {
-        const string PREFIX = "THEINTERNET_";
+        const string PREFIX = "YASF_";
 
         public const string DEFAULT_TEST_EXECUTION_CONTEXT = "default-chrome-localhost";
 

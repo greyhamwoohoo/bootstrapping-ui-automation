@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
 using System;
-using Yasf.Common.ExtentReports;
 using Yasf.Common.Infrastructure;
 using Yasf.Common.Reporting;
 using Yasf.Common.Reporting.Contracts;
@@ -12,7 +11,7 @@ namespace Yasf.Common.ExtentReports.SystemTests.Infrastructure
     [TestClass]
     public class TestRunInitialization
     {
-        const string PREFIX = "THEINTERNET_";
+        const string PREFIX = "YASF_";
 
         public const string DEFAULT_TEST_EXECUTION_CONTEXT = "default-chrome-localhost";
 

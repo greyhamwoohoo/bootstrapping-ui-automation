@@ -1,9 +1,9 @@
 {
   "testExecutionContext": {
     "environmentVariables": {
-      "THEINTERNET_DEVICESETTINGS_FILES": "common-android-web-chrome.json",
-      "THEINTERNET_BROWSERSETTINGS_FILES": "common-chrome.json",
-      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-appium.json"
+      "YASF_DEVICESETTINGS_FILES": "common-android-web-chrome.json",
+      "YASF_BROWSERSETTINGS_FILES": "common-chrome.json",
+      "YASF_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-appium.json"
     }
   }
 }

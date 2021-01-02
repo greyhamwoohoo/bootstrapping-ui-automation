@@ -20,13 +20,13 @@ Environment variables can be set before running the tests to configure the Test 
 
 | Environment Variable | Default | Description |
 | -------------------- | ------- | ----------- |
-| THEINTERNET_BROWSERSETTINGS_FILES | common-chrome.json | Launches an incognito Chrome |
-| THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES | common-localhost-selenium.json | Does not use a remote webdriver - launches locally (Selenium) |
-| THEINTERNET_ENVIRONMENTSETTINGS_FILES | internet.json | The target environment for the tests. ie: where the application (baseUrl) will point to |
-| THEINTERNET_CONTROLSETTINGS_FILES | common.json | Element timeouts, polling frequency etc. |
-| THEINTERNET_DEVICESETTINGS_FILES | common-desktop-selenium.json | The 'Selenium Happy Path' - we want to launch browsers on the Desktop |
+| YASF_BROWSERSETTINGS_FILES | common-chrome.json | Launches an incognito Chrome |
+| YASF_REMOTEWEBDRIVERSETTINGS_FILES | common-localhost-selenium.json | Does not use a remote webdriver - launches locally (Selenium) |
+| YASF_ENVIRONMENTSETTINGS_FILES | internet.json | The target environment for the tests. ie: where the application (baseUrl) will point to |
+| YASF_CONTROLSETTINGS_FILES | common.json | Element timeouts, polling frequency etc. |
+| YASF_DEVICESETTINGS_FILES | common-desktop-selenium.json | The 'Selenium Happy Path' - we want to launch browsers on the Desktop |
 
-The following browsers (and configurations) are supported - choose the browser by setting THEINTERNET_BROWSERSETTINGS_FILES environment variable to one of these values:
+The following browsers (and configurations) are supported - choose the browser by setting YASF_BROWSERSETTINGS_FILES environment variable to one of these values:
 
 | Browser | Value | Description |
 | ------- | ----- | ----------- |
@@ -49,7 +49,7 @@ The optional xxx_FILES environment variables support either a fully qualified pa
 This implementation uses the .Net Core ConfigurationBuilder() - this means configuration files can be 'overlayed' and specialized like appsettings. For example, to specify a base file and then overload just one or two properties, specify the original file and then a Json file containing the variations:
 
 ```
-SET THEINTERNET_BROWSERSETTINGS_FILES=common-chrome.json;chrome-captureLogFile.json;otherspecializations
+SET YASF_BROWSERSETTINGS_FILES=common-chrome.json;chrome-captureLogFile.json;otherspecializations
 ```
 
 The .Net Core conventions for environment variable overrides are also supported which means individual settings can be overridden by setting environment variables prior to execution. 
@@ -57,10 +57,10 @@ The .Net Core conventions for environment variable overrides are also supported 
 For example: to change the RemoteWebDriverSettings RemoteUri property in the JSON, do something like this:
 
 ```
-SET THEINTERNET_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
+SET YASF_REMOTEWEBDRIVERSETTINGS:REMOTEURI="https://localhost.com/overriddenUri"
 
 REM Use the .Net Core __ notation for overriding nested values in the configuration files: see tec.attachable-chrome-localhost.json for an example
-SET THEINTERNET_REMOTEWEBDRIVERSETTINGS__REMOTEURI="https://localhost.com/overriddenUri"
+SET YASF_REMOTEWEBDRIVERSETTINGS__REMOTEURI="https://localhost.com/overriddenUri"
 ```
 
 ## Test Execution Contexts (.runsettings)
@@ -77,7 +77,7 @@ The 'real' settings are stored in the tec.*.json files - at the moment, these se
 If executing the tests from the command line, you can specify the name of the test execution context by setting this variable:
 
 ```
-THEINTERNET_TEST_EXECUTION_CONTEXT=common-chrome-localhost
+YASF_TEST_EXECUTION_CONTEXT=common-chrome-localhost
 ```
 
 | RunSettings | Test Execution Context | Full filename | Description | 
@@ -107,13 +107,13 @@ Open  up a command prompt in TheInternet.SystemTests.Raw folder and execute the 
 
 Command Prompt:
 ```
-SET THEINTERNET_TEST_EXECUTION_CONTEXT=attachable-chrome-localhost
+SET YASF_TEST_EXECUTION_CONTEXT=attachable-chrome-localhost
 dotnet watch test --filter "Name=HotReloadWorkflow"
 ```
 
 PowerShell:
 ```
-$env:THEINTERNET_TEST_EXECUTION_CONTEXT="attachable-chrome-localhost"
+$env:YASF_TEST_EXECUTION_CONTEXT="attachable-chrome-localhost"
 dotnet watch test --filter "Name=HotReloadWorkflow"
 ```
 
@@ -148,13 +148,13 @@ docker build -t chrome-and-tests:local .
 To run the tests, we always need to specify (at least) headless-chrome.json:
 
 ```
-docker run -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local
+docker run -e YASF_TEST_EXECUTION_CONTEXT=empty -e YASF_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local
 ```
 
 To add extra 'dotnet test' parameters:
 
 ```
-docker run -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local  --testcasefilter:"Name=DriverSessionExists"
+docker run -e YASF_TEST_EXECUTION_CONTEXT=empty -e YASF_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local  --testcasefilter:"Name=DriverSessionExists"
 ```
 
 To run the tests and capture the output / test results from the container (PowerShell)
@@ -162,7 +162,7 @@ To run the tests and capture the output / test results from the container (Power
 ```
 New-Item -ItemType Directory -Name container-test-results -Force
 
-docker run -v "$($pwd)/container-test-results:/app/TestResults" -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local --logger:"trx;LogFileName=MyPsResults.trx"
+docker run -v "$($pwd)/container-test-results:/app/TestResults" -e YASF_TEST_EXECUTION_CONTEXT=empty -e YASF_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local --logger:"trx;LogFileName=MyPsResults.trx"
 ```
 
 To run the tests (CMD Prompt):
@@ -170,7 +170,7 @@ To run the tests (CMD Prompt):
 ```
 mkdir container-test-results
 
-docker run -v %CD%/container-test-results:/app/TestResults -e THEINTERNET_TEST_EXECUTION_CONTEXT=empty -e THEINTERNET_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local --logger:"trx;LogFileName=MyCmdPromptResults.trx"
+docker run -v %CD%/container-test-results:/app/TestResults -e YASF_TEST_EXECUTION_CONTEXT=empty -e YASF_BROWSERSETTINGS_FILES=common-headless-chrome.json chrome-and-tests:local --logger:"trx;LogFileName=MyCmdPromptResults.trx"
 ```
 
 ### Reference
