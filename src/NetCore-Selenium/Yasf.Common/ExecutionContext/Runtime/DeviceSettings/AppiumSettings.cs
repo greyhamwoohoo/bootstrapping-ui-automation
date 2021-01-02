@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
+namespace Yasf.Common.ExecutionContext.Runtime.DeviceSettings
 {
     public class AppiumSettings : DeviceSettingsBase
     {

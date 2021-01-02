@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static TheInternet.Common.ElementOperations.ElementState;
-using static TheInternet.Common.ElementOperations.ElementStateCondition;
+using static Yasf.Common.ElementOperations.ElementState;
+using static Yasf.Common.ElementOperations.ElementStateCondition;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Service;
@@ -9,10 +9,8 @@ using OpenQA.Selenium.Appium.Enums;
 using OpenQA.Selenium.Appium.Android;
 using System;
 using OpenQA.Selenium.Chrome;
-using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
-using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
-using TheInternet.Common;
+using Yasf.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
+using Yasf.Common;
 
 namespace TheInternet.SystemTests.Raw
 {

@@ -1,6 +1,6 @@
-﻿using TheInternet.Common.ExecutionContext.Contracts;
+﻿using Yasf.Common.ExecutionContext.Contracts;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings
+namespace Yasf.Common.ExecutionContext.Runtime.EnvironmentSettings
 {
     public class EnvironmentSettings : ICleanse
     {

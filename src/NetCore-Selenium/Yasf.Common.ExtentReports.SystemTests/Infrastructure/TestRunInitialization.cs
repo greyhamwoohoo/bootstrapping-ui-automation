@@ -2,11 +2,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
 using System;
-using TheInternet.Common.Infrastructure;
-using TheInternet.Common.Reporting;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.ExtentReports;
+using Yasf.Common.Infrastructure;
+using Yasf.Common.Reporting;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.ExtentReports.SystemTests.Infrastructure
+namespace Yasf.Common.ExtentReports.SystemTests.Infrastructure
 {
     [TestClass]
     public class TestRunInitialization
@@ -29,7 +30,7 @@ namespace TheInternet.Common.ExtentReports.SystemTests.Infrastructure
 
         private static void RegisterExtentReporting(string prefix, IServiceCollection serviceCollection, ITestRunReporterContext testRunReporterContext)
         {
-            if(!testRunReporterContext.InstrumentationSettings.ReportingSettings.Enabled)
+            if (!testRunReporterContext.InstrumentationSettings.ReportingSettings.Enabled)
             {
                 return;
             }

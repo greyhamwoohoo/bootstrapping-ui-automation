@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TheInternet.Common;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common;
+using Yasf.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.ExecutionContext.Runtime.InstrumentationSettings;
+using Yasf.Common.Reporting.Contracts;
 
 namespace TheInternet.SystemTests.Raw
 {

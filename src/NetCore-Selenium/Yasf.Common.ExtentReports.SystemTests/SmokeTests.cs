@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using TheInternet.Common;
+using Yasf.Common;
 
-namespace TheInternet.SystemTests.Raw
+namespace Yasf.Common.ExtentReports.SystemTests
 {
     [TestClass]
     public class SmokeTests : SeleniumTestBase

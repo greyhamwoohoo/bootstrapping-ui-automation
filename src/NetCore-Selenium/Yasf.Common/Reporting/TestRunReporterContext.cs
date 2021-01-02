@@ -1,7 +1,7 @@
-﻿using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
-using TheInternet.Common.Reporting.Contracts;
+﻿using Yasf.Common.ExecutionContext.Runtime.InstrumentationSettings;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.Reporting
+namespace Yasf.Common.Reporting
 {
     public class TestRunReporterContext : ITestRunReporterContext
     {

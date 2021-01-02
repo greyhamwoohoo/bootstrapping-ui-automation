@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TheInternet.Common.Infrastructure;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.Infrastructure;
+using Yasf.Common.Reporting.Contracts;
 
 namespace TheMobileFlutterApp.SystemTests.Infrastructure
 {

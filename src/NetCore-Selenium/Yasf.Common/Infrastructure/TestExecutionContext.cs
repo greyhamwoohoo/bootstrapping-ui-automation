@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace TheInternet.Common.Infrastructure
+namespace Yasf.Common.Infrastructure
 {
     public class TestExecutionContext
     {

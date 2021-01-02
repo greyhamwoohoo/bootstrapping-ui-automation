@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace TheInternet.Common.Infrastructure
+namespace Yasf.Common.Infrastructure
 {
     public static class TestExecutionContextFactory
     {

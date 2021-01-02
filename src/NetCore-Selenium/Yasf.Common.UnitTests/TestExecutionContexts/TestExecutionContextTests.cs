@@ -4,9 +4,9 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using TheInternet.Common.DataSource;
+using Yasf.Common.DataSource;
 
-namespace TheInternet.Common.UnitTests.Runtime
+namespace Yasf.Common.UnitTests.TestExecutionContexts
 {
     [TestClass]
     public class TestExecutionContextTests
@@ -24,7 +24,7 @@ namespace TheInternet.Common.UnitTests.Runtime
             [RuntimeFilePathDataSource(relativePath: "TestExecutionContexts", pattern: "*.json")]
             public void AllTecsCanBeParsed(string runtimeFilePath)
             {
-                var content = System.IO.File.ReadAllText(runtimeFilePath);
+                var content = File.ReadAllText(runtimeFilePath);
 
                 _ = JsonConvert.DeserializeObject(content);
             }
@@ -33,7 +33,7 @@ namespace TheInternet.Common.UnitTests.Runtime
             [RuntimeFilePathDataSource(relativePath: "TestExecutionContexts", pattern: "*.runsettings")]
             public void AllRunSettingsCanBeParsed(string runtimeFilePath)
             {
-                var content = System.IO.File.ReadAllText(runtimeFilePath);
+                var content = File.ReadAllText(runtimeFilePath);
 
                 XmlDocument doc = new XmlDocument();
 

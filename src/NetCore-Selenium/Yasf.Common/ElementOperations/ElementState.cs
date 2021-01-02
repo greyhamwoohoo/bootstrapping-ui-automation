@@ -1,4 +1,4 @@
-﻿namespace TheInternet.Common.ElementOperations
+﻿namespace Yasf.Common.ElementOperations
 {
     /// <summary>
     /// The element state

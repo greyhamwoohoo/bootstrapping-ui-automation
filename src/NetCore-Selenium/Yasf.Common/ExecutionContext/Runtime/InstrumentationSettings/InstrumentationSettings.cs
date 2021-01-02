@@ -1,6 +1,6 @@
-﻿using TheInternet.Common.ExecutionContext.Contracts;
+﻿using Yasf.Common.ExecutionContext.Contracts;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings
+namespace Yasf.Common.ExecutionContext.Runtime.InstrumentationSettings
 {
     /// <summary>
     /// Placeholder for controlling things such as: reporting and logging storage. 

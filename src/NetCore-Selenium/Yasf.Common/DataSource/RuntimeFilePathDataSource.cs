@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace TheInternet.Common.DataSource
+namespace Yasf.Common.DataSource
 {
     /// <summary>
     /// DataSource that will dynamically discover the configuration files relative to the .Common assembly.
@@ -16,8 +16,8 @@ namespace TheInternet.Common.DataSource
 
         public RuntimeFilePathDataSource(string relativePath, string pattern)
         {
-            RelativePath = relativePath ?? throw new System.ArgumentNullException(nameof(relativePath));
-            Pattern = pattern ?? throw new System.ArgumentNullException(nameof(pattern));
+            RelativePath = relativePath ?? throw new ArgumentNullException(nameof(relativePath));
+            Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
             Path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(RuntimeFilePathDataSource).Assembly.Location), relativePath);
         }

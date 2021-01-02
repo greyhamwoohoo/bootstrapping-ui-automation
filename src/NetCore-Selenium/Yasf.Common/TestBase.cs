@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
 using System;
-using TheInternet.Common.Infrastructure;
+using Yasf.Common.Infrastructure;
 
-namespace TheInternet.Common
+namespace Yasf.Common
 {
     [TestClass]
     public abstract class TestBase

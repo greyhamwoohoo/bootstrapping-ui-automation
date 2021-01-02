@@ -1,10 +1,10 @@
 ﻿using OpenQA.Selenium;
-using TheInternet.Common.ElementOperations.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.ElementOperations.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.ExecutionContext.Runtime.EnvironmentSettings;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.SessionManagement.Contracts
+namespace Yasf.Common.SessionManagement.Contracts
 {
     public interface IDriverSession
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System.Linq;
-using static TheInternet.Common.ElementOperations.ElementState;
-using static TheInternet.Common.ElementOperations.ElementStateCondition;
+using static Yasf.Common.ElementOperations.ElementState;
+using static Yasf.Common.ElementOperations.ElementStateCondition;
 
 namespace TheInternet.SystemTests.Raw.Tests
 {

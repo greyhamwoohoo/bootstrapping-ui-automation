@@ -3,10 +3,10 @@ using Serilog;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.Reporting.Contracts;
 
 [assembly: InternalsVisibleTo("Yasf.Common.UnitTests")]
-namespace TheInternet.Common.Reporting
+namespace Yasf.Common.Reporting
 {
     /// <summary>
     /// Ensures the ReportingContexts are consistently configured in the service collection. 
@@ -22,9 +22,9 @@ namespace TheInternet.Common.Reporting
 
         internal ReportingContextRegistrationManager(ILogger bootstrappingLogger, IServiceCollection services, ITestRunReporterContext testRunReporterContext)
         {
-            _bootstrappingLogger = bootstrappingLogger ?? throw new System.ArgumentNullException(nameof(bootstrappingLogger));
-            _services = services ?? throw new System.ArgumentNullException(nameof(services));
-            _testRunReporterContext = testRunReporterContext ?? throw new System.ArgumentNullException(nameof(testRunReporterContext));
+            _bootstrappingLogger = bootstrappingLogger ?? throw new ArgumentNullException(nameof(bootstrappingLogger));
+            _services = services ?? throw new ArgumentNullException(nameof(services));
+            _testRunReporterContext = testRunReporterContext ?? throw new ArgumentNullException(nameof(testRunReporterContext));
 
             RefreshRegistrationState();
         }
@@ -35,15 +35,15 @@ namespace TheInternet.Common.Reporting
         {
             if (IsPartiallyConfigured)
             {
-                throw new System.InvalidOperationException($"The ReportingContext is not correctly configured. {typeof(ITestRunReporter).FullName},{typeof(ITestCaseReporterContext).FullName} and {typeof(ITestCaseReporter).FullName} must be registered together; or not at all. ");
+                throw new InvalidOperationException($"The ReportingContext is not correctly configured. {typeof(ITestRunReporter).FullName},{typeof(ITestCaseReporterContext).FullName} and {typeof(ITestCaseReporter).FullName} must be registered together; or not at all. ");
             }
         }
 
         internal void PopulateDefaultReportingContexts()
         {
-            if(IsConfigured || IsPartiallyConfigured)
+            if (IsConfigured || IsPartiallyConfigured)
             {
-                throw new System.InvalidOperationException($"The Reporting Contexts are already configured. ");
+                throw new InvalidOperationException($"The Reporting Contexts are already configured. ");
             }
 
             _services.AddSingleton<ITestRunReporter>(isp =>
@@ -58,7 +58,7 @@ namespace TheInternet.Common.Reporting
                 return new TestCaseReporterContext(rootOutputFolder: testRunReporter.ReportOutputFolder, testCaseIdentity: $"{DateTime.Now.ToString("yyyyMMddHHmmssfff")}");
             });
 
-            _services.AddScoped<ITestCaseReporter>(isp =>
+            _services.AddScoped(isp =>
             {
                 var testRunReporter = isp.GetRequiredService<ITestRunReporter>();
                 var testCaseReporterContext = isp.GetRequiredService<ITestCaseReporterContext>();

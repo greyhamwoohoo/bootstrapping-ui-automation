@@ -2,9 +2,8 @@
 using OpenQA.Selenium.Remote;
 using System.Collections.Generic;
 using System.IO;
-using TheInternet.Common.Drivers;
 
-namespace TheInternet.Common.WebDrivers
+namespace Yasf.Common.Drivers
 {
     /// <summary>
     /// Allows us to attach to a running Internet Explorer Driver instance / Selenium Session

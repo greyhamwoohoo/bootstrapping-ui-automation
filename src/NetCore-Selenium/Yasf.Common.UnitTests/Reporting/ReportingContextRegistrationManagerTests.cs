@@ -3,10 +3,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
 using System;
-using TheInternet.Common.Reporting;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.Reporting;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.UnitTests.Reporting
+namespace Yasf.Common.UnitTests.Reporting
 {
     /// <summary>
     /// An experiment using Builders for Unit Test (perhaps overkill for such a simple class!)

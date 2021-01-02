@@ -1,4 +1,4 @@
-﻿namespace TheInternet.Common.SessionManagement.Contracts
+﻿namespace Yasf.Common.SessionManagement.Contracts
 {
     /// <summary>
     /// Returns TRUE if it looks like a session is running on the remote port. 

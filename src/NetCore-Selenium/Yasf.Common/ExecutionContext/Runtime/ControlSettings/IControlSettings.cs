@@ -1,4 +1,4 @@
-﻿namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
+﻿namespace Yasf.Common.ExecutionContext.Runtime.ControlSettings
 {
     /// <summary>
     /// We use an interface for the 'Common' control settings. 

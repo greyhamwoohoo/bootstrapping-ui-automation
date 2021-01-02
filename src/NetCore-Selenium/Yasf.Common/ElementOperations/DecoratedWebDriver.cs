@@ -3,11 +3,11 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
 using OpenQA.Selenium.Support.Extensions;
 using System.Collections.ObjectModel;
-using TheInternet.Common.ElementOperations.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.ElementOperations.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.ElementOperations
+namespace Yasf.Common.ElementOperations
 {
     /// <summary>
     /// Wraps the IWebDriver interface and enriches it. 
@@ -28,7 +28,7 @@ namespace TheInternet.Common.ElementOperations
 
             Assert = new WebDriverAssertions(this, _controlSettings, _testCaseReporter, _logger);
         }
-        
+
         public IWebDriverAssertions Assert { get; }
 
         #region Wrap _original WebDriver properties and methods

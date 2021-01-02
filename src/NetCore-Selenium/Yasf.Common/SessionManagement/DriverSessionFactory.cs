@@ -11,32 +11,33 @@ using Serilog;
 using System;
 using System.Linq;
 using System.Text;
-using TheInternet.Common.ElementOperations;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
-using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
-using TheInternet.Common.Reporting.Contracts;
-using TheInternet.Common.SessionManagement.Contracts;
-using TheInternet.Common.WebDrivers;
+using Yasf.Common.Drivers;
+using Yasf.Common.ElementOperations;
+using Yasf.Common.ExecutionContext.Runtime.BrowserSettings;
+using Yasf.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.ExecutionContext.Runtime.DeviceSettings;
+using Yasf.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.EnvironmentSettings;
+using Yasf.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using Yasf.Common.Reporting.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.SessionManagement
+namespace Yasf.Common.SessionManagement
 {
     public class DriverSessionFactory : IDriverSessionFactory
     {
         // TODO: Refactor. Too many parameters. 
         public IDriverSession Create(IDeviceProperties deviceProperties, IBrowserProperties browserProperties, RemoteWebDriverSettings remoteWebDriverSettings, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ILogger logger, ITestCaseReporter testCaseReporter, ICommandExecutor httpCommandExecutor)
         {
-            if (deviceProperties == null) throw new System.ArgumentNullException(nameof(deviceProperties));
-            if (browserProperties == null) throw new System.ArgumentNullException(nameof(browserProperties));
-            if (remoteWebDriverSettings == null) throw new System.ArgumentNullException(nameof(remoteWebDriverSettings));
-            if (environmentSettings == null) throw new System.ArgumentNullException(nameof(environmentSettings));
-            if (controlSettings == null) throw new System.ArgumentNullException(nameof(controlSettings));
-            if (logger == null) throw new System.ArgumentNullException(nameof(logger));
-            if (testCaseReporter == null) throw new System.ArgumentNullException(nameof(testCaseReporter));
-            if (httpCommandExecutor == null) throw new System.ArgumentNullException(nameof(httpCommandExecutor));
+            if (deviceProperties == null) throw new ArgumentNullException(nameof(deviceProperties));
+            if (browserProperties == null) throw new ArgumentNullException(nameof(browserProperties));
+            if (remoteWebDriverSettings == null) throw new ArgumentNullException(nameof(remoteWebDriverSettings));
+            if (environmentSettings == null) throw new ArgumentNullException(nameof(environmentSettings));
+            if (controlSettings == null) throw new ArgumentNullException(nameof(controlSettings));
+            if (logger == null) throw new ArgumentNullException(nameof(logger));
+            if (testCaseReporter == null) throw new ArgumentNullException(nameof(testCaseReporter));
+            if (httpCommandExecutor == null) throw new ArgumentNullException(nameof(httpCommandExecutor));
 
             var browser = default(IWebDriver);
 
@@ -44,40 +45,40 @@ namespace TheInternet.Common.SessionManagement
             // 1. Desktop (ie: 'traditional' Web Browser Automation)
             // 2. Android (Devices)
 
-            if(deviceProperties.Name == "DESKTOP")
+            if (deviceProperties.Name == "DESKTOP")
             {
                 switch (browserProperties.Name)
                 {
                     case "CHROME":
                         var chromeBrowserSettings = browserProperties.BrowserSettings as ChromeBrowserSettings;
-                        if (null == chromeBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
+                        if (null == chromeBrowserSettings) throw new InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
                         browser = StartBrowser(remoteWebDriverSettings, chromeBrowserSettings, controlSettings);
 
                         break;
                     case "EDGE":
                         var edgeBrowserSettings = browserProperties.BrowserSettings as EdgeBrowserSettings;
-                        if (null == edgeBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
+                        if (null == edgeBrowserSettings) throw new InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
                         browser = StartBrowser(remoteWebDriverSettings, edgeBrowserSettings, controlSettings);
 
                         break;
                     case "INTERNETEXPLORER":
                         var ieBrowserSettings = browserProperties.BrowserSettings as InternetExplorerBrowserSettings;
-                        if (null == ieBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
+                        if (null == ieBrowserSettings) throw new InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
                         browser = StartBrowser(remoteWebDriverSettings, ieBrowserSettings, controlSettings);
 
                         break;
                     case "FIREFOX":
                         var ffBrowserSettings = browserProperties.BrowserSettings as FireFoxBrowserSettings;
-                        if (null == ffBrowserSettings) throw new System.InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
+                        if (null == ffBrowserSettings) throw new InvalidOperationException($"The browserSettings for {browserProperties.Name} are not availble. Were they correctly registered in the Container? ");
 
                         browser = StartBrowser(remoteWebDriverSettings, ffBrowserSettings, controlSettings);
 
                         break;
                     default:
-                        throw new System.ArgumentOutOfRangeException($"There is no support for starting browsers of type {browserProperties.Name}");
+                        throw new ArgumentOutOfRangeException($"There is no support for starting browsers of type {browserProperties.Name}");
                 }
 
                 var decoratedWebDriver = new DecoratedWebDriver(browser, controlSettings, testCaseReporter, logger);
@@ -85,11 +86,11 @@ namespace TheInternet.Common.SessionManagement
                 return new DriverSession(decoratedWebDriver, environmentSettings, controlSettings, testCaseReporter);
             }
 
-            if(deviceProperties.Name == "ANDROID")
+            if (deviceProperties.Name == "ANDROID")
             {
                 if (!remoteWebDriverSettings.UseRemoteDriver)
                 {
-                    throw new System.InvalidOperationException($"For Appium, we always configure the RemoteWebDriver settings. If running Appium locally, use the 'common-localhost-appium.json' file. ");
+                    throw new InvalidOperationException($"For Appium, we always configure the RemoteWebDriver settings. If running Appium locally, use the 'common-localhost-appium.json' file. ");
                 }
 
                 var appiumSettings = deviceProperties.DeviceSettings as AppiumSettings;
@@ -98,7 +99,7 @@ namespace TheInternet.Common.SessionManagement
 
                 var androidDriver = default(AndroidDriver<AppiumWebElement>);
 
-                foreach(var currentAttempt in Enumerable.Range(1, controlSettings.AppiumDriverCreationRetries))
+                foreach (var currentAttempt in Enumerable.Range(1, controlSettings.AppiumDriverCreationRetries))
                 {
                     try
                     {
@@ -106,7 +107,7 @@ namespace TheInternet.Common.SessionManagement
 
                         break;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         logger.Error($"ERROR: Starting Android Driver attempt {currentAttempt}");
                         logger.Error($"ERROR: {ex}");

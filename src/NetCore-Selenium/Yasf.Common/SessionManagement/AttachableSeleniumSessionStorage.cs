@@ -3,9 +3,9 @@ using Newtonsoft.Json.Linq;
 using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.SessionManagement
+namespace Yasf.Common.SessionManagement
 {
     public class AttachableSeleniumSessionStorage : IAttachableSeleniumSessionStorage
     {
@@ -14,7 +14,7 @@ namespace TheInternet.Common.SessionManagement
 
         public AttachableSeleniumSessionStorage(string basePath)
         {
-            if (null == basePath) throw new System.ArgumentNullException(nameof(basePath));
+            if (null == basePath) throw new ArgumentNullException(nameof(basePath));
 
             _basePath = basePath;
         }
@@ -25,7 +25,7 @@ namespace TheInternet.Common.SessionManagement
 
         public IAttachableSeleniumSession ReadSessionState(string browserName)
         {
-            if (null == browserName) throw new System.ArgumentNullException(nameof(browserName));
+            if (null == browserName) throw new ArgumentNullException(nameof(browserName));
 
             if (!AttachableSessionExists)
             {
@@ -43,7 +43,7 @@ namespace TheInternet.Common.SessionManagement
 
                 var officialResponse = Response.FromJson(persistedSession.OfficialResponse);
                 officialResponse.SessionId = persistedSession.Response.SessionId;
-                
+
                 var newSession = new AttachableSeleniumSession()
                 {
                     BrowserName = browserName,
@@ -72,7 +72,7 @@ namespace TheInternet.Common.SessionManagement
 
         public void RemoveSessionState()
         {
-            if(System.IO.File.Exists(Path))
+            if (System.IO.File.Exists(Path))
             {
                 System.IO.File.Delete(Path);
             }

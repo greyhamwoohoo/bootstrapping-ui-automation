@@ -1,7 +1,7 @@
 ﻿using Serilog;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.ExtentReports
+namespace Yasf.Common.ExtentReports
 {
     public class TestRunReporter : ITestRunReporter
     {
@@ -19,11 +19,11 @@ namespace TheInternet.Common.ExtentReports
 
         public void Initialize()
         {
-            ExtentReporter = new global::AventStack.ExtentReports.ExtentReports();
+            ExtentReporter = new AventStack.ExtentReports.ExtentReports();
 
             // NOTE: For some reason, I need to specify the path here or it goes 'one level up'. Am I missing something?
-            _htmlReporter = new global::AventStack.ExtentReports.Reporter.ExtentHtmlReporter(System.IO.Path.Combine(ReportOutputFolder, "index.html"));
-  
+            _htmlReporter = new AventStack.ExtentReports.Reporter.ExtentHtmlReporter(System.IO.Path.Combine(ReportOutputFolder, "index.html"));
+
             ExtentReporter.AttachReporter(_htmlReporter);
         }
 

@@ -5,11 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TheInternet.Common.ElementOperations.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.ElementOperations.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.ElementOperations
+namespace Yasf.Common.ElementOperations
 {
     public class WebDriverAssertions : IWebDriverAssertions
     {
@@ -20,10 +20,10 @@ namespace TheInternet.Common.ElementOperations
 
         public WebDriverAssertions(IDecoratedWebDriver webDriver, IControlSettings controlSettings, ITestCaseReporter testCaseReporter, ILogger logger)
         {
-            _testCaseReporter = testCaseReporter ?? throw new System.ArgumentNullException(nameof(testCaseReporter));
-            _webDriver = webDriver ?? throw new System.ArgumentNullException(nameof(webDriver)); ; 
-            _controlSettings = controlSettings ?? throw new System.ArgumentNullException(nameof(controlSettings)); ;
-            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            _testCaseReporter = testCaseReporter ?? throw new ArgumentNullException(nameof(testCaseReporter));
+            _webDriver = webDriver ?? throw new ArgumentNullException(nameof(webDriver)); ;
+            _controlSettings = controlSettings ?? throw new ArgumentNullException(nameof(controlSettings)); ;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public IWebElement Click(By locator)
@@ -59,7 +59,7 @@ namespace TheInternet.Common.ElementOperations
                 element = AssertExactlyOneElementExists(_webDriver, locator);
 
                 element.SendKeys(keys);
-                if(andPressEnter)
+                if (andPressEnter)
                 {
                     element.SendKeys(Keys.Enter);
                 }
@@ -228,19 +228,19 @@ namespace TheInternet.Common.ElementOperations
             {
                 var webElements = _webDriver.FindElements(condition.Locator);
                 if (webElements.Count() == 0) throw new NoSuchElementException($"{condition.Locator}");
-                if (webElements.Count() != 1) throw new System.InvalidOperationException($"ERROR: There is more than one instance of {condition.State.ToString()}. There must be exactly one instance on the page. ");
+                if (webElements.Count() != 1) throw new InvalidOperationException($"ERROR: There is more than one instance of {condition.State.ToString()}. There must be exactly one instance on the page. ");
 
                 webElement = webElements[0];
             }
 
             if (condition.State.HasFlag(ElementState.IsDisplayed))
             {
-                if (!webElement.Displayed) throw new NoSuchElementException($"The Element is not visible", new OpenQA.Selenium.ElementNotVisibleException($"The Element is not visible: {webElement}"));
+                if (!webElement.Displayed) throw new NoSuchElementException($"The Element is not visible", new ElementNotVisibleException($"The Element is not visible: {webElement}"));
             }
 
             if (condition.State.HasFlag(ElementState.IsEnabled))
             {
-                if (!webElement.Enabled) throw new NoSuchElementException($"The Element is not enabled", new OpenQA.Selenium.ElementNotInteractableException($"The Element is not enabled: {webElement}"));
+                if (!webElement.Enabled) throw new NoSuchElementException($"The Element is not enabled", new ElementNotInteractableException($"The Element is not enabled: {webElement}"));
             }
 
             return webElement;
@@ -262,10 +262,10 @@ namespace TheInternet.Common.ElementOperations
         /// <param name="callback"></param>
         private void AssertThatEventually(Action<IDecoratedWebDriver> callback, string because)
         {
-            if (null == callback) throw new System.ArgumentNullException(nameof(callback));
+            if (null == callback) throw new ArgumentNullException(nameof(callback));
 
             DateTime endMatch = DateTime.Now.AddSeconds(_controlSettings.WaitUntilTimeoutInSeconds);
-            Exception lastException = default(Exception);
+            Exception lastException = default;
 
             do
             {

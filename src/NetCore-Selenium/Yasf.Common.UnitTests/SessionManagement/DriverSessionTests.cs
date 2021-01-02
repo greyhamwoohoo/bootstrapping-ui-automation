@@ -2,9 +2,9 @@
 using AutoFixture.AutoNSubstitute;
 using AutoFixture.Idioms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TheInternet.Common.SessionManagement;
+using Yasf.Common.SessionManagement;
 
-namespace TheInternet.Common.UnitTests.SessionManagement
+namespace Yasf.Common.UnitTests.SessionManagement
 {
     [TestClass]
     public class DriverSessionTests

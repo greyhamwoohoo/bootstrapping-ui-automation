@@ -1,11 +1,11 @@
 ﻿using OpenQA.Selenium.IE;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
+namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
 {
     public class InternetExplorerBrowserSettings : BrowserSettingsBase
     {
         public string BrowserVersion { get; set; }
-        public BrowserSettingsInternetExplorerOptions Options {get; set; }
+        public BrowserSettingsInternetExplorerOptions Options { get; set; }
 
         public InternetExplorerBrowserSettings()
         {

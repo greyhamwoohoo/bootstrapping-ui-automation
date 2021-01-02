@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using System;
-using static TheInternet.Common.ElementOperations.ElementState;
+using static Yasf.Common.ElementOperations.ElementState;
 
 namespace TheInternet.SystemTests.Raw.Tests
 {

@@ -1,7 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using Yasf.Common;
 
-namespace TheInternet.Common.SystemTests
+namespace Yasf.Common.SystemTests
 {
     [TestClass]
     public class SmokeTests : SeleniumTestBase
@@ -11,7 +12,7 @@ namespace TheInternet.Common.SystemTests
         [TestMethod]
         public void Google_Can_Be_Reached()
         {
-           WebDriver.Assert.Click(By.Name("q"));
+            WebDriver.Assert.Click(By.Name("q"));
         }
 
         [TestMethod]

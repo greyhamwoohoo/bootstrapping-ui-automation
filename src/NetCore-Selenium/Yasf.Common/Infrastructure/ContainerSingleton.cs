@@ -7,21 +7,22 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using TheInternet.Common.ExecutionContext.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings;
-using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
-using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
-using TheInternet.Common.Reporting;
-using TheInternet.Common.Reporting.Contracts;
-using TheInternet.Common.SessionManagement;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.ExecutionContext.Contracts;
+using Yasf.Common.ExecutionContext.Runtime;
+using Yasf.Common.ExecutionContext.Runtime.BrowserSettings;
+using Yasf.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.ExecutionContext.Runtime.DeviceSettings;
+using Yasf.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.EnvironmentSettings;
+using Yasf.Common.ExecutionContext.Runtime.InstrumentationSettings;
+using Yasf.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using Yasf.Common.Reporting;
+using Yasf.Common.Reporting.Contracts;
+using Yasf.Common.SessionManagement;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.Infrastructure
+namespace Yasf.Common.Infrastructure
 {
     /// <summary>
     /// TODO: This is becoming a monster. Refactor. 
@@ -51,8 +52,8 @@ namespace TheInternet.Common.Infrastructure
         public static void Initialize(ILogger bootstrappingLogger, string prefix, Action<string, IServiceCollection, ITestRunReporterContext> beforeContainerBuild)
         {
             if (_instance != null) throw new InvalidOperationException($"The Initialize method has already been called. ");
-            if (prefix == null) throw new System.ArgumentNullException(nameof(prefix));
-            if (beforeContainerBuild == null) throw new System.ArgumentNullException(nameof(beforeContainerBuild));
+            if (prefix == null) throw new ArgumentNullException(nameof(prefix));
+            if (beforeContainerBuild == null) throw new ArgumentNullException(nameof(beforeContainerBuild));
 
             Environment.SetEnvironmentVariable("TEST_OUTPUT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
             Environment.SetEnvironmentVariable("TEST_DEPLOYMENT_FOLDER", Directory.GetCurrentDirectory(), EnvironmentVariableTarget.Process);
@@ -142,7 +143,7 @@ namespace TheInternet.Common.Infrastructure
             var reportingContextManager = new ReportingContextRegistrationManager(bootstrappingLogger, services, testRunReporterContext);
 
             reportingContextManager.AssertIsNotPartiallyConfigured();
-            if(!reportingContextManager.IsConfigured)
+            if (!reportingContextManager.IsConfigured)
             {
                 reportingContextManager.PopulateDefaultReportingContexts();
             }
@@ -173,7 +174,7 @@ namespace TheInternet.Common.Infrastructure
 
                     configurationRoot.Bind(androidSettings);
 
-                    androidSettings = SubstituteEnvironmentVariables<AppiumSettings>(androidSettings);
+                    androidSettings = SubstituteEnvironmentVariables(androidSettings);
 
                     androidSettings.PlatformName = platformName;
                     androidSettings.Cleanse();
@@ -182,7 +183,7 @@ namespace TheInternet.Common.Infrastructure
                     services.AddSingleton<IDeviceProperties>(androidSettings);
                     break;
                 default:
-                    throw new System.ArgumentOutOfRangeException($"The device called {platformName} is currently not supported. ");
+                    throw new ArgumentOutOfRangeException($"The device called {platformName} is currently not supported. ");
             }
         }
 
@@ -202,7 +203,7 @@ namespace TheInternet.Common.Infrastructure
 
                     browserSettings.Bind(instance);
 
-                    instance = SubstituteEnvironmentVariables<ChromeBrowserSettings>(instance);
+                    instance = SubstituteEnvironmentVariables(instance);
 
                     instance.BrowserName = browserName;
                     instance.Cleanse();
@@ -215,7 +216,7 @@ namespace TheInternet.Common.Infrastructure
 
                     browserSettings.Bind(edgeInstance);
 
-                    edgeInstance = SubstituteEnvironmentVariables<EdgeBrowserSettings>(edgeInstance);
+                    edgeInstance = SubstituteEnvironmentVariables(edgeInstance);
 
                     edgeInstance.BrowserName = browserName;
                     edgeInstance.Cleanse();
@@ -228,7 +229,7 @@ namespace TheInternet.Common.Infrastructure
 
                     browserSettings.Bind(ffInstance);
 
-                    ffInstance = SubstituteEnvironmentVariables<FireFoxBrowserSettings>(ffInstance);
+                    ffInstance = SubstituteEnvironmentVariables(ffInstance);
 
                     ffInstance.BrowserName = browserName;
                     ffInstance.Cleanse();
@@ -241,7 +242,7 @@ namespace TheInternet.Common.Infrastructure
 
                     browserSettings.Bind(ieInstance);
 
-                    ieInstance = SubstituteEnvironmentVariables<InternetExplorerBrowserSettings>(ieInstance);
+                    ieInstance = SubstituteEnvironmentVariables(ieInstance);
 
                     ieInstance.BrowserName = browserName;
                     ieInstance.Cleanse();
@@ -250,7 +251,7 @@ namespace TheInternet.Common.Infrastructure
                     services.AddSingleton<IBrowserProperties>(ieInstance);
                     break;
                 default:
-                    throw new System.ArgumentOutOfRangeException($"The browser called {browserName} is currently not supported. ");
+                    throw new ArgumentOutOfRangeException($"The browser called {browserName} is currently not supported. ");
             }
         }
 
@@ -266,7 +267,7 @@ namespace TheInternet.Common.Infrastructure
 
             controlSettings.Bind(instance);
 
-            instance = SubstituteEnvironmentVariables<T>(instance);
+            instance = SubstituteEnvironmentVariables(instance);
 
             var cleansor = instance as ICleanse;
             if (cleansor != null)
@@ -276,7 +277,7 @@ namespace TheInternet.Common.Infrastructure
 
             if (registerInstance)
             {
-                services.AddSingleton<T>(isp => instance);
+                services.AddSingleton(isp => instance);
             }
 
             return instance;
@@ -300,7 +301,7 @@ namespace TheInternet.Common.Infrastructure
         /// <returns></returns>
         private static T SubstituteEnvironmentVariables<T>(T value) where T : class
         {
-            var variables = System.Environment.GetEnvironmentVariables();
+            var variables = Environment.GetEnvironmentVariables();
             var content = JsonConvert.SerializeObject(value);
             if (content.Contains("%"))
             {

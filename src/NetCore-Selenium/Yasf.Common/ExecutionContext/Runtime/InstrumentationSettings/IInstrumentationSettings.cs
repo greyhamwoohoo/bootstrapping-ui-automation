@@ -1,8 +1,8 @@
-﻿namespace TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings
+﻿namespace Yasf.Common.ExecutionContext.Runtime.InstrumentationSettings
 {
     public interface IInstrumentationSettings
     {
-        bool LogFilePerTest {get; }
+        bool LogFilePerTest { get; }
         public string RootReportingFolder { get; }
         IReportingSettings ReportingSettings { get; }
     }

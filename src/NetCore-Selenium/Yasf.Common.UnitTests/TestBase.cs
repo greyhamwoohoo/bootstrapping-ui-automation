@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace TheInternet.Common.UnitTests
+namespace Yasf.Common.UnitTests
 {
     [TestClass]
     public abstract class TestBase

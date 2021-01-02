@@ -1,10 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System;
 using System.Linq;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
 
 namespace TheInternet.SystemTests.Raw.Tests
 {

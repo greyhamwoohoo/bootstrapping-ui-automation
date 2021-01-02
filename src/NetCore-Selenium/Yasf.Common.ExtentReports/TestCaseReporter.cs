@@ -2,10 +2,10 @@
 using OpenQA.Selenium;
 using Serilog;
 using System;
-using TheInternet.Common.Reporting.Contracts;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.Reporting.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.ExtentReports
+namespace Yasf.Common.ExtentReports
 {
     public class TestCaseReporter : ITestCaseReporter
     {
@@ -20,16 +20,16 @@ namespace TheInternet.Common.ExtentReports
         private ExtentTest _extentTest;
         public TestCaseReporter(ILogger logger, TestRunReporter testRunReporter, string logFilePath)
         {
-            Logger = logger ?? throw new System.ArgumentNullException(nameof(testRunReporter));
-            ExtentTestRunReporter = testRunReporter ?? throw new System.ArgumentNullException(nameof(testRunReporter));
-            LogFilePath = logFilePath ?? throw new System.ArgumentNullException(nameof(logFilePath));
+            Logger = logger ?? throw new ArgumentNullException(nameof(testRunReporter));
+            ExtentTestRunReporter = testRunReporter ?? throw new ArgumentNullException(nameof(testRunReporter));
+            LogFilePath = logFilePath ?? throw new ArgumentNullException(nameof(logFilePath));
         }
 
         public void Initialize(IDriverSession driverSession, string name)
         {
-            if (_extentTest != null) throw new System.InvalidOperationException($"The TestCaseReporter is already initialized. ");
+            if (_extentTest != null) throw new InvalidOperationException($"The TestCaseReporter is already initialized. ");
 
-            Name = name ?? throw new System.ArgumentNullException(nameof(name));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
             DriverSession = driverSession ?? throw new ArgumentNullException(nameof(driverSession));
 
             _extentTest = ExtentTestRunReporter.ExtentReporter.CreateTest(name);
@@ -87,9 +87,9 @@ namespace TheInternet.Common.ExtentReports
 
             Logger.Debug($"ExtentReporter:Write{status},{message}");
 
-            if(AlwaysCaptureScreenshots)
+            if (AlwaysCaptureScreenshots)
             {
-                var screenshot = ((ITakesScreenshot)DriverSession.WebDriver).GetScreenshot();
+                var screenshot = DriverSession.WebDriver.GetScreenshot();
 
                 var screenshotsFolder = System.IO.Path.Combine(RootOutputFolder, "Screenshots");
                 System.IO.Directory.CreateDirectory(screenshotsFolder);
@@ -107,7 +107,7 @@ namespace TheInternet.Common.ExtentReports
 
         private void AssertDriverSession()
         {
-            if (DriverSession == null) throw new System.InvalidOperationException($"You must call Bind() to pass in the IDriverSession");
+            if (DriverSession == null) throw new InvalidOperationException($"You must call Bind() to pass in the IDriverSession");
         }
     }
 }

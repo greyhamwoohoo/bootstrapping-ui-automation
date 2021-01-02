@@ -1,4 +1,4 @@
-﻿namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts
+﻿namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings.Contracts
 {
     public interface IBrowserProperties
     {

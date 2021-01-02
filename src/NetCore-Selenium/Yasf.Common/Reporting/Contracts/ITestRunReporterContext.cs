@@ -1,6 +1,6 @@
-﻿using TheInternet.Common.ExecutionContext.Runtime.InstrumentationSettings;
+﻿using Yasf.Common.ExecutionContext.Runtime.InstrumentationSettings;
 
-namespace TheInternet.Common.Reporting.Contracts
+namespace Yasf.Common.Reporting.Contracts
 {
     /// <summary>
     /// Context for the entire test run. 

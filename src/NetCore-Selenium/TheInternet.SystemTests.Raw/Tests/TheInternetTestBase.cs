@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using TheInternet.Common;
+using Yasf.Common;
 
 namespace TheInternet.SystemTests.Raw.Tests
 {

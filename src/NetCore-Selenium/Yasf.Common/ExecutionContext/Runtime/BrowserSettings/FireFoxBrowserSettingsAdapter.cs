@@ -1,19 +1,19 @@
 ﻿using OpenQA.Selenium.Firefox;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
+namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
 {
     public class FireFoxBrowserSettingsAdapter
     {
         public FirefoxProfile ToFirefoxProfile(FireFoxBrowserSettings settings)
         {
             if (null == settings) throw new System.ArgumentNullException(nameof(settings));
-            
+
             var result = new FirefoxProfile();
 
             foreach (var pair in settings.Profile.Preferences)
             {
                 bool boolValue;
-                bool isBool = System.Boolean.TryParse(System.Convert.ToString(pair.Value), out boolValue);
+                bool isBool = bool.TryParse(System.Convert.ToString(pair.Value), out boolValue);
                 if (isBool)
                 {
                     result.SetPreference(pair.Key, boolValue);
@@ -21,7 +21,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
                 }
 
                 int intValue;
-                bool isInt = System.Int32.TryParse(System.Convert.ToString(pair.Value), out intValue);
+                bool isInt = int.TryParse(System.Convert.ToString(pair.Value), out intValue);
                 if (isInt)
                 {
                     result.SetPreference(pair.Key, intValue);

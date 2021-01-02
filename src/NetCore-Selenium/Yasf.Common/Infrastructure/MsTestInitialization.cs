@@ -4,9 +4,9 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.Infrastructure
+namespace Yasf.Common.Infrastructure
 {
     /// <summary>
     /// Core Framework Initialization 
@@ -22,13 +22,13 @@ namespace TheInternet.Common.Infrastructure
         {
             Initialize(prefix, defaultTestExecutionContext, testContext, (prefix, serviceCollection, testRunReporterContext) => { });
         }
-        
+
         public static void Initialize(string prefix, string defaultTestExecutionContext, TestContext testContext, Action<string, IServiceCollection, ITestRunReporterContext> callback)
         {
-            if (null == prefix) throw new System.ArgumentNullException(nameof(prefix));
-            if (null == defaultTestExecutionContext) throw new System.ArgumentNullException(nameof(defaultTestExecutionContext));
-            if (null == testContext) throw new System.ArgumentNullException(nameof(testContext));
-            if (null == callback) throw new System.ArgumentNullException(nameof(callback));
+            if (null == prefix) throw new ArgumentNullException(nameof(prefix));
+            if (null == defaultTestExecutionContext) throw new ArgumentNullException(nameof(defaultTestExecutionContext));
+            if (null == testContext) throw new ArgumentNullException(nameof(testContext));
+            if (null == callback) throw new ArgumentNullException(nameof(callback));
 
             // Initialize this early on (for bootstrapping) and keep it simple: console output only (MsTest will capture this)
             Log.Logger = new LoggerConfiguration()

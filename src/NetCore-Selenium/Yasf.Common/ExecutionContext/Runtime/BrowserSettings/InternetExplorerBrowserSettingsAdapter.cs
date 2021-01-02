@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.IE;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
+namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
 {
     public class InternetExplorerBrowserSettingsAdapter
     {

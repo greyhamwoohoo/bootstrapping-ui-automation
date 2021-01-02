@@ -3,7 +3,7 @@ using OpenQA.Selenium;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
+namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
 {
     public class ChromeBrowserSettings : BrowserSettingsBase
     {

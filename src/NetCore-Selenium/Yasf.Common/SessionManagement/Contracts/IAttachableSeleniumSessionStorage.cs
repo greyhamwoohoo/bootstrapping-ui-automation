@@ -1,4 +1,4 @@
-﻿namespace TheInternet.Common.SessionManagement.Contracts
+﻿namespace Yasf.Common.SessionManagement.Contracts
 {
     public interface IAttachableSeleniumSessionStorage
     {

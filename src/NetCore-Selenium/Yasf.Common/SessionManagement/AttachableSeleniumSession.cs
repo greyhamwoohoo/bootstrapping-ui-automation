@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using OpenQA.Selenium.Remote;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.SessionManagement
+namespace Yasf.Common.SessionManagement
 {
     public class AttachableSeleniumSession : IAttachableSeleniumSession
     {

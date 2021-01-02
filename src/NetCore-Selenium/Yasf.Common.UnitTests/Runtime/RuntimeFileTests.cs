@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System.Linq;
-using TheInternet.Common.DataSource;
+using Yasf.Common.DataSource;
 
-namespace TheInternet.Common.UnitTests.Runtime
+namespace Yasf.Common.UnitTests.Runtime
 {
     [TestClass]
     public class RuntimeFileTests

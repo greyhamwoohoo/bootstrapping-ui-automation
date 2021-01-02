@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
+namespace Yasf.Common.ExecutionContext.Runtime.DeviceSettings
 {
     public class AppiumSettingsAdapter
     {
@@ -121,7 +121,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 
         public OpenQA.Selenium.Appium.AppiumOptions ToAppiumOptions(AppiumSettings settings)
         {
-            if (settings == null) throw new System.ArgumentNullException(nameof(settings));
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
 
             var result = new OpenQA.Selenium.Appium.AppiumOptions();
 
@@ -139,9 +139,9 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
 
         private void PopulateCapabilities(OpenQA.Selenium.Appium.AppiumOptions inOptions, IDictionary<string, string> withWellKnownCapabilities, IDictionary<string, object> from)
         {
-            if (null == withWellKnownCapabilities) throw new System.ArgumentNullException(nameof(withWellKnownCapabilities));
-            if (null == inOptions) throw new System.ArgumentNullException(nameof(inOptions));
-            
+            if (null == withWellKnownCapabilities) throw new ArgumentNullException(nameof(withWellKnownCapabilities));
+            if (null == inOptions) throw new ArgumentNullException(nameof(inOptions));
+
             if (null == from) return;
 
             from.ToList().ForEach(pair =>
@@ -177,15 +177,15 @@ namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings
             // Don't be clever if the original value is null - just pass it through
             if (result == null) return result;
 
-            switch(type.ToLower())
+            switch (type.ToLower())
             {
                 case "string":
                     break;
                 case "boolean":
-                    result = System.Convert.ToBoolean(candidateValue);
+                    result = Convert.ToBoolean(candidateValue);
                     break;
                 case "integer":
-                    result = System.Convert.ToInt32(candidateValue);
+                    result = Convert.ToInt32(candidateValue);
                     break;
                 case "array":
                     // Leave it as is

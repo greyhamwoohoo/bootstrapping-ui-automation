@@ -7,7 +7,7 @@ using Serilog;
 using System.IO;
 using System.Linq;
 
-namespace TheInternet.Common.UnitTests
+namespace Yasf.Common.UnitTests.ExecutionContext.Runtime
 {
     [TestClass]
     public class RuntimeSettings
@@ -21,14 +21,14 @@ namespace TheInternet.Common.UnitTests
                 var fixture = new Fixture();
                 fixture.Customize(new AutoNSubstituteCustomization());
                 var assertThatAllMembersHaveGuards = new GuardClauseAssertion(fixture);
-                assertThatAllMembersHaveGuards.Verify(typeof(ExecutionContext.Runtime.RuntimeSettings).GetMembers());
+                assertThatAllMembersHaveGuards.Verify(typeof(Common.ExecutionContext.Runtime.RuntimeSettings).GetMembers());
             }
         }
 
         [TestClass]
         public class GetPaths
         {
-            ExecutionContext.Runtime.RuntimeSettings _utilities = default;
+            Common.ExecutionContext.Runtime.RuntimeSettings _utilities = default;
             ILogger _logger = default;
 
             string SETTINGS_ENVIRONMENT_VARIABLE_NAME = "PREF_SOMETHINGSETTINGS_FILES";
@@ -36,7 +36,7 @@ namespace TheInternet.Common.UnitTests
             [TestInitialize]
             public void SetupRuntimeSettings()
             {
-                _utilities = new ExecutionContext.Runtime.RuntimeSettings(NSubstitute.Substitute.For<ILogger>());
+                _utilities = new Common.ExecutionContext.Runtime.RuntimeSettings(NSubstitute.Substitute.For<ILogger>());
                 _logger = NSubstitute.Substitute.For<ILogger>();
             }
 

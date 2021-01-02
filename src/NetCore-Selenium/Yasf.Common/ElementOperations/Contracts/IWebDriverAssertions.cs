@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TheInternet.Common.ElementOperations.Contracts
+namespace Yasf.Common.ElementOperations.Contracts
 {
     /// <summary>
     /// All Assertions use an implementation similar to "ImplicitWait" - in other words: the operation 

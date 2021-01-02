@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace TheInternet.Common.Reporting.Contracts
+namespace Yasf.Common.Reporting.Contracts
 {
     public interface ITestCaseReporterContext
     {

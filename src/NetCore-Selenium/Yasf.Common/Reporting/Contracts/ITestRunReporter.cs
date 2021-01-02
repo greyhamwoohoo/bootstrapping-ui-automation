@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace TheInternet.Common.Reporting.Contracts
+namespace Yasf.Common.Reporting.Contracts
 {
     public interface ITestRunReporter
     {
@@ -8,7 +8,7 @@ namespace TheInternet.Common.Reporting.Contracts
         /// The top level folder where test results are to be written.
         /// </summary>
         string RootOutputFolder { get; }
-        
+
         /// <summary>
         /// Unique identitiy for this test run - typically combined by the report with TestOutputFolder to group results. 
         /// </summary>

@@ -1,12 +1,13 @@
 ﻿using OpenQA.Selenium.Remote;
 using Serilog;
-using TheInternet.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.ExecutionContext.Runtime.DeviceSettings.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.EnvironmentSettings;
+using Yasf.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
+using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.SessionManagement.Contracts
+namespace Yasf.Common.SessionManagement.Contracts
 {
     public interface IDriverSessionFactory
     {

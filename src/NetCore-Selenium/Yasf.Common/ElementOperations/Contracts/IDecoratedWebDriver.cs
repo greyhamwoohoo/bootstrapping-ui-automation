@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace TheInternet.Common.ElementOperations.Contracts
+namespace Yasf.Common.ElementOperations.Contracts
 {
     /// <summary>
     /// Interface made available to all tests view the WebDriver property.

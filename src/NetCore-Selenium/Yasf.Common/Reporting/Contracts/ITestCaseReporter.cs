@@ -1,8 +1,7 @@
 ﻿using System;
-using TheInternet.Common.SessionManagement;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.Reporting.Contracts
+namespace Yasf.Common.Reporting.Contracts
 {
     /// <summary>
     /// Represents the running test case. 

@@ -1,13 +1,10 @@
-﻿using OpenQA.Selenium;
-using Serilog;
-using TheInternet.Common.ElementOperations;
-using TheInternet.Common.ElementOperations.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings;
-using TheInternet.Common.Reporting.Contracts;
-using TheInternet.Common.SessionManagement.Contracts;
+﻿using Yasf.Common.ElementOperations.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.ExecutionContext.Runtime.EnvironmentSettings;
+using Yasf.Common.Reporting.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.SessionManagement
+namespace Yasf.Common.SessionManagement
 {
     public class DriverSession : IDriverSession
     {
@@ -16,7 +13,7 @@ namespace TheInternet.Common.SessionManagement
         public IControlSettings ControlSettings { get; }
         public ITestCaseReporter TestCaseReporter { get; }
 
-        public DriverSession(IDecoratedWebDriver webDriver, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ITestCaseReporter testCaseReporter) 
+        public DriverSession(IDecoratedWebDriver webDriver, EnvironmentSettings environmentSettings, IControlSettings controlSettings, ITestCaseReporter testCaseReporter)
         {
             if (webDriver == null) throw new System.ArgumentNullException(nameof(webDriver));
             if (environmentSettings == null) throw new System.ArgumentNullException(nameof(environmentSettings));

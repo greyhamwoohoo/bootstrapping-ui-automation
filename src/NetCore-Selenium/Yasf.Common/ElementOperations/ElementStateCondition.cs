@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium;
 
-namespace TheInternet.Common.ElementOperations
+namespace Yasf.Common.ElementOperations
 {
     /// <summary>
     /// Provides a fluent interface around the expected state of multiple elements. 

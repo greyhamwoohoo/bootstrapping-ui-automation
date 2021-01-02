@@ -1,6 +1,6 @@
-﻿using TheInternet.Common.ExecutionContext.Contracts;
+﻿using Yasf.Common.ExecutionContext.Contracts;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
+namespace Yasf.Common.ExecutionContext.Runtime.ControlSettings
 {
     public class ControlSettings : IControlSettings, ICleanse
     {
@@ -14,7 +14,7 @@ namespace TheInternet.Common.ExecutionContext.Runtime.ControlSettings
 
         public int PollingTimeInMilliseconds { get; set; }
         public int WaitUntilTimeoutInSeconds { get; set; }
-        public bool AttachToExistingSessionIfItExists { get; set;  }
+        public bool AttachToExistingSessionIfItExists { get; set; }
         public int AppiumDriverCreationRetries { get; set; }
         public void Cleanse()
         {

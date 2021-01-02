@@ -1,4 +1,4 @@
-﻿namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
+﻿namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
 {
     public class EdgeBrowserSettings : BrowserSettingsBase
     {

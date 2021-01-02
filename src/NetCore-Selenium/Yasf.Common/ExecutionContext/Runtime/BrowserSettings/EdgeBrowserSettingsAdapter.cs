@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium.Edge;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.BrowserSettings
+namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
 {
     public class EdgeBrowserSettingsAdapter
     {

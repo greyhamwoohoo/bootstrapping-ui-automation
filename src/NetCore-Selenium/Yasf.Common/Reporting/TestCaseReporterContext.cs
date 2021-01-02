@@ -1,6 +1,6 @@
-﻿using TheInternet.Common.Reporting.Contracts;
+﻿using Yasf.Common.Reporting.Contracts;
 
-namespace TheInternet.Common.Reporting
+namespace Yasf.Common.Reporting
 {
     public class TestCaseReporterContext : ITestCaseReporterContext
     {

@@ -1,10 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Serilog;
-using System;
-using TheInternet.Common.Infrastructure;
-using TheInternet.Common.Reporting;
-using TheInternet.Common.Reporting.Contracts;
+using Yasf.Common.Infrastructure;
+using Yasf.Common.Reporting.Contracts;
 
 namespace TheInternet.SystemTests.Raw.Infrastructure
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace TheInternet.Common.ExecutionContext.Runtime
+namespace Yasf.Common.ExecutionContext.Runtime
 {
     public class RuntimeSettings
     {

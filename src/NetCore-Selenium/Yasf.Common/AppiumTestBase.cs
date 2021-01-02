@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TheInternet.Common
+namespace Yasf.Common
 {
     [TestClass]
     public abstract class AppiumTestBase : SeleniumTestBase

@@ -1,4 +1,4 @@
-﻿namespace TheInternet.Common.ExecutionContext.Runtime.DeviceSettings.Contracts
+﻿namespace Yasf.Common.ExecutionContext.Runtime.DeviceSettings.Contracts
 {
     public interface IDeviceProperties
     {

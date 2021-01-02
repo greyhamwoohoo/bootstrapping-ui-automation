@@ -1,9 +1,9 @@
 ﻿using Serilog;
 using System;
-using TheInternet.Common.Reporting.Contracts;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.Reporting.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.Reporting
+namespace Yasf.Common.Reporting
 {
     public class TestCaseReporter : ITestCaseReporter
     {
@@ -15,16 +15,16 @@ namespace TheInternet.Common.Reporting
 
         public TestCaseReporter(ILogger logger, ITestCaseReporterContext testCaseReporterContext)
         {
-            Logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
-            if(null == testCaseReporterContext) throw new System.ArgumentNullException(nameof(testCaseReporterContext));
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            if (null == testCaseReporterContext) throw new ArgumentNullException(nameof(testCaseReporterContext));
 
             LogFilePath = testCaseReporterContext.LogFilePath;
         }
 
         public void Initialize(IDriverSession driverSession, string name)
         {
-            DriverSession = driverSession ?? throw new System.ArgumentNullException(nameof(driverSession));
-            Name = name ?? throw new System.ArgumentNullException(nameof(name));
+            DriverSession = driverSession ?? throw new ArgumentNullException(nameof(driverSession));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
 
             Logger.Debug($"Initialize: Name={name}");
         }

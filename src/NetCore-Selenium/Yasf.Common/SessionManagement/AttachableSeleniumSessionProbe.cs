@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common.SessionManagement
+namespace Yasf.Common.SessionManagement
 {
     public class AttachableSeleniumSessionProbe : IAttachableSeleniumSessionProbe
     {

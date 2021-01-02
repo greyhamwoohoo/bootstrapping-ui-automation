@@ -1,11 +1,11 @@
-﻿using TheInternet.Common.ExecutionContext.Contracts;
+﻿using Yasf.Common.ExecutionContext.Contracts;
 
-namespace TheInternet.Common.ExecutionContext.Runtime.RemoteWebDriverSettings
+namespace Yasf.Common.ExecutionContext.Runtime.RemoteWebDriverSettings
 {
     public class RemoteWebDriverSettings : ICleanse
     {
         public int HttpCommandExecutorTimeoutInSeconds { get; set; }
-        public bool UseRemoteDriver { get; set;  }
+        public bool UseRemoteDriver { get; set; }
         public string RemoteUri { get; set; }
 
         public RemoteWebDriverSettings()

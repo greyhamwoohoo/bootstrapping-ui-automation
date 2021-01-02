@@ -1,6 +1,6 @@
 ﻿using OpenQA.Selenium.Remote;
 
-namespace TheInternet.Common.SessionManagement.Contracts
+namespace Yasf.Common.SessionManagement.Contracts
 {
     /// <summary>
     /// Represents read only information for an attachable Selenium Session

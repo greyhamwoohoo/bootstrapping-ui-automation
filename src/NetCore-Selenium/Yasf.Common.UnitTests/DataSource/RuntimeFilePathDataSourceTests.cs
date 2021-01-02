@@ -2,9 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Reflection;
-using TheInternet.Common.DataSource;
+using Yasf.Common.DataSource;
 
-namespace TheInternet.Common.UnitTests.DataSource
+namespace Yasf.Common.UnitTests.DataSource
 {
     [TestClass]
     public class RuntimeFilePathDataSourceTests

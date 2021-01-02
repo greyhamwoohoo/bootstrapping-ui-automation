@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using TheInternet.Common.ElementOperations.Contracts;
-using TheInternet.Common.ExecutionContext.Runtime.ControlSettings;
-using TheInternet.Common.Reporting.Contracts;
-using TheInternet.Common.SessionManagement.Contracts;
+using Yasf.Common.ElementOperations.Contracts;
+using Yasf.Common.ExecutionContext.Runtime.ControlSettings;
+using Yasf.Common.Reporting.Contracts;
+using Yasf.Common.SessionManagement.Contracts;
 
-namespace TheInternet.Common
+namespace Yasf.Common
 {
     /// <summary>
     /// Base class for all Web based tests: use for Selenium and Device Web Browsing
@@ -18,7 +18,7 @@ namespace TheInternet.Common
         protected IDriverSession DriverSession { get; private set; }
         protected ITestCaseReporter Reporter => TestCaseReporter;
         private ITestCaseReporter TestCaseReporter => DriverSession.TestCaseReporter;
-        
+
 
         [TestInitialize]
         public void SetupSeleniumTest()

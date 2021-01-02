@@ -3,9 +3,9 @@ using AutoFixture.AutoNSubstitute;
 using AutoFixture.Idioms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
-using TheInternet.Common.Reporting;
+using Yasf.Common.Reporting;
 
-namespace TheInternet.Common.UnitTests.SessionManagement
+namespace Yasf.Common.UnitTests.Reporting
 {
     [TestClass]
     public class TestCaseReporterTests
