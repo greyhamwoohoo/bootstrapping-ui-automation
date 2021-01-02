@@ -3,7 +3,7 @@ steps:
   displayName: 'Run Common.SystemTests'
   inputs:
     command: test
-    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.Common.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
-    arguments: TheInternet.Common.SystemTests.dll
+    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+    arguments: Yasf.Common.SystemTests.dll
     publishTestResults: true
     testRunTitle: Common.SystemTests      

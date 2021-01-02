@@ -11,15 +11,15 @@ name: 1.0$(Rev:.r)
 variables:
   - name: Build.Configuration
     value: Release
-  - name: THEINTERNET_TEST_EXECUTION_CONTEXT
+  - name: YASF_TEST_EXECUTION_CONTEXT
     value: empty    
-  - name: THEINTERNET_BROWSERSETTINGS_FILES
+  - name: YASF_BROWSERSETTINGS_FILES
     value: common-headless-chrome.json
-  - name: THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES
+  - name: YASF_REMOTEWEBDRIVERSETTINGS_FILES
     value: common-localhost-selenium.json
-  - name: THEINTERNET_ENVIRONMENTSETTINGS_FILES
+  - name: YASF_ENVIRONMENTSETTINGS_FILES
     value: internet.json
-  - name: THEINTERNET_CONTROLSETTINGS_FILES
+  - name: YASF_CONTROLSETTINGS_FILES
     value: common.json
   - name: TEST_TARGET_FOLDER
     value: NetCore-Selenium
