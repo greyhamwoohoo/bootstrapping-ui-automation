@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TheInternet.Common\TheInternet.Common.csproj" />
+    <ProjectReference Include="..\Yasf.Common\Yasf.Common.csproj" />
   </ItemGroup>
 
 </Project>

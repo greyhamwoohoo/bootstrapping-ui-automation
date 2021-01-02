@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using TheInternet.Common.Reporting.Contracts;
 
-[assembly: InternalsVisibleTo("TheInternet.Common.UnitTests")]
+[assembly: InternalsVisibleTo("Yasf.Common.UnitTests")]
 namespace TheInternet.Common.Reporting
 {
     /// <summary>

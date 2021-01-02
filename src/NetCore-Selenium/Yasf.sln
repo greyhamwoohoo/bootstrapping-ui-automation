@@ -3,24 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common", "TheInternet.Common\TheInternet.Common.csproj", "{97E17B18-E3C3-420D-B951-5900503135E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yasf.Common", "Yasf.Common\Yasf.Common.csproj", "{97E17B18-E3C3-420D-B951-5900503135E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.SystemTests.Raw", "TheInternet.SystemTests.Raw\TheInternet.SystemTests.Raw.csproj", "{6A82F996-5A4B-48A4-B4FB-A661C4AEA9F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.UnitTests", "TheInternet.Common.UnitTests\TheInternet.Common.UnitTests.csproj", "{8FF0B0A7-F5C5-42EF-BC35-76F3D4A03869}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yasf.Common.UnitTests", "Yasf.Common.UnitTests\Yasf.Common.UnitTests.csproj", "{8FF0B0A7-F5C5-42EF-BC35-76F3D4A03869}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8F9EA5DF-BB72-4E33-A66C-59857D5B2E4D}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.ExtentReports", "TheInternet.Common.ExtentReports\TheInternet.Common.ExtentReports.csproj", "{EE446499-E756-4C9B-92D8-97349C2A565E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yasf.Common.ExtentReports", "Yasf.Common.ExtentReports\Yasf.Common.ExtentReports.csproj", "{EE446499-E756-4C9B-92D8-97349C2A565E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.ExtentReports.SystemTests", "TheInternet.Common.ExtentReports.SystemTests\TheInternet.Common.ExtentReports.SystemTests.csproj", "{C4DA267F-C173-4F66-B45C-C901759D22FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yasf.Common.ExtentReports.SystemTests", "Yasf.Common.ExtentReports.SystemTests\Yasf.Common.ExtentReports.SystemTests.csproj", "{C4DA267F-C173-4F66-B45C-C901759D22FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheInternet.Common.SystemTests", "TheInternet.Common.SystemTests\TheInternet.Common.SystemTests.csproj", "{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yasf.Common.SystemTests", "Yasf.Common.SystemTests\Yasf.Common.SystemTests.csproj", "{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheMobileFlutterApp.SystemTests", "TheMobileFlutterApp.SystemTests\TheMobileFlutterApp.SystemTests.csproj", "{22440B4C-244F-4D4B-89CD-AE5DE4F73484}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{744EE9D0-5650-449A-9C32-0A27E4CA71F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{97E17B18-E3C3-420D-B951-5900503135E3} = {744EE9D0-5650-449A-9C32-0A27E4CA71F6}
+		{8FF0B0A7-F5C5-42EF-BC35-76F3D4A03869} = {744EE9D0-5650-449A-9C32-0A27E4CA71F6}
+		{EE446499-E756-4C9B-92D8-97349C2A565E} = {744EE9D0-5650-449A-9C32-0A27E4CA71F6}
+		{C4DA267F-C173-4F66-B45C-C901759D22FD} = {744EE9D0-5650-449A-9C32-0A27E4CA71F6}
+		{9EAA715F-77E7-473D-A4FD-276BD2ECAFD6} = {744EE9D0-5650-449A-9C32-0A27E4CA71F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {88234FC9-1D08-43A8-8153-9E35F72E72D2}

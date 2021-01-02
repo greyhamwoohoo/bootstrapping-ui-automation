@@ -39,11 +39,11 @@
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="83.0.4103.3900" />
     <PackageReference Include="Selenium.WebDriver.IEDriver" Version="3.150.1" />
-  </ItemGroup>
+  </ItemGroup>  
 
   <ItemGroup>
-    <ProjectReference Include="..\TheInternet.Common.ExtentReports\TheInternet.Common.ExtentReports.csproj" />
-    <ProjectReference Include="..\TheInternet.Common\TheInternet.Common.csproj" />
+    <ProjectReference Include="..\Yasf.Common.ExtentReports\Yasf.Common.ExtentReports.csproj" />
+    <ProjectReference Include="..\Yasf.Common\Yasf.Common.csproj" />
   </ItemGroup>
 
 </Project>
