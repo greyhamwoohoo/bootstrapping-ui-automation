@@ -27,7 +27,7 @@ The baseline framework is the same - but the attachable driver / hot-reload work
 | Folder | Description | 
 | ------ | ----------- |
 | src/NetCore-Selenium | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 3.141  (IE, Chrome, Edge) |
-| src/NetCore-Selenium-4.0-alpha3 | (OBSOLETE) Baseline framework and attachable drivers using Selenium 4.0.0.0-alpha-03  (IE, Chrome, Edge) <br><br>NOTE: This was created as a Spike, it works, but is out of date from the original implementation. NetCore-Selenium is the reference implementation. |
+| src/ZZZ-Obsolete-NetCore-Selenium-4.0-alpha3 | (OBSOLETE) Baseline framework and attachable drivers using Selenium 4.0.0.0-alpha-03  (IE, Chrome, Edge) <br><br>NOTE: This was created as a Spike, it works, but is out of date from the original implementation. NetCore-Selenium is the reference implementation. |
 
 ## Infrastructure
 You can run 'the-internet' yourself in the following ways: 
