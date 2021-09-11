@@ -18,7 +18,6 @@ A few example pipelines are included for reference.
 | ----- | ------ | ----------- |
 | internet.yml | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/netcore-selenium-framework-chrome-internet?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=25&branchName=master) | Builds and runs the tests on a Windows VM and targets http://the-internet.herokuapp.com |
 | internet-localhost.yml | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/netcore-selenium-framework-internet-localhost?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=26&branchName=master) | Builds and runs the tests on an Ubuntu VM and targets 'the-internet' in a container started on the build system |
-| zalenium-localhost-vm.yml | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/netcore-selenium-framework-zalenium-localhost-vm?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=24&branchName=master) | Builds and runs the tests on an Ubuntu VM and targets http://the-internet.herokuapp.com via Zalenium (Dockerized Selenium Grid) started on the build system |
 | netcore-selenium-framework-from-built-container | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/netcore-selenium-framework-from-built-container?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=30&branchName=master) | Builds a container including both Google Chrome and the Test Binaries, runs the tests from the container targetting http://the-internet.herokuapp.com and then publishes test results.<br><br>Test results are 'dropped' onto the host using a mapped volume. | 
 
 ## Versions
@@ -27,7 +26,6 @@ The baseline framework is the same - but the attachable driver / hot-reload work
 | Folder | Description | 
 | ------ | ----------- |
 | src/NetCore-Selenium | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 3.141  (IE, Chrome, Edge) |
-| src/ZZZ-Obsolete-NetCore-Selenium-4.0-alpha3 | (OBSOLETE) Baseline framework and attachable drivers using Selenium 4.0.0.0-alpha-03  (IE, Chrome, Edge) <br><br>NOTE: This was created as a Spike, it works, but is out of date from the original implementation. NetCore-Selenium is the reference implementation. |
 
 ## Infrastructure
 You can run 'the-internet' yourself in the following ways: 
@@ -36,4 +34,3 @@ You can run 'the-internet' yourself in the following ways:
 | ------ | ----------- |
 | infra/docker-localhost | Uses a docker-compose file to spin up the-internet locally |
 | infra/minikube | Uses minikube / kubectl to start the-internet locally and expose it via an external 'LoadBalancer' port on your own machine |
-| infra/zalenium-docker-localhost | Runs Zalenium (Dockerized Selenium Grid) - supports Firefox and Chrome browsers |

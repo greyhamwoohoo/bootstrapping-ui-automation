@@ -23,29 +23,22 @@
     <None Remove="Runtime\InstrumentationSettings\common.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-appium.json" />
     <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-selenium.json" />
-    <None Remove="Runtime\RemoteWebDriverSettings\common-localhost-zalenium-docker.json" />
     <None Remove="serilogSettings.json" />
     <None Remove="TestExecutionContexts\Attachable-Chrome-Localhost.runsettings" />
-    <None Remove="TestExecutionContexts\Attachable-Chrome-Zalenium-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\Attachable-Edge-Localhost.runsettings" />
-    <None Remove="TestExecutionContexts\Attachable-Firefox-Zalenium-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\Attachable-IE11-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\Default-Android-Web-Chrome-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\Default-Chrome-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\Default-Edge-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\Default-FireFox-Localhost.runsettings" />
-    <None Remove="TestExecutionContexts\Default-FireFox-Zalenium-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\Default-IE11-Localhost.runsettings" />
     <None Remove="TestExecutionContexts\tec.attachable-chrome-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\tec.attachable-edge-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\tec.attachable-ie11-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-android-chrome-web-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-chrome-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-edge-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-firefox-localhost.json" />
-    <None Remove="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json" />
     <None Remove="TestExecutionContexts\tec.default-ie11-localhost.json" />
     <None Remove="TestExecutionContexts\tec.empty.json" />
     <None Remove="TestExecutionContexts\tec.json" />
@@ -94,9 +87,6 @@
     <Content Include="Runtime\RemoteWebDriverSettings\common-localhost-appium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Runtime\RemoteWebDriverSettings\common-localhost-zalenium-docker.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Runtime\RemoteWebDriverSettings\common-localhost-selenium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -106,13 +96,7 @@
     <Content Include="TestExecutionContexts\Attachable-Chrome-Localhost.runsettings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\Attachable-Chrome-Zalenium-Localhost.runsettings">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestExecutionContexts\Attachable-Edge-Localhost.runsettings">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\Attachable-Firefox-Zalenium-Localhost.runsettings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestExecutionContexts\Attachable-IE11-Localhost.runsettings">
@@ -130,22 +114,13 @@
     <Content Include="TestExecutionContexts\Default-FireFox-Localhost.runsettings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\Default-FireFox-Zalenium-Localhost.runsettings">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestExecutionContexts\Default-IE11-Localhost.runsettings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestExecutionContexts\tec.attachable-chrome-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestExecutionContexts\tec.attachable-chrome-zalenium-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestExecutionContexts\tec.attachable-edge-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.attachable-firefox-zalenium-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestExecutionContexts\tec.attachable-ie11-localhost.json">
@@ -161,9 +136,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestExecutionContexts\tec.default-firefox-localhost.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestExecutionContexts\tec.default-firefox-zalenium-localhost.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestExecutionContexts\tec.default-ie11-localhost.json">

@@ -12,7 +12,7 @@ A few automated (raw, inline locator) tests are written against https://the-inte
 NOTE: Appium is slowly being added, but is a work in progress. 
 
 ## Framework Parameters
-The browser you use, where the test is executed (locally, Selenium Grid, Zalenium), how you control that execution (timeouts, logging) and the environment you target are runtime parameters and each one is a separate concern and should be configurable independently. Collectively these parameters are known as the "Test Execution Context"
+The browser you use, where the test is executed (locally, Selenium Grid), how you control that execution (timeouts, logging) and the environment you target are runtime parameters and each one is a separate concern and should be configurable independently. Collectively these parameters are known as the "Test Execution Context"
 
 By default, the tests will run using the Chrome browser against http://the-internet.herokuapp.com.
 
@@ -41,7 +41,6 @@ The following Remote Web Driver Settings files are provided:
 | Setting | Description |
 | ------- | ----------- |
 | common-localhost-selenium.json | The default. Means: do not use a Remote Web Driver |
-| common-localhost-zalenium-docker.json | Targets Zalenium running on localhost via Docker. See the infra/the-internet/common-zalenium-docker-localhost folder for more information |
 
 ### Advanced Parameters
 The optional xxx_FILES environment variables support either a fully qualified path; or the name of a file that is expected to exist under the Runtime folder when the tests are executed; or a combination of both. 
@@ -88,7 +87,6 @@ YASF_TEST_EXECUTION_CONTEXT=common-chrome-localhost
 | Attachable-Edge-Localhost.runsettings | attachable-edge-localhost | tec.attachable-edge-localhost.json | Will attach to an already-running Selenium Driver instance if it exists and was started when this .runsettings was active. |
 | Default-Edge-Localhost.runsettings | default-edge-localhost | tec.default-edge-localhost.json | Runs the tests in Edge |
 | Default-FireFox-Localhost.runsettings | default-firefox-localhost | tec.default-firefox-localhost.json | Runs the tests in Firerfox |
-| Default-FireFox-Zalenium-Localhost.runsettings | default-firefox-zalenium-localhost | tec.default-firefox-zalenium-localhost.json | Runs the tests in Firefox against Zalenium |
 | Default-Android-Web-Chrome-Localhost.runsettings | default-android-chrome-web-localhost | tec.tec.default-android-chrome-web-localhost.json | Runs tests against Chrome on an Android Device using the chromedriver.exe that is part of the Solution |
 
 ## Hot Reload Functionality / Scratchpad
@@ -118,8 +116,6 @@ dotnet watch test --filter "Name=HotReloadWorkflow"
 ```
 
 Whenever we save anything in the TheInternet.SystemTests.Raw project, that single test will be run. On my machine it takes around 6 seconds for the build and test exection to occur; perhaps 'warm-reload' is a better description :)
-
-NOTE: There is also an Attachable .runsettings for targetting Zalenium - this will let you attach to a remote running instance of Chrome, or FireFox, on Zalenium. The current implementation is quite limited in that it will reconnect to ANY remote session (regardless of whether it is Chrome, Firefox, or otherwise).  qBe aware of the default timeout for browser sessions in Zalenium - it is possible your browser session will be purged before you have a chance to interact with it again. Google SEL_BROWSER_TIMEOUT_SECS for more information.
 
 ### Within Visual Studio
 1. Select the Attachable-Chrome-Localhost .runsettings file *FIRST*
