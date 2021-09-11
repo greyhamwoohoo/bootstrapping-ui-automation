@@ -33,7 +33,7 @@ stages:
     timeoutInMinutes: 12
     cancelTimeoutInMinutes: 2
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: Ubuntu-20.04
 
     steps:
     - template: templates/build-and-publish.yml
