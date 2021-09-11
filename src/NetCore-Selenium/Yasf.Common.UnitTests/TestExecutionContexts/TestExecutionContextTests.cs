@@ -17,7 +17,7 @@ namespace Yasf.Common.UnitTests.TestExecutionContexts
             [TestMethod]
             public void ThereAreManyFiles()
             {
-                DiscoverFilesAtPath("TestExecutionContexts", "*.json").Count().Should().BeGreaterThan(10, because: "we will be parsing all Json files. ");
+                DiscoverFilesAtPath("TestExecutionContexts", "*.json").Count().Should().BeGreaterThan(5, because: "we will be parsing all Json files. ");
             }
 
             [TestMethod]
