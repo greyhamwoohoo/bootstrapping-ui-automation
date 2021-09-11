@@ -1,8 +1,0 @@
-{
-  "testSettings": {
-    "environmentVariables": {
-      "THEINTERNET_BROWSERSETTINGS_FILES": "default-chrome.json",
-      "THEINTERNET_REMOTEWEBDRIVERSETTINGS_FILES": "localhost.json"
-    }
-  }
-}

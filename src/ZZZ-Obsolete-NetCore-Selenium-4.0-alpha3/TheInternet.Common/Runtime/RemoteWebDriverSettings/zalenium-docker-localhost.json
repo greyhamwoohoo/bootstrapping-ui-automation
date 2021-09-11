@@ -1,6 +1,0 @@
-﻿{
-  "remoteWebDriverSettings": {
-    "useRemoteDriver": true,
-    "remoteUri": "http://localhost:4444/wd/hub"
-  }
-}

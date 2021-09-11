@@ -1,7 +1,0 @@
-{
-  "controlSettings": {
-    "pollingTimeInMilliseconds": 250,
-    "waitUntilTimeoutInSeconds": 60,
-    "attachToExistingSessionIfItExists": false
-  }
-}
