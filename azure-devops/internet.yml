@@ -43,7 +43,7 @@ stages:
       inputs:
         command: custom
         custom: vstest
-        arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.SystemTests.Raw/bin/$(Build.Configuration)/netcoreapp3.1/publish/TheInternet.SystemTests.Raw.dll --logger:"trx;LogFileName=TheInternet-Tests.trx"'
+        arguments: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheInternet.SystemTests.Raw/bin/$(Build.Configuration)/net5.0/publish/TheInternet.SystemTests.Raw.dll --logger:"trx;LogFileName=TheInternet-Tests.trx"'
     
     - task: PublishTestResults@2
       displayName: 'Publish Test Results **/TheInternet-Tests.trx'

@@ -3,7 +3,7 @@ steps:
   displayName: 'Run Common.UnitTests'
   inputs:
     command: test
-    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.UnitTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.UnitTests/bin/$(Build.Configuration)/net5.0/publish
     arguments: Yasf.Common.UnitTests.dll
     publishTestResults: true
     testRunTitle: Common.UnitTests
