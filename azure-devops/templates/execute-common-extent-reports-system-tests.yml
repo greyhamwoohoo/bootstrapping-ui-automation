@@ -3,7 +3,7 @@ steps:
   displayName: 'Run ExtentReports.System Tests'
   inputs:
     command: test
-    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.ExtentReports.SystemTests/bin/$(Build.Configuration)/netcoreapp3.1/publish
+    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.ExtentReports.SystemTests/bin/$(Build.Configuration)/net5.0/publish
     arguments: Yasf.Common.ExtentReports.SystemTests.dll
     publishTestResults: true
     testRunTitle: Common.ExtentReports.SystemTests
