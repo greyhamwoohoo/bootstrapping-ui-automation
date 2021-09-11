@@ -1,9 +1,0 @@
-{
-  "testExecutionContext": {
-    "environmentVariables": {
-      "YASF_BROWSERSETTINGS_FILES": "common-firefox.json",
-      "YASF_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-zalenium-docker.json",
-      "YASF_CONTROLSETTINGS__ATTACHTOEXISTINGSESSIONIFITEXISTS": true
-    }
-  }
-}
