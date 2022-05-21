@@ -61,7 +61,7 @@ stages:
     # Fail hard after 60 minutes incase anything goes wrong (TODO: add a timeout on adb wait-for-device)
     timeoutInMinutes: 20
     pool:
-      vmImage: macOS-10.15
+      vmImage: macOS-11
 
     steps:
     - task: DownloadPipelineArtifact@2
