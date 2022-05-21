@@ -80,7 +80,12 @@ stages:
 
     - powershell: |
         Write-Host "##vso[task.setvariable variable=YASF_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP]$(Pipeline.Workspace)/Input/TestApp/fat-debug/app-debug.apk"
-      displayName: 'Set YASF_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP location'  
+      displayName: 'Set YASF_DEVICESETTINGS__OPTIONS__GENERALCAPABILITIES__APP location' 
+
+    - task: UseDotNet@2
+      displayName: 'Use .Net Core sdk 6.x'
+      inputs:
+        version: 6.x       
 
     - template: templates/build-and-publish.yml
 
