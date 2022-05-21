@@ -3,7 +3,7 @@ steps:
   displayName: 'Run Common.SystemTests'
   inputs:
     command: test
-    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.SystemTests/bin/$(Build.Configuration)/net5.0/publish
+    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.SystemTests/bin/$(Build.Configuration)/net6.0/publish
     arguments: Yasf.Common.SystemTests.dll
     publishTestResults: true
     testRunTitle: Common.SystemTests      
