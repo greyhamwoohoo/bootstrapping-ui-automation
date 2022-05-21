@@ -35,7 +35,7 @@ stages:
     timeoutInMinutes: 12
     cancelTimeoutInMinutes: 2
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20.04
 
     steps:
     - powershell: |
