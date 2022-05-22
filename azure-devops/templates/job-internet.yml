@@ -1,0 +1,34 @@
+parameters:
+- name: frameworkFolder
+  displayName: "Name of the folder containing the framework version to build. ie: NetCore-Selenium or NetCore-Selenium-3-141"
+  type: string
+  default: src
+  
+jobs:
+- job: Build
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
+  timeoutInMinutes: 12
+  cancelTimeoutInMinutes: 2
+  pool:
+    vmImage: windows-2022
+
+  steps:
+  - template: build-and-publish.yml
+    parameters:
+        relativeBaseFolder: src/${{ parameters.frameworkFolder }}
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Raw SystemTests'
+    inputs:
+      command: custom
+      custom: vstest
+      arguments: '$(System.DefaultWorkingDirectory)/src/${{ parameters.frameworkFolder }}/TheInternet.SystemTests.Raw/bin/$(Build.Configuration)/net6.0/publish/TheInternet.SystemTests.Raw.dll --logger:"trx;LogFileName=TheInternet-Tests.trx"'
+  
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/TheInternet-Tests.trx'
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**/TheInternet-Tests.trx'
+      failTaskOnFailedTests: true
+      testRunTitle: 'TheInternet-Tests'

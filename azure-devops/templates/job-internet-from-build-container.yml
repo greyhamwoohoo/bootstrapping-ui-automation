@@ -1,0 +1,35 @@
+parameters:
+- name: frameworkFolder
+  displayName: "Name of the folder containing the framework version to build. ie: NetCore-Selenium or NetCore-Selenium-3-141"
+  type: string
+  default: src
+
+jobs:
+- job: Build
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
+  timeoutInMinutes: 12
+  cancelTimeoutInMinutes: 2
+  pool:
+    vmImage: ubuntu-20.04
+
+  steps:
+  - powershell: |
+      docker build -t chrome-and-tests:local .
+    workingDirectory: src/${{ parameters.frameworkFolder }}
+    displayName: Build Container
+
+  - powershell: |
+      New-Item -ItemType Directory -Name container-test-results -Force
+
+      docker run -v "$($pwd)/container-test-results:/app/TestResults" -e YASF_TEST_EXECUTION_CONTEXT=$env:YASF_TEST_EXECUTION_CONTEXT -e YASF_BROWSERSETTINGS_FILES=$env:YASF_BROWSERSETTINGS_FILES chrome-and-tests:local --logger:"trx;LogFileName=TheInternet-Tests.trx"
+    workingDirectory: $(Pipeline.Workspace)
+    displayName: Run tests      
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '$(Pipeline.Workspace)/container-test-results/TheInternet-Tests.trx'
+      failTaskOnFailedTests: true
+      testRunTitle: 'TheInternet-Tests'
