@@ -26,7 +26,7 @@ Two versions are included. Both versions will be managed independently even thou
 
 | Folder | Description | 
 | ------ | ----------- |
-| src/NetCore-Selenium | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 4  (IE, Chrome, Edge) and Appium WebDriver 5 |
+| src/NetCore-Selenium | Reference Implementation (Work In Progress): <br><br>Baseline framework and attachable drivers using Selenium 4  (IE, Chrome, Edge) and Appium WebDriver 5.<br/><br/>NOTE: This is still a work in progress. |
 | src/NetCore-Selenium-3-141 | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 3.141  (IE, Chrome, Edge) |
 
 ## Infrastructure
