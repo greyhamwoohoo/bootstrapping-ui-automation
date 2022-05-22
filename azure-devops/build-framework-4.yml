@@ -9,7 +9,8 @@ schedules:
 - cron: "0 15 * * 0"
   displayName: "Weekly Sunday Build at 3pm GMT"
   branches:
-    include: "master"
+    include: 
+    - master
   always: true
 
 name: 1.0$(Rev:.r)
