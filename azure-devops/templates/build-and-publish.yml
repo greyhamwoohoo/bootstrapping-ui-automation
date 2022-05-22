@@ -1,16 +1,23 @@
+parameters:
+- name: relativeBaseFolder
+  displayName: Relative path of the folder containing the version of the framework to build
+  type: string
+  default: src
+  
 steps:
 - task: DotNetCoreCLI@2
   displayName: 'Dotnet Restore'
   inputs:
     command: restore
-    projects: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.sln'
+    projects: "${{ parameters.relativeBaseFolder }}/Yasf.sln"
+
 - task: DotNetCoreCLI@2
   displayName: 'Dotnet Publish'
   inputs:
     command: publish
     publishWebProjects: false
     projects: |
-        $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.sln
+       ${{ parameters.relativeBaseFolder }}/Yasf.sln
     
     arguments: '--no-restore --configuration $(Build.Configuration)'
     zipAfterPublish: false  

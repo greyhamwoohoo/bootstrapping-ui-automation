@@ -37,6 +37,8 @@ stages:
 
     steps:
     - template: templates/build-and-publish.yml
+      parameters:
+         relativeBaseFolder: src/$(TEST_TARGET_FOLDER) 
 
     - task: DotNetCoreCLI@2
       displayName: 'Run Raw SystemTests'

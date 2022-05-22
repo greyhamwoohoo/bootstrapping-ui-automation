@@ -1,0 +1,45 @@
+parameters:
+- name: frameworkFolder
+  displayName: "Name of the folder containing the framework version to build. ie: NetCore-Selenium or NetCore-Selenium-3-141"
+  type: string
+  default: src
+  
+jobs:
+- job: Build
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
+  timeoutInMinutes: 12
+  cancelTimeoutInMinutes: 2
+  pool:
+    vmImage: windows-2022
+
+  steps:
+  - template: build-and-publish.yml
+    parameters:
+        relativeBaseFolder: src/${{ parameters.frameworkFolder }}
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Common.UnitTests'
+    inputs:
+      command: test
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/${{ parameters.frameworkFolder }}/Yasf.Common.UnitTests/bin/$(Build.Configuration)/net6.0/publish
+      arguments: Yasf.Common.UnitTests.dll
+      publishTestResults: true
+      testRunTitle: Common.UnitTests
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Common.SystemTests'
+    inputs:
+      command: test
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/${{ parameters.frameworkFolder }}/Yasf.Common.SystemTests/bin/$(Build.Configuration)/net6.0/publish
+      arguments: Yasf.Common.SystemTests.dll
+      publishTestResults: true
+      testRunTitle: Common.SystemTests         
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run ExtentReports.System Tests'
+    inputs:
+      command: test
+      workingDirectory: $(System.DefaultWorkingDirectory)/src/${{ parameters.frameworkFolder }}/Yasf.Common.ExtentReports.SystemTests/bin/$(Build.Configuration)/net6.0/publish
+      arguments: Yasf.Common.ExtentReports.SystemTests.dll
+      publishTestResults: true
+      testRunTitle: Common.ExtentReports.SystemTests
