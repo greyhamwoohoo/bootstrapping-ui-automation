@@ -10,7 +10,7 @@ steps:
     command: publish
     publishWebProjects: false
     projects: |
-        '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.sln'
+        $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.sln
     
     arguments: '--no-restore --configuration $(Build.Configuration)'
     zipAfterPublish: false  
