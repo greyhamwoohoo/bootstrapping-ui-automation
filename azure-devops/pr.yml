@@ -36,6 +36,9 @@ stages:
 
     steps:
     - template: templates/build-and-publish.yml
+      parameters:
+         relativeBaseFolder: src/$(TEST_TARGET_FOLDER)
+
     - template: templates/execute-common-unit-tests.yml
     - template: templates/execute-common-system-tests.yml
     - template: templates/execute-common-extent-reports-system-tests.yml
