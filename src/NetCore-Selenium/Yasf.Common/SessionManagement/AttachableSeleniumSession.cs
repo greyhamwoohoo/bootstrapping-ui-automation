@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using Yasf.Common.SessionManagement.Contracts;
 

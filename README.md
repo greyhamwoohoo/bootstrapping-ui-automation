@@ -17,16 +17,17 @@ A few example pipelines are included for reference.
 | Build | Result | Description |
 | ----- | ------ | ----------- |
 | yasf-internet.yml | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/yet-another-selenium-framework/yasf-internet?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=65&branchName=master) | Builds and runs the tests on a Windows VM and targets http://the-internet.herokuapp.com |
-| tasf-internet-localhost.yml | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/yet-another-selenium-framework/yasf-internet?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=65&branchName=master) | Builds and runs the tests on an Ubuntu VM and targets 'the-internet' in a container started on the build system |
+| yasf-internet-localhost.yml | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/yet-another-selenium-framework/yasf-internet?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=65&branchName=master) | Builds and runs the tests on an Ubuntu VM and targets 'the-internet' in a container started on the build system |
 | yasf-internet-from-built-container | [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/yet-another-selenium-framework/yasf-internet-from-build-container?branchName=update-docker-images)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=66&branchName=update-docker-images) | Builds a container including both Google Chrome and the Test Binaries, runs the tests from the container targetting http://the-internet.herokuapp.com and then publishes test results.<br><br>Test results are 'dropped' onto the host using a mapped volume. | 
 | yasf-mobile-flutter-app-tests |  [![Build Status](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_apis/build/status/yet-another-selenium-framework/yasf-mobile-flutter-app-tests?branchName=master)](https://greyhamwoohoo.visualstudio.com/Public-Automation-Examples/_build/latest?definitionId=67&branchName=master) | Runs the Android FlutterApp Tests in the Pipeline via Appium |
 
 ## Versions
-The baseline framework is the same - but the attachable driver / hot-reload workflow implementation is very dependent on the version of Selenium in use. 
+Two versions are included. Both versions will be managed independently even though there is a LOT of duplicated code. Selenium-3-141 will eventually be obsoleted. 
 
 | Folder | Description | 
 | ------ | ----------- |
-| src/NetCore-Selenium | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 3.141  (IE, Chrome, Edge) |
+| src/NetCore-Selenium | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 4  (IE, Chrome, Edge) and Appium WebDriver 5 |
+| src/NetCore-Selenium-3-141 | Reference Implementation: <br><br>Baseline framework and attachable drivers using Selenium 3.141  (IE, Chrome, Edge) |
 
 ## Infrastructure
 You can run 'the-internet' yourself in the following ways: 

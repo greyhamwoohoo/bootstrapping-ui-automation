@@ -1,0 +1,19 @@
+﻿{
+  "browserName": "FireFox",
+  "browserSettings": {
+    "profile": {
+      "preferences": {
+        "browser.download.folderList": 2,
+        "browser.helperApps.alwaysAsk.force": false,
+        "browser.download.dir": "%TEST_OUTPUT_FOLDER%",
+        "browser.download.downloadDir": "%TEST_OUTPUT_FOLDER%",
+        "browser.download.defaultFolder": "%TEST_OUTPUT_FOLDER%",
+        "browser.privatebrowsing.autostart": true,
+        "!excludepreference": "somevalue"
+      }
+    },
+    "options": {
+      "useLegacyImplementation": true
+    }
+  }
+}

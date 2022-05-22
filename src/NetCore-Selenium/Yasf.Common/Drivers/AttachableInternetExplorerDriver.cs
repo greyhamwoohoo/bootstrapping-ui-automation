@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.IE;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 using System.Collections.Generic;
 using System.IO;

@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Chromium;
 using System.Linq;
 
 namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
@@ -18,7 +19,7 @@ namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
             if (!settings.Options.PerformanceLoggingPreferences.IsEmpty)
             {
                 // It would appear that setting Options.PerformanceLoggingPreferences to non-null has side effects; hence, we only set it if we actually have tracing categories to deal with. 
-                result.PerformanceLoggingPreferences = new ChromePerformanceLoggingPreferences();
+                result.PerformanceLoggingPreferences = new ChromiumPerformanceLoggingPreferences();
                 settings.Options.PerformanceLoggingPreferences.TracingCategories.ForEach(tracingCategory => result.PerformanceLoggingPreferences.AddTracingCategory(tracingCategory));
             }
 

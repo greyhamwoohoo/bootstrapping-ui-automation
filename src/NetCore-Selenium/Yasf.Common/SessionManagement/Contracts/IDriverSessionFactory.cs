@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Remote;
+﻿using OpenQA.Selenium;
 using Serilog;
 using Yasf.Common.ExecutionContext.Runtime.BrowserSettings.Contracts;
 using Yasf.Common.ExecutionContext.Runtime.ControlSettings;

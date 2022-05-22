@@ -45,6 +45,8 @@ variables:
   value: 60002  
 - name: YASF_CONTROLSETTINGS__APPIUMDRIVERCREATIONRETRIES
   value: 5
+- name: TEST_TARGET_FOLDER
+  value: NetCore-Selenium-3-141
 
 # Reference: The artifacts are published from this pipeline:
 # https://github.com/greyhamwoohoo/appium-flutter-driver-net-bindings-test-app/blob/master/azure-devops/release.yml
@@ -181,8 +183,7 @@ stages:
         command: test
         arguments: --no-restore --no-build --configuration $(Build.Configuration)
         projects: |
-          **/TheMobileFlutterApp.SystemTests.csproj
-        
+          $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/TheMobileFlutterApp.SystemTests/TheMobileFlutterApp.SystemTests.csproj
         testRunTitle: 'System Tests'
 
     - task: Bash@3

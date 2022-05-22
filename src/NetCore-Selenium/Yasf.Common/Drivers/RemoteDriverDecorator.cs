@@ -135,10 +135,6 @@ namespace Yasf.Common.Drivers
                 {
                     SetCommandInfoRepository(new W3CWireProtocolCommandInfoRepository());
                 }
-                else if (existingSession.CommandRepositoryTypeName == typeof(WebDriverWireProtocolCommandInfoRepository).FullName)
-                {
-                    SetCommandInfoRepository(new WebDriverWireProtocolCommandInfoRepository());
-                }
                 else
                 {
                     throw new InvalidOperationException($"At the time of writing this there were two implementations of CommandInfoRepository. Add a switch statement and new up a type of {existingSession.CommandRepositoryTypeName}");

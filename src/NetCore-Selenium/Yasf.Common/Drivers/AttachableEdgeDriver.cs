@@ -1,5 +1,5 @@
-﻿using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Remote;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Edge;
 using System.Collections.Generic;
 using System.IO;
 
@@ -16,10 +16,10 @@ namespace Yasf.Common.Drivers
 
         protected override Response Execute(string driverCommandToExecute, Dictionary<string, object> parameters)
         {
-            var decoratedRemoteWebDriver = new DriverDecorator(this, "EDGE", Directory.GetCurrentDirectory());
-            decoratedRemoteWebDriver.AssertSeleniumVersionIsCompatible();
+           var decoratedRemoteWebDriver = new DriverDecorator(this, "EDGE", Directory.GetCurrentDirectory());
+           decoratedRemoteWebDriver.AssertSeleniumVersionIsCompatible();
 
-            return decoratedRemoteWebDriver.Execute(driverCommandToExecute, parameters, Executor);
+           return decoratedRemoteWebDriver.Execute(driverCommandToExecute, parameters, Executor);
         }
 
         private Response Executor(string driverCommandToExecute, Dictionary<string, object> parameters)

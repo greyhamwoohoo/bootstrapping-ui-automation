@@ -1,0 +1,8 @@
+﻿{
+  "browserName": "Edge",
+  "browserSettings": {
+    "options": {
+      "useInPrivateBrowsing": true
+    }
+  }
+}
