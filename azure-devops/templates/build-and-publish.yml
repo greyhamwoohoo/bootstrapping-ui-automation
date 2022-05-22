@@ -3,14 +3,14 @@ steps:
   displayName: 'Dotnet Restore'
   inputs:
     command: restore
-    projects: '**/*.sln'
+    projects: '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.sln'
 - task: DotNetCoreCLI@2
   displayName: 'Dotnet Publish'
   inputs:
     command: publish
     publishWebProjects: false
     projects: |
-        **/*.sln
+        '$(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.sln'
     
     arguments: '--no-restore --configuration $(Build.Configuration)'
     zipAfterPublish: false  
