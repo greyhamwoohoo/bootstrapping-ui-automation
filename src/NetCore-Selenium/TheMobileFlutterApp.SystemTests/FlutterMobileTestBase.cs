@@ -1,7 +1,7 @@
 ﻿using GreyhamWooHoo.Flutter;
 using GreyhamWooHoo.Flutter.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium.Internal;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using Yasf.Common;
 using Yasf.Common.ExecutionContext.Runtime.ControlSettings;

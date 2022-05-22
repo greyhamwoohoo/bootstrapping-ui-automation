@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using Serilog;
 using System;
 using System.IO;
 using System.Linq;
-using System.Windows.Input;
 using Yasf.Common.ExecutionContext.Contracts;
 using Yasf.Common.ExecutionContext.Runtime;
 using Yasf.Common.ExecutionContext.Runtime.BrowserSettings;

@@ -39,7 +39,6 @@ namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
             if (null == settings) throw new System.ArgumentNullException(nameof(settings));
 
             var result = new FirefoxOptions();
-            result.UseLegacyImplementation = settings.Options.UseLegacyImplementation;
             return result;
         }
     }

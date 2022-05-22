@@ -11,29 +11,30 @@ namespace Yasf.Common.Drivers
     /// </summary>
     public class DriverDecorator
     {
-        public const string IMPLEMENTATION_NOTE = "This implementation is for Selenium 3.141.59 and is using protected / private methods to enable session reuse. The implementation might have changed for the Selenium you are using; we will need a new specific adapter for the (Driver,SeleniumVersion).";
+        public const string IMPLEMENTATION_NOTE = "This implementation is for Selenium 4.0.0.0 and is using protected / private methods to enable session reuse. The implementation might have changed for the Selenium you are using; we will need a new specific adapter for the (Driver,SeleniumVersion).";
 
-        private readonly RemoteWebDriver _remoteWebDriver;
+        private readonly WebDriver _webDriver;
         private readonly string _browserName;
         private readonly string _targetFolder;
 
-        public DriverDecorator(RemoteWebDriver remoteWebDriver, string browserName, string targetFolder)
+        public DriverDecorator(WebDriver webDriver, string browserName, string targetFolder)
         {
-            if (null == remoteWebDriver) throw new ArgumentNullException(nameof(remoteWebDriver));
+            if (null == webDriver) throw new ArgumentNullException(nameof(webDriver));
             if (null == browserName) throw new ArgumentNullException(nameof(browserName));
             if (null == targetFolder) throw new ArgumentNullException(nameof(targetFolder));
 
-            _remoteWebDriver = remoteWebDriver;
+            _webDriver = webDriver;
             _browserName = browserName;
             _targetFolder = targetFolder;
         }
 
         public void AssertSeleniumVersionIsCompatible()
         {
-            var seleniumVersion = typeof(RemoteWebDriver).Assembly.GetName().Version.ToString();
-            if (seleniumVersion != "3.0.0.0" && seleniumVersion != "3.141.0.0")
+            // From experience: Selenium preserves its major copmatibility very well. So I am only matching on the Major version here. 
+            var seleniumVersion = typeof(RemoteWebDriver).Assembly.GetName().Version;
+            var supportedVersion = Version.Parse("4.0.0.0");
+            if (seleniumVersion.MajorRevision != supportedVersion.MajorRevision)
             {
-                // Unfortunately, it would appear that 3.141.59 is not surfaced anywhere, so we are limited to major/minor
                 throw new NotSupportedException($"{IMPLEMENTATION_NOTE}");
             }
         }
@@ -41,7 +42,7 @@ namespace Yasf.Common.Drivers
         public string GetRemoteServerUri()
         {
             // return this.CommandExecutor.HttpExecutor.remoteServerUri.ToString();
-            var commandExecutor = GetCommandExecutor(_remoteWebDriver);
+            var commandExecutor = GetCommandExecutor(_webDriver);
 
             var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
             if (null == httpExecutorProperty) throw new InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
@@ -61,7 +62,7 @@ namespace Yasf.Common.Drivers
         public void SetRemoteServerUri(string value)
         {
             // this.CommandExecutor.HttpExecutor.remoteServerUri = new Uri(value)
-            var commandExecutor = GetCommandExecutor(_remoteWebDriver);
+            var commandExecutor = GetCommandExecutor(_webDriver);
 
             var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
             if (null == httpExecutorProperty) throw new InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
@@ -78,7 +79,7 @@ namespace Yasf.Common.Drivers
         public CommandInfoRepository GetCommandInfoRepository()
         {
             // return this.CommandExecutor.HttpExecutor.commandInfoRepository
-            var commandExecutor = GetCommandExecutor(_remoteWebDriver);
+            var commandExecutor = GetCommandExecutor(_webDriver);
 
             var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
             if (null == httpExecutorProperty) throw new InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
@@ -101,7 +102,7 @@ namespace Yasf.Common.Drivers
         public void SetCommandInfoRepository(CommandInfoRepository repository)
         {
             // this.CommandExecutor.HttpExecutor.commandInfoRepository = repository
-            var commandExecutor = GetCommandExecutor(_remoteWebDriver);
+            var commandExecutor = GetCommandExecutor(_webDriver);
 
             var httpExecutorProperty = commandExecutor.GetType().GetProperty("HttpExecutor");
             if (null == httpExecutorProperty) throw new InvalidOperationException($"remoteWebDriver.CommandExecutor.HttpExecutor property should exist. {IMPLEMENTATION_NOTE}");
@@ -159,10 +160,6 @@ namespace Yasf.Common.Drivers
                 {
                     SetCommandInfoRepository(new W3CWireProtocolCommandInfoRepository());
                 }
-                else if (existingSession.CommandRepositoryTypeName == typeof(WebDriverWireProtocolCommandInfoRepository).FullName)
-                {
-                    SetCommandInfoRepository(new WebDriverWireProtocolCommandInfoRepository());
-                }
                 else
                 {
                     throw new InvalidOperationException($"At the time of writing this there were two implementations of CommandInfoRepository. Add a switch statement and new up a type of {existingSession.CommandRepositoryTypeName}");
@@ -176,9 +173,9 @@ namespace Yasf.Common.Drivers
             return result;
         }
 
-        private ICommandExecutor GetCommandExecutor(RemoteWebDriver remoteWebDriver)
+        private ICommandExecutor GetCommandExecutor(WebDriver remoteWebDriver)
         {
-            var commandExecutorProperty = remoteWebDriver.GetType().GetProperty("CommandExecutor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var commandExecutorProperty = remoteWebDriver.GetType().GetProperty("CommandExecutor");
             if (null == commandExecutorProperty) throw new InvalidOperationException($"remoteWebDriver.CommandExecutor property should exist. {IMPLEMENTATION_NOTE}");
 
             var commandExecutor = commandExecutorProperty.GetValue(remoteWebDriver) as ICommandExecutor;

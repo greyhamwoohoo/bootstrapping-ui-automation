@@ -6,7 +6,6 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.Events;
 using Serilog;
 using System;
 using System.Linq;
@@ -97,13 +96,13 @@ namespace Yasf.Common.SessionManagement
                 var appiumSettingsAdapter = new AppiumSettingsAdapter();
                 var options = appiumSettingsAdapter.ToAppiumOptions(appiumSettings);
 
-                var androidDriver = default(AndroidDriver<AppiumWebElement>);
+                var androidDriver = default(AndroidDriver);
 
                 foreach (var currentAttempt in Enumerable.Range(1, controlSettings.AppiumDriverCreationRetries))
                 {
                     try
                     {
-                        androidDriver = new AndroidDriver<AppiumWebElement>(httpCommandExecutor, options);
+                        androidDriver = new AndroidDriver(httpCommandExecutor, options);
 
                         break;
                     }

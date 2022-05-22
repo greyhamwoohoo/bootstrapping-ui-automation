@@ -7,7 +7,10 @@ namespace Yasf.Common.ExecutionContext.Runtime.BrowserSettings
         public EdgeOptions ToEdgeOptions(EdgeBrowserSettings settings)
         {
             var result = new EdgeOptions();
-            result.UseInPrivateBrowsing = settings.Options.UseInPrivateBrowsing;
+            if(settings.Options.UseInPrivateBrowsing)
+            {
+                result.AddArgument("inprivate");
+            }
             return result;
         }
     }

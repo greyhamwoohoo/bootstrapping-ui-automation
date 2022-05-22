@@ -1,0 +1,8 @@
+{
+  "testExecutionContext": {
+    "environmentVariables": {
+      "YASF_BROWSERSETTINGS_FILES": "common-edge.json",
+      "YASF_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-selenium.json"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "testExecutionContext": {
+    "environmentVariables": {
+      "YASF_BROWSERSETTINGS_FILES": "common-chrome.json",
+      "YASF_REMOTEWEBDRIVERSETTINGS_FILES": "common-localhost-selenium.json",
+      "YASF_CONTROLSETTINGS__ATTACHTOEXISTINGSESSIONIFITEXISTS": true
+    }
+  }
+}

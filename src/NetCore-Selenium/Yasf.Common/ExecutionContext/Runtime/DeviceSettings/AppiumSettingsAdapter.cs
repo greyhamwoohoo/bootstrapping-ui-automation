@@ -161,11 +161,11 @@ namespace Yasf.Common.ExecutionContext.Runtime.DeviceSettings
                 if (!keyIsKnown)
                 {
                     // As the key is not known - do not coerce it. 
-                    inOptions.AddAdditionalCapability(candidateKey, pair.Value);
+                    inOptions.AddAdditionalOption(candidateKey, pair.Value);
                 }
                 else
                 {
-                    inOptions.AddAdditionalCapability(candidateKey, CoerceValueToType(candidateKey, withWellKnownCapabilities[candidateKey], pair.Value));
+                    inOptions.AddAdditionalOption(candidateKey, CoerceValueToType(candidateKey, withWellKnownCapabilities[candidateKey], pair.Value));
                 }
             });
         }

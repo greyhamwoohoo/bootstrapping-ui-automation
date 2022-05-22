@@ -1,0 +1,6 @@
+﻿{
+  "remoteWebDriverSettings": {
+    "httpCommandExecutorTimeoutInSeconds": 60,
+    "useRemoteDriver": false
+  }
+}

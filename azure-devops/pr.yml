@@ -22,7 +22,7 @@ variables:
   - name: YASF_CONTROLSETTINGS_FILES
     value: common.json
   - name: TEST_TARGET_FOLDER
-    value: NetCore-Selenium
+    value: NetCore-Selenium-3-141
 
 stages:
 - stage: Build
