@@ -1,7 +1,9 @@
 
 steps:
 - task: PowerShell@2
-  displayName: 'Tag Build'
-  condition: eq(variables['Build.Reason'], 'Manual')
-  script: |
-     Write-Host "##vso[build.addbuildtag]Weekly"
+  displayName: 'Tag Scheduled Build'
+  condition: eq(variables['Build.Reason'], 'Schedule')
+  inputs:
+    targetType: inline
+    script: |
+      Write-Host "##vso[build.addbuildtag]Weekly"
