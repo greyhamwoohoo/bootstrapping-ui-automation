@@ -1,8 +1,8 @@
 parameters:
 - name: relativeBaseFolder
-  displayName: Fully qualified path of the base folder containing the version of the framework to build
+  displayName: Relative path of the folder containing the version of the framework to build
   type: string
-  default: $(System.DefaultWorkingDirectory)
+  default: src
   
 steps:
 - task: DotNetCoreCLI@2

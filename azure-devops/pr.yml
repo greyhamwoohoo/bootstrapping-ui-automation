@@ -21,24 +21,15 @@ variables:
     value: internet.json
   - name: YASF_CONTROLSETTINGS_FILES
     value: common.json
-  - name: TEST_TARGET_FOLDER
-    value: NetCore-Selenium-3-141
 
 stages:
 - stage: Build
   jobs:
-  - job: Build
-    # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
-    timeoutInMinutes: 12
-    cancelTimeoutInMinutes: 2
-    pool:
-      vmImage: windows-2022
-
-    steps:
-    - template: templates/build-and-publish.yml
-      parameters:
-         relativeBaseFolder: src/$(TEST_TARGET_FOLDER)
-
-    - template: templates/execute-common-unit-tests.yml
-    - template: templates/execute-common-system-tests.yml
-    - template: templates/execute-common-extent-reports-system-tests.yml
+  - template: templates/job-pr.yml
+    parameters:
+       frameworkFolder: "NetCore-Selenium-3-141"
+       buildName: "Selenium_3_141"
+  - template: templates/job-pr.yml
+    parameters:
+       frameworkFolder: "NetCore-Selenium"       
+       buildName: "Selenium_4"

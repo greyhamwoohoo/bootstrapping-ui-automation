@@ -1,0 +1,34 @@
+parameters:
+- name: frameworkFolder
+  displayName: "Name of the folder containing the framework version to build. ie: NetCore-Selenium or NetCore-Selenium-3-141"
+  type: string
+  default: src
+- name: buildName
+  displayName: "There is no easy way to map the frameworkFolder to a unique Build Name. So we choose one. "
+  type: string
+  default: ""
+  
+jobs:
+- job: ${{ parameters.buildName }}
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=azure-devops&tabs=yaml&viewFallbackFrom=vsts#timeouts
+  timeoutInMinutes: 12
+  cancelTimeoutInMinutes: 2
+  pool:
+    vmImage: windows-2022
+
+  steps:
+  - template: build-and-publish.yml
+    parameters:
+        relativeBaseFolder: src/${{ parameters.frameworkFolder }}
+
+  - template: execute-common-unit-tests.yml
+    parameters:
+        relativeBaseFolder: src/${{ parameters.frameworkFolder }}
+
+  - template: execute-common-system-tests.yml
+    parameters:
+        relativeBaseFolder: src/${{ parameters.frameworkFolder }}
+
+  - template: execute-common-extent-reports-system-tests.yml
+    parameters:
+        relativeBaseFolder: src/${{ parameters.frameworkFolder }}  

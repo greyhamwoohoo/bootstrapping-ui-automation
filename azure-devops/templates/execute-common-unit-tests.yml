@@ -1,9 +1,15 @@
+parameters:
+- name: relativeBaseFolder
+  displayName: Relative path of the folder containing the version of the framework to build
+  type: string
+  default: src
+
 steps:
 - task: DotNetCoreCLI@2
   displayName: 'Run Common.UnitTests'
   inputs:
     command: test
-    workingDirectory: $(System.DefaultWorkingDirectory)/src/$(TEST_TARGET_FOLDER)/Yasf.Common.UnitTests/bin/$(Build.Configuration)/net6.0/publish
+    workingDirectory: $(System.DefaultWorkingDirectory)/${{ parameters.relativeBaseFolder }}/Yasf.Common.UnitTests/bin/$(Build.Configuration)/net6.0/publish
     arguments: Yasf.Common.UnitTests.dll
     publishTestResults: true
     testRunTitle: Common.UnitTests
