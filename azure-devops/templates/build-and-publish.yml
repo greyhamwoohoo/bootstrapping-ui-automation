@@ -5,6 +5,7 @@ parameters:
   default: src
   
 steps:
+- template: step-add-schedule-tag-conditionally.yml
 - task: DotNetCoreCLI@2
   displayName: 'Dotnet Restore'
   inputs:
