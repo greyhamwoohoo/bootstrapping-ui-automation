@@ -1,8 +1,8 @@
 
 steps:
 - task: PowerShell@2
-  displayName: 'Tag Build'
-  condition: eq(variables['Build.Reason'], 'Manual')
+  displayName: 'Tag Scheduled Build'
+  condition: eq(variables['Build.Reason'], 'Schedule')
   inputs:
     targetType: inline
     script: |
