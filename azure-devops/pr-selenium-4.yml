@@ -25,11 +25,6 @@ variables:
 stages:
 - stage: Build
   jobs:
-  - template: templates/job-pr.yml
-    parameters:
-       frameworkFolder: "NetCore-Selenium-3-141"
-       buildName: "Selenium_3_141"
-  - template: templates/job-pr.yml
+  - template: templates/job-build-and-test-framework.yml
     parameters:
        frameworkFolder: "NetCore-Selenium"       
-       buildName: "Selenium_4"
