@@ -1,0 +1,31 @@
+# Runs the tests using Google Chrome and target http://the-internet.herokuapp.com on the Internet
+#
+# Implementation:
+# 1. All work is executed on a Windows VM
+# 2. The tests are run 'from the VM' against the real website on the Internet
+
+trigger: none
+pr: none
+
+name: 1.0$(Rev:.r)
+
+variables:
+  - name: Build.Configuration
+    value: Release
+  - name: YASF_TEST_EXECUTION_CONTEXT
+    value: empty    
+  - name: YASF_BROWSERSETTINGS_FILES
+    value: common-headless-chrome.json
+  - name: YASF_REMOTEWEBDRIVERSETTINGS_FILES
+    value: common-localhost-selenium.json
+  - name: YASF_ENVIRONMENTSETTINGS_FILES
+    value: internet.json
+  - name: YASF_CONTROLSETTINGS_FILES
+    value: common.json
+
+stages:
+- stage: Build
+  jobs:
+  - template: templates/job-internet.yml
+    parameters:
+       frameworkFolder: "NetCore-Selenium-3-141"
