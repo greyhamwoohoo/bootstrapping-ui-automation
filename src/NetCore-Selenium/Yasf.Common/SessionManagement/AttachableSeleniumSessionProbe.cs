@@ -38,7 +38,7 @@ namespace Yasf.Common.SessionManagement
             try
             {
                 var client = new RestSharp.RestClient(attachableSeleniumSession.RemoteServerUri);
-                var request = new RestSharp.RestRequest($"/session/{attachableSeleniumSession.Response.SessionId}/url", RestSharp.Method.GET);
+                var request = new RestSharp.RestRequest($"/session/{attachableSeleniumSession.Response.SessionId}/url", RestSharp.Method.Get);
                 request.Timeout = 5000;
 
                 var response = client.Execute(request);
@@ -56,7 +56,7 @@ namespace Yasf.Common.SessionManagement
             try
             {
                 var client = new RestSharp.RestClient(attachableSeleniumSession.RemoteServerUri);
-                var request = new RestSharp.RestRequest("/status", RestSharp.Method.GET);
+                var request = new RestSharp.RestRequest("/status", RestSharp.Method.Get);
 
                 var response = client.Execute(request);
                 // 0 means there is nothing on the port - it is definitely not running
