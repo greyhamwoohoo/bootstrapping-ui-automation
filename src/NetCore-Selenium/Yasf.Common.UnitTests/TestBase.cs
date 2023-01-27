@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using Yasf.Common.DataSource;
 
 namespace Yasf.Common.UnitTests
 {
@@ -14,7 +15,7 @@ namespace Yasf.Common.UnitTests
         /// <returns></returns>
         protected IEnumerable<string> DiscoverFilesAtPath(string relativePath, string pattern)
         {
-            var root = System.IO.Path.Combine(TestContext.DeploymentDirectory, relativePath);
+            var root = System.IO.Path.Combine(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(TestBase).Assembly.Location), relativePath));
 
             var jsonFiles = System.IO.Directory.GetFiles(root, pattern, System.IO.SearchOption.AllDirectories);
 
